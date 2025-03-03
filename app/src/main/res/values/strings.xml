@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">calculadoraDosificadora</string>
+    <string name="menu_icon_description">Menú</string>
+    <string name="options_icon_description">Opciones</string>
+    <string name="greeting_text">Buen Día Dr. XXX</string>
+    <string name="welcome_message">¿Qué vamos a hacer hoy?</string>
+    <string name="citas_title">Citas</string>
+    <string name="citas_description">¿A quienes vamos a atender?</string>
+    <string name="historial_title">Historial de Citas</string>
+    <string name="historial_description">¿A quienes hemos atendido?</string>
+    <string name="titulares_title">Titulares</string>
+    <string name="titulares_description">Personas responsables de nuestros menores</string>
+    <string name="calculadora_title">Calculadora</string>
+    <string name="calculadora_description">Solo Calculadora Pediátrica</string>
+
+    <string-array name="genero_array">
+        <item>Hombre</item>
+        <item>Mujer</item>
+        <item>No binario</item>
+        <item>Otro</item>
+    </string-array>
+</resources>

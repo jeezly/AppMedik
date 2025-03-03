@@ -1,0 +1,11 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/opciones_perfil"
+        android:title="👤 Perfil"/>
+    <item
+        android:id="@+id/opciones_configuracion"
+        android:title="⚙️ Configuración"/>
+    <item
+        android:id="@+id/opciones_cerrar_sesion"
+        android:title="🚪 Cerrar sesión"/>
+</menu>

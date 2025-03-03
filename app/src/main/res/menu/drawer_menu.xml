@@ -1,0 +1,14 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_inicio"
+        android:title="🏠 Inicio / Dashboard"/>
+    <item
+        android:id="@+id/menu_protocolos"
+        android:title="📚 Protocolos y Guías"/>
+    <item
+        android:id="@+id/menu_sobre_nosotros"
+         android:title="ℹ️ Sobre Nosotros"/>
+    <item
+        android:id="@+id/menu_soporte"
+       android:title="📞 Soporte / Ayuda"/>
+</menu>

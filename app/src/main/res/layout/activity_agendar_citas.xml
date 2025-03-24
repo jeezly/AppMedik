@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/colorPeach"
     android:orientation="vertical"
     android:padding="16dp"
-    android:background="@android:color/white"
     tools:context=".VistaTitular.AgendarCitasActivity">
 
     <!-- Barra Superior (Toolbar) -->
@@ -14,7 +14,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/colorGreen"
+        android:background="@color/colorBlueD"
         android:elevation="4dp"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
@@ -23,10 +23,10 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:text="Agendar Cita"
             android:textSize="18sp"
-            android:textStyle="bold"
-            android:layout_gravity="center"/>
+            android:textStyle="bold" />
     </androidx.appcompat.widget.Toolbar>
 
     <!-- Título de la actividad -->
@@ -34,11 +34,11 @@
         android:id="@+id/tvTitulo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Veamos los Médicos pediátricos disponibles para agendar una cita"
-        android:textSize="20sp"
-        android:textColor="@android:color/black"
         android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"/>
+        android:layout_marginBottom="16dp"
+        android:text="Veamos los Médicos pediátricos disponibles para agendar una cita"
+        android:textColor="@android:color/black"
+        android:textSize="20sp" />
 
     <!-- Lista de doctores -->
     <ScrollView
@@ -50,8 +50,7 @@
             android:id="@+id/listaDoctores"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-        </LinearLayout>
+            android:orientation="vertical"></LinearLayout>
     </ScrollView>
 
     <!-- Botón de Cancelar Cita -->
@@ -59,9 +58,9 @@
         android:id="@+id/btnCancelarCita"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Cancelar Cita"
-        android:backgroundTint="@color/colorRed"
-        android:textColor="@android:color/white"
         android:layout_gravity="end"
-        android:layout_marginTop="16dp"/>
+        android:layout_marginTop="16dp"
+        android:backgroundTint="@color/colorRedD"
+        android:text="Cancelar Cita"
+        android:textColor="@android:color/white" />
 </LinearLayout>

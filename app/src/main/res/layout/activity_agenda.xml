@@ -11,7 +11,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/blue"
+        android:background="@color/colorBlueD"
         android:elevation="4dp"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
@@ -20,23 +20,23 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
             <!-- Menú de 3 líneas (ícono de menú) -->
             <ImageView
                 android:id="@+id/menu_icon"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@drawable/ic_menu"
+                android:layout_marginEnd="16dp"
                 android:contentDescription="@string/menu_icon_description"
-                android:layout_marginEnd="16dp"/>
+                android:src="@drawable/ic_menu" />
 
             <!-- Espacio flexible para centrar el título -->
             <Space
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"/>
+                android:layout_weight="1" />
 
             <!-- Título dinámico -->
             <TextView
@@ -44,23 +44,23 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Agenda"
+                android:textColor="@color/white"
                 android:textSize="18sp"
-                android:textStyle="bold"
-                android:textColor="@color/white"/>
+                android:textStyle="bold" />
 
             <!-- Espacio flexible para alinear el ícono de opciones a la derecha -->
             <Space
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"/>
+                android:layout_weight="1" />
 
             <!-- Ícono de 3 puntos verticales (opciones) -->
             <ImageView
                 android:id="@+id/options_icon"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@drawable/ic_more_vert"
-                android:contentDescription="@string/options_icon_description"/>
+                android:contentDescription="@string/options_icon_description"
+                android:src="@drawable/ic_more_vert" />
         </LinearLayout>
     </androidx.appcompat.widget.Toolbar>
 
@@ -68,6 +68,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/colorPeach"
         android:orientation="vertical"
         android:padding="16dp">
 
@@ -115,8 +116,8 @@
             android:id="@+id/btnRegresar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Regresar"
-            android:backgroundTint="@color/colorRed"
-            android:layout_gravity="center_horizontal"/>
+            android:layout_gravity="center_horizontal"
+            android:backgroundTint="@color/colorRedD"
+            android:text="Regresar" />
     </LinearLayout>
 </LinearLayout>

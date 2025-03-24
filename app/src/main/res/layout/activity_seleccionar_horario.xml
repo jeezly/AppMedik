@@ -53,7 +53,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
-            android:backgroundTint="@color/colorRedD"
+            android:backgroundTint="@color/colorOrangeD"
             android:paddingHorizontal="16dp"
             android:text="Cancelar Cita"
             android:textColor="@android:color/white" />

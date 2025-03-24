@@ -7,15 +7,13 @@
     <color name="colorGreen">#28A745</color>
     <color name="colorRed">#D32F2F</color>
     <color name="colorAccent">#FFC107</color> <!-- Amarillo -->
-    <color name="colorPeach">#f8f8ff</color>
+    <color name="colorPeach">#EFCCD6</color>
     <color name="colorBlueD">#2CBCCF</color>
     <color name="colorOrangeD">#F68D6C</color>
     <color name="colorRedD">#E44646</color>
     <color name="colorYellowD">#F2CD58</color>
 
-    <!-- Nuevos colores grises -->
-    <color name="colorGray">#9E9E9E</color>
-    <color name="colorGrayLight">#E0E0E0</color>
-    <color name="colorGrayDark">#616161</color>
-    <color name="colorGrayVeryLight">#F5F5F5</color>
+
+
+
 </resources>

@@ -14,6 +14,7 @@ import androidx.core.view.GravityCompat;
 import com.google.android.material.navigation.NavigationView;
 
 import org.utl.calculadoradosificadora.MainActivity;
+import org.utl.calculadoradosificadora.VistaMedico.Acciones.AgendaActivity;
 import org.utl.calculadoradosificadora.VistaMedico.Acciones.CalculadoraPediatricaActivity;
 import org.utl.calculadoradosificadora.VistaMedico.Acciones.CitasActivity;
 import org.utl.calculadoradosificadora.VistaMedico.Acciones.HistorialCitasActivity;
@@ -104,12 +105,12 @@ public class VistaMedico extends AppCompatActivity {
             }
         });
 
-        // Navegación a CitasActivity
+        // Navegación a AgendaActivity
         CardView cardCitas = findViewById(R.id.cardCitas);
         cardCitas.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(VistaMedico.this, CitasActivity.class);
+                Intent intent = new Intent(VistaMedico.this, AgendaActivity.class);
                 startActivity(intent);
             }
         });

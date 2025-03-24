@@ -13,6 +13,7 @@
         android:theme="@style/Theme.CalculadoraDosificadora"
         tools:targetApi="31">
 
+        <!-- Actividad Principal (Login) -->
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -22,8 +23,40 @@
             </intent-filter>
         </activity>
 
+        <!-- Actividades de Vista Médico -->
         <activity
             android:name=".VistaMedico.Menu.PrincipalActivity"
+            android:exported="true" />
+        <activity
+            android:name=".VistaMedico.VistaMedico"
+            android:exported="true" />
+        <activity
+            android:name=".VistaMedico.CuentaNueva.CrearCuentaMedico"
+            android:exported="true" />
+        <activity
+            android:name=".VistaMedico.CuentaNueva.CrearMedicoDos"
+            android:exported="true" />
+
+        <!-- Actividades de Citas (Vista Médico) -->
+        <activity
+            android:name=".VistaMedico.Acciones.AgendaActivity"
+            android:exported="true" />
+        <activity
+            android:name=".VistaMedico.Acciones.AgregarCitaActivity"
+            android:exported="true" />
+        <activity
+            android:name=".VistaMedico.Acciones.DetallesCitaActivity"
+            android:exported="true" />
+
+        <!-- Actividades de Vista Titular -->
+        <activity
+            android:name=".VistaTitular.VistaTitular"
+            android:exported="true" />
+        <activity
+            android:name=".VistaTitular.AgendarCitasActivity"
+            android:exported="true" />
+        <activity
+            android:name=".VistaTitular.AgendarCitasDosActivity"
             android:exported="true" />
         <activity
             android:name=".VistaTitular.CuentaNueva.CuentaNueva"
@@ -35,26 +68,7 @@
             android:name=".VistaTitular.CuentaNueva.CrearTitularDos"
             android:exported="true" />
 
-        <activity
-            android:name=".VistaTitular.VistaTitular"
-            android:exported="true" />
-        <activity
-            android:name=".VistaTitular.AgendarCitasActivity"
-            android:exported="true" />
-        <activity
-            android:name=".VistaTitular.AgendarCitasDosActivity"
-            android:exported="true" />
-        <activity
-            android:name=".VistaMedico.CuentaNueva.CrearCuentaMedico"
-            android:exported="true" />
-        <activity
-            android:name=".VistaMedico.CuentaNueva.CrearMedicoDos"
-            android:exported="true" />
-
-        <activity
-            android:name=".VistaMedico.VistaMedico"
-            android:exported="true" />
-
+        <!-- Otras Actividades -->
         <activity
             android:name=".BienvenidaActivity"
             android:exported="true" />

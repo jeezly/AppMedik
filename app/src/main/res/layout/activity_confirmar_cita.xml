@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/colorPeach"
     android:orientation="vertical"
     android:padding="16dp"
-    android:background="@android:color/white"
     tools:context=".VistaTitular.ConfirmarCitaActivity">
 
     <!-- Barra Superior (Toolbar) -->
@@ -14,7 +14,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/colorGreen"
+        android:background="@color/colorBlueD"
         android:elevation="4dp"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
@@ -23,10 +23,10 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:text="¡Cita Agendada!"
             android:textSize="18sp"
-            android:textStyle="bold"
-            android:layout_gravity="center"/>
+            android:textStyle="bold" />
     </androidx.appcompat.widget.Toolbar>
 
     <!-- Fecha Agendada -->
@@ -34,26 +34,26 @@
         android:id="@+id/tvFechaAgendada"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Fecha Agendada:"
-        android:textSize="16sp"
-        android:textColor="@android:color/black"
-        android:textStyle="bold"
         android:layout_marginTop="16dp"
-        android:layout_marginBottom="8dp"/>
+        android:layout_marginBottom="8dp"
+        android:text="Fecha Agendada:"
+        android:textColor="@android:color/black"
+        android:textSize="16sp"
+        android:textStyle="bold" />
 
     <!-- Rectángulos para Fecha y Hora -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginBottom="16dp">
+        android:layout_marginBottom="16dp"
+        android:orientation="horizontal">
 
         <!-- Fecha -->
         <androidx.cardview.widget.CardView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_marginEnd="8dp"
+            android:layout_weight="1"
             app:cardCornerRadius="8dp"
             app:cardElevation="4dp">
 
@@ -61,11 +61,11 @@
                 android:id="@+id/tvFecha"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="01/01/2023"
-                android:textSize="16sp"
-                android:textColor="@android:color/black"
+                android:gravity="center"
                 android:padding="16dp"
-                android:gravity="center"/>
+                android:text="01/01/2023"
+                android:textColor="@android:color/black"
+                android:textSize="16sp" />
         </androidx.cardview.widget.CardView>
 
         <!-- Hora -->
@@ -80,11 +80,11 @@
                 android:id="@+id/tvHora"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="12:00 PM"
-                android:textSize="16sp"
-                android:textColor="@android:color/black"
+                android:gravity="center"
                 android:padding="16dp"
-                android:gravity="center"/>
+                android:text="12:00 PM"
+                android:textColor="@android:color/black"
+                android:textSize="16sp" />
         </androidx.cardview.widget.CardView>
     </LinearLayout>
 
@@ -93,11 +93,11 @@
         android:id="@+id/tvDoctorAgendado"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
         android:text="Doctor Agendado:"
-        android:textSize="16sp"
         android:textColor="@android:color/black"
-        android:textStyle="bold"
-        android:layout_marginBottom="8dp"/>
+        android:textSize="16sp"
+        android:textStyle="bold" />
 
     <!-- Información del Doctor -->
     <androidx.cardview.widget.CardView
@@ -116,27 +116,27 @@
                 android:id="@+id/tvNombreDoctor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
                 android:text="Nombre: Dr. Juan Pérez"
-                android:textSize="14sp"
                 android:textColor="@android:color/black"
-                android:layout_marginBottom="8dp"/>
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/tvCedulaDoctor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
                 android:text="Cédula: 12345678"
-                android:textSize="14sp"
                 android:textColor="@android:color/black"
-                android:layout_marginBottom="8dp"/>
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/tvGeneroDoctor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Género: Masculino"
-                android:textSize="14sp"
-                android:textColor="@android:color/black"/>
+                android:textColor="@android:color/black"
+                android:textSize="14sp" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
@@ -145,8 +145,8 @@
         android:id="@+id/btnOk"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="@color/colorBlueD"
         android:text="OK"
-        android:backgroundTint="@color/colorGreen"
-        android:textColor="@android:color/white"
-        android:layout_marginTop="16dp"/>
+        android:textColor="@android:color/white" />
 </LinearLayout>

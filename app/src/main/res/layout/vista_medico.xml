@@ -9,6 +9,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/colorPeach"
         android:orientation="vertical"
         android:padding="16dp">
 
@@ -26,23 +27,23 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
                 <!-- Menú de 3 líneas (ícono de menú) -->
                 <ImageView
                     android:id="@+id/menu_icon"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:src="@drawable/ic_menu"
+                    android:layout_marginEnd="16dp"
                     android:contentDescription="@string/menu_icon_description"
-                    android:layout_marginEnd="16dp"/>
+                    android:src="@drawable/ic_menu" />
 
                 <!-- Espacio flexible para centrar el título -->
                 <Space
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"/>
+                    android:layout_weight="1" />
 
                 <!-- Título "Inicio" -->
                 <TextView
@@ -50,21 +51,21 @@
                     android:layout_height="wrap_content"
                     android:text="Inicio"
                     android:textSize="18sp"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold" />
 
                 <!-- Espacio flexible para alinear el ícono de opciones a la derecha -->
                 <Space
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"/>
+                    android:layout_weight="1" />
 
                 <!-- Ícono de 3 puntos verticales (opciones) -->
                 <ImageView
                     android:id="@+id/options_icon"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:src="@drawable/ic_more_vert"
-                    android:contentDescription="@string/options_icon_description"/>
+                    android:contentDescription="@string/options_icon_description"
+                    android:src="@drawable/ic_more_vert" />
             </LinearLayout>
         </androidx.appcompat.widget.Toolbar>
 
@@ -73,18 +74,18 @@
             android:id="@+id/tvGreeting"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/greeting_text"
-            android:textSize="20sp"
             android:layout_marginTop="16dp"
-            android:layout_marginBottom="8dp"/>
+            android:layout_marginBottom="8dp"
+            android:text="@string/greeting_text"
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/tvMessage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
             android:text="@string/welcome_message"
-            android:textSize="16sp"
-            android:layout_marginBottom="16dp"/>
+            android:textSize="16sp" />
 
         <!-- Opción 1: Citas -->
         <androidx.cardview.widget.CardView
@@ -105,8 +106,8 @@
                     android:id="@+id/ivCitas"
                     android:layout_width="64dp"
                     android:layout_height="64dp"
-                    android:src="@drawable/ic_citas"
-                    android:layout_marginEnd="16dp"/>
+                    android:layout_marginEnd="16dp"
+                    android:src="@drawable/ic_citas" />
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -120,14 +121,14 @@
                         android:layout_height="wrap_content"
                         android:text="@string/citas_title"
                         android:textSize="18sp"
-                        android:textStyle="bold"/>
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/tvCitasDescription"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/citas_description"
-                        android:textSize="14sp"/>
+                        android:textSize="14sp" />
                 </LinearLayout>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
@@ -151,8 +152,8 @@
                     android:id="@+id/ivHistorial"
                     android:layout_width="64dp"
                     android:layout_height="64dp"
-                    android:src="@drawable/ic_historial"
-                    android:layout_marginEnd="16dp"/>
+                    android:layout_marginEnd="16dp"
+                    android:src="@drawable/ic_historial" />
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -166,14 +167,14 @@
                         android:layout_height="wrap_content"
                         android:text="@string/historial_title"
                         android:textSize="18sp"
-                        android:textStyle="bold"/>
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/tvHistorialDescription"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/historial_description"
-                        android:textSize="14sp"/>
+                        android:textSize="14sp" />
                 </LinearLayout>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
@@ -197,8 +198,8 @@
                     android:id="@+id/ivTitulares"
                     android:layout_width="64dp"
                     android:layout_height="64dp"
-                    android:src="@drawable/ic_titulares"
-                    android:layout_marginEnd="16dp"/>
+                    android:layout_marginEnd="16dp"
+                    android:src="@drawable/ic_titulares" />
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -212,14 +213,14 @@
                         android:layout_height="wrap_content"
                         android:text="@string/titulares_title"
                         android:textSize="18sp"
-                        android:textStyle="bold"/>
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/tvTitularesDescription"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/titulares_description"
-                        android:textSize="14sp"/>
+                        android:textSize="14sp" />
                 </LinearLayout>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
@@ -243,8 +244,8 @@
                     android:id="@+id/ivCalculadora"
                     android:layout_width="64dp"
                     android:layout_height="64dp"
-                    android:src="@drawable/ic_calculadora"
-                    android:layout_marginEnd="16dp"/>
+                    android:layout_marginEnd="16dp"
+                    android:src="@drawable/ic_calculadora" />
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -258,14 +259,14 @@
                         android:layout_height="wrap_content"
                         android:text="@string/calculadora_title"
                         android:textSize="18sp"
-                        android:textStyle="bold"/>
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/tvCalculadoraDescription"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/calculadora_description"
-                        android:textSize="14sp"/>
+                        android:textSize="14sp" />
                 </LinearLayout>
             </LinearLayout>
         </androidx.cardview.widget.CardView>

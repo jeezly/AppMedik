@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/colorPeach"
     android:orientation="vertical"
     android:padding="16dp"
-    android:background="@android:color/white"
     tools:context=".VistaTitular.AgendarCitasTresActivity">
 
     <!-- Barra Superior (Toolbar) -->
@@ -14,7 +14,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/colorGreen"
+        android:background="@color/colorBlueD"
         android:elevation="4dp"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
@@ -23,10 +23,10 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:text="Seleccionar Horario"
             android:textSize="18sp"
-            android:textStyle="bold"
-            android:layout_gravity="center"/>
+            android:textStyle="bold" />
     </androidx.appcompat.widget.Toolbar>
 
     <!-- RecyclerView para mostrar los horarios -->
@@ -34,38 +34,38 @@
         android:id="@+id/rvHorarios"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
-        tools:listitem="@layout/item_horario"/>
+        android:layout_weight="1"
+        tools:listitem="@layout/item_horario" />
 
     <!-- Contenedor para los botones -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:layout_gravity="end"
-        android:gravity="end">
+        android:gravity="end"
+        android:orientation="horizontal">
 
         <!-- Botón de Cancelar Cita -->
         <Button
             android:id="@+id/btnCancelarCita"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Cancelar Cita"
-            android:backgroundTint="@color/colorRed"
-            android:textColor="@android:color/white"
             android:layout_marginEnd="8dp"
-            android:paddingHorizontal="16dp"/>
+            android:backgroundTint="@color/colorOrangeD"
+            android:paddingHorizontal="16dp"
+            android:text="Cancelar Cita"
+            android:textColor="@android:color/white" />
 
         <!-- Botón de Agendar -->
         <Button
             android:id="@+id/btnAgendar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/colorBlueD"
+            android:paddingHorizontal="16dp"
             android:text="Agendar"
-            android:backgroundTint="@color/colorGreen"
-            android:textColor="@android:color/white"
-            android:paddingHorizontal="16dp"/>
+            android:textColor="@android:color/white" />
     </LinearLayout>
 </LinearLayout>

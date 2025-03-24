@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorPeach"
     android:padding="16dp"
     tools:context=".VistaMedico.CuentaNueva.CrearMedicoDos">
 
@@ -18,63 +19,63 @@
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
             android:text="Crear Cuenta Médico"
             android:textSize="24sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="16dp" />
+            android:textStyle="bold" />
 
 
         <TextView
             android:id="@+id/welcomeMessage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
             android:text="Ya casi está lista tu cuenta de Médico. Para tener acceso necesitamos un correo y una contraseña junto con tu número de cédula."
-            android:textSize="16sp"
-            android:layout_marginBottom="24dp" />
+            android:textSize="16sp" />
 
 
         <EditText
             android:id="@+id/etUsuario"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
             android:hint="Usuario"
-            android:inputType="text"
-            android:layout_marginBottom="16dp" />
+            android:inputType="text" />
 
 
         <EditText
             android:id="@+id/etCorreo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
             android:hint="Correo electrónico"
-            android:inputType="textEmailAddress"
-            android:layout_marginBottom="16dp" />
+            android:inputType="textEmailAddress" />
 
         <EditText
             android:id="@+id/etContrasenia"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
             android:hint="Contraseña"
-            android:inputType="textPassword"
-            android:layout_marginBottom="16dp" />
+            android:inputType="textPassword" />
 
 
         <EditText
             android:id="@+id/etCedula"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
             android:hint="Cédula profesional"
-            android:inputType="number"
-            android:layout_marginBottom="24dp" />
+            android:inputType="number" />
 
 
         <Button
             android:id="@+id/btnCrearCuenta"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:backgroundTint="@color/colorBlueD"
             android:text="CREAR CUENTA"
-            android:backgroundTint="@color/blue"
-            android:textColor="@android:color/white"
-            android:layout_gravity="end" />
+            android:textColor="@android:color/white" />
     </LinearLayout>
 </ScrollView>

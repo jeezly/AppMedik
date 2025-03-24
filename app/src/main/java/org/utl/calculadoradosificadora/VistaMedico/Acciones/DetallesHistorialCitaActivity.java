@@ -4,15 +4,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
-import android.widget.SearchView;
+import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.navigation.NavigationView;
 
 import org.utl.calculadoradosificadora.MainActivity;
@@ -26,17 +23,11 @@ import org.utl.calculadoradosificadora.VistaMedico.Opciones.PerfilActivity;
 import org.utl.calculadoradosificadora.VistaMedico.Opciones.SeguridadActivity;
 import org.utl.calculadoradosificadora.VistaMedico.VistaMedico;
 import org.utl.calculadoradosificadora.model.Cita;
-import org.utl.calculadoradosificadora.model.Paciente;
-import java.util.ArrayList;
-import java.util.List;
 
-public class HistorialCitasActivity extends AppCompatActivity {
+public class DetallesHistorialCitaActivity extends AppCompatActivity {
 
-    private RecyclerView rvHistorialCitas;
-    private SearchView searchView;
-    private Button btnSalir;
-    private HistorialCitasAdapter adapter;
-    private List<Cita> listaCitas;
+    private TextView tvFecha, tvHora, tvClaveNombreTitular, tvClaveNombrePaciente, tvRazonCita, tvNotas;
+    private Button btnOk;
 
     private DrawerLayout drawerLayout;
     private NavigationView navigationViewLeft;
@@ -45,40 +36,16 @@ public class HistorialCitasActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_historial_citas);
+        setContentView(R.layout.activity_detalles_historial_cita);
 
         // Inicializar vistas
-        rvHistorialCitas = findViewById(R.id.rvHistorialCitas);
-        searchView = findViewById(R.id.searchView);
-        btnSalir = findViewById(R.id.btnSalir);
-
-        // Configurar RecyclerView
-        rvHistorialCitas.setLayoutManager(new LinearLayoutManager(this));
-        listaCitas = obtenerCitasDePrueba(); // Obtener datos de prueba
-        adapter = new HistorialCitasAdapter(listaCitas);
-        rvHistorialCitas.setAdapter(adapter);
-
-        // Configurar SearchView
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                adapter.filtrar(newText);
-                return true;
-            }
-        });
-
-        // Configurar botón de salir
-        btnSalir.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish(); // Regresar a VistaMedico
-            }
-        });
+        tvFecha = findViewById(R.id.tvFecha);
+        tvHora = findViewById(R.id.tvHora);
+        tvClaveNombreTitular = findViewById(R.id.tvClaveNombreTitular);
+        tvClaveNombrePaciente = findViewById(R.id.tvClaveNombrePaciente);
+        tvRazonCita = findViewById(R.id.tvRazonCita);
+        tvNotas = findViewById(R.id.tvNotas);
+        btnOk = findViewById(R.id.btnOk);
 
         // Configurar el menú lateral
         drawerLayout = findViewById(R.id.drawer_layout);
@@ -86,20 +53,10 @@ public class HistorialCitasActivity extends AppCompatActivity {
         navigationViewRight = findViewById(R.id.navigation_view_right);
 
         // Abrir menú izquierdo
-        findViewById(R.id.menu_icon).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                drawerLayout.openDrawer(GravityCompat.START);
-            }
-        });
+        findViewById(R.id.menu_icon).setOnClickListener(v -> drawerLayout.openDrawer(GravityCompat.START));
 
         // Abrir menú derecho
-        findViewById(R.id.options_icon).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                drawerLayout.openDrawer(GravityCompat.END);
-            }
-        });
+        findViewById(R.id.options_icon).setOnClickListener(v -> drawerLayout.openDrawer(GravityCompat.END));
 
         // Manejar las opciones del menú izquierdo
         navigationViewLeft.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -108,13 +65,13 @@ public class HistorialCitasActivity extends AppCompatActivity {
                 int id = item.getItemId();
 
                 if (id == R.id.menu_inicio) {
-                    startActivity(new Intent(HistorialCitasActivity.this, VistaMedico.class));
+                    startActivity(new Intent(DetallesHistorialCitaActivity.this, VistaMedico.class));
                 } else if (id == R.id.menu_protocolos) {
-                    startActivity(new Intent(HistorialCitasActivity.this, ProtocolosActivity.class));
+                    startActivity(new Intent(DetallesHistorialCitaActivity.this, ProtocolosActivity.class));
                 } else if (id == R.id.menu_sobre_nosotros) {
-                    startActivity(new Intent(HistorialCitasActivity.this, SobreNosotrosActivity.class));
+                    startActivity(new Intent(DetallesHistorialCitaActivity.this, SobreNosotrosActivity.class));
                 } else if (id == R.id.menu_soporte) {
-                    startActivity(new Intent(HistorialCitasActivity.this, SoporteActivity.class));
+                    startActivity(new Intent(DetallesHistorialCitaActivity.this, SoporteActivity.class));
                 }
 
                 drawerLayout.closeDrawer(GravityCompat.START);
@@ -129,13 +86,13 @@ public class HistorialCitasActivity extends AppCompatActivity {
                 int id = item.getItemId();
 
                 if (id == R.id.opciones_perfil) {
-                    startActivity(new Intent(HistorialCitasActivity.this, PerfilActivity.class));
+                    startActivity(new Intent(DetallesHistorialCitaActivity.this, PerfilActivity.class));
                 } else if (id == R.id.opciones_configuracion) {
-                    startActivity(new Intent(HistorialCitasActivity.this, ConfiguracionActivity.class));
+                    startActivity(new Intent(DetallesHistorialCitaActivity.this, ConfiguracionActivity.class));
                 } else if (id == R.id.opciones_seguridad) {
-                    startActivity(new Intent(HistorialCitasActivity.this, SeguridadActivity.class));
+                    startActivity(new Intent(DetallesHistorialCitaActivity.this, SeguridadActivity.class));
                 } else if (id == R.id.opciones_notificaciones) {
-                    startActivity(new Intent(HistorialCitasActivity.this, NotificacionesActivity.class));
+                    startActivity(new Intent(DetallesHistorialCitaActivity.this, NotificacionesActivity.class));
                 } else if (id == R.id.opciones_cerrar_sesion) {
                     cerrarSesion();
                 }
@@ -144,6 +101,22 @@ public class HistorialCitasActivity extends AppCompatActivity {
                 return true;
             }
         });
+
+        // Obtener la cita seleccionada
+        Cita cita = (Cita) getIntent().getSerializableExtra("cita");
+
+        // Mostrar los datos de la cita
+        if (cita != null) {
+            tvFecha.setText("Fecha: " + cita.getFecha());
+            tvHora.setText("Hora: " + cita.getHora());
+            tvClaveNombreTitular.setText("Clave: " + cita.getPaciente().getIdPaciente() + " - Nombre: " + cita.getPaciente().getNombre() + " " + cita.getPaciente().getApellidos());
+            tvClaveNombrePaciente.setText("Clave: " + cita.getPaciente().getIdPaciente() + " - Nombre: " + cita.getPaciente().getNombre() + " " + cita.getPaciente().getApellidos() + " - Fecha Nac: " + cita.getPaciente().getFechaNacimiento() + " - Peso: " + cita.getPaciente().getPeso() + " kg");
+            tvRazonCita.setText("Razón: " + cita.getRazon());
+            tvNotas.setText("Notas: " + cita.getRazon()); // Aquí puedes cambiar "Notas" por otro campo si es necesario
+        }
+
+        // Configurar botón "OK"
+        btnOk.setOnClickListener(v -> finish()); // Regresar al historial de citas
     }
 
     private void cerrarSesion() {
@@ -154,17 +127,9 @@ public class HistorialCitasActivity extends AppCompatActivity {
         editor.apply();
 
         // Redirigir a la pantalla de inicio
-        Intent intent = new Intent(HistorialCitasActivity.this, MainActivity.class);
+        Intent intent = new Intent(DetallesHistorialCitaActivity.this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // Elimina el historial de actividades
         startActivity(intent);
         finish();
-    }
-
-    // Método para obtener datos de prueba
-    private List<Cita> obtenerCitasDePrueba() {
-        List<Cita> citas = new ArrayList<>();
-        citas.add(new Cita(1, "2023-10-01", "10:00", "Control", "Atendida", new Paciente(1, "Juan", "Pérez", true, 1, "2000-01-01", 30.5, "Seguro Popular")));
-        citas.add(new Cita(2, "2023-10-02", "11:00", "Revisión", "Cancelada", new Paciente(2, "Ana", "Gómez", false, 2, "2005-05-05", 25.0, "IMSS")));
-        return citas;
     }
 }

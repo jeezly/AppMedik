@@ -1,6 +1,7 @@
 package org.utl.calculadoradosificadora.model;
+import java.io.Serializable;
 
-public class Persona {
+public class Persona implements Serializable {
     private int idPersona;
     private String nombre;
     private String apellidos;

@@ -13,6 +13,7 @@
     <string name="add_cita_description">Agregar Cita</string>
     <string name="citas_title">Citas</string>
     <string name="citas_description">Gestiona tus citas</string>
+    <string name="filter_icon_description">Filtrar</string>
 
     <string-array name="genero_array">
         <item>Hombre</item>

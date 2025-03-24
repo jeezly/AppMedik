@@ -48,6 +48,14 @@
             android:name=".VistaMedico.Acciones.DetallesCitaActivity"
             android:exported="true" />
 
+        <!-- Nuevas Actividades de Historial de Citas -->
+        <activity
+            android:name=".VistaMedico.Acciones.HistorialCitasActivity"
+            android:exported="true" />
+        <activity
+            android:name=".VistaMedico.Acciones.DetallesHistorialCitaActivity"
+            android:exported="true" />
+
         <!-- Actividades de Vista Titular -->
         <activity
             android:name=".VistaTitular.VistaTitular"

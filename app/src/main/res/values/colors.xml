@@ -7,7 +7,7 @@
     <color name="colorGreen">#28A745</color>
     <color name="colorRed">#D32F2F</color>
     <color name="colorAccent">#FFC107</color> <!-- Amarillo -->
-    <color name="colorPeach">#EFCCD6</color>
+    <color name="colorPeach">#f8f8ff</color>
     <color name="colorBlueD">#2CBCCF</color>
     <color name="colorOrangeD">#F68D6C</color>
     <color name="colorRedD">#E44646</color>

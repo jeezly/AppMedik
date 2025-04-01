@@ -23,7 +23,7 @@ public class AgendaActivity extends AppCompatActivity {
         tvTitulo.setText("Agenda");
 
         // Botón para agregar una nueva cita
-        ImageView btnAgregarCita = findViewById(R.id.btnAgregarCita);
+        Button btnAgregarCita = findViewById(R.id.btnAgregarCita);
         btnAgregarCita.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

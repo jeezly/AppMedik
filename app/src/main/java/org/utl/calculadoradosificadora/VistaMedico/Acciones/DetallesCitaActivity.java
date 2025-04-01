@@ -65,11 +65,15 @@ public class DetallesCitaActivity extends AppCompatActivity {
         });
 
         // Botón Atender
-        btnAtender.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Lógica para atender la cita
-            }
+        btnAtender.setOnClickListener(v -> {
+            Intent intent = new Intent(DetallesCitaActivity.this, AtenderCitaActivity.class);
+
+            // Pasar datos del paciente (ejemplo con datos ficticios)
+            intent.putExtra("nombrePaciente", "Juan Pérez López");
+            intent.putExtra("edadPaciente", "5 años");
+            intent.putExtra("pesoPaciente", "18.5");
+
+            startActivity(intent);
         });
 
         // Botón Regresar

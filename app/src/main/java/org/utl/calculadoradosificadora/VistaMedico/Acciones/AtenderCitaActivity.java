@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -34,12 +33,13 @@ import org.utl.calculadoradosificadora.VistaMedico.VistaMedico;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CalculadoraPediatricaActivity extends AppCompatActivity {
+public class AtenderCitaActivity extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
     private NavigationView navigationViewLeft;
     private NavigationView navigationViewRight;
 
+    // Views
     private Spinner spinnerMedicamentos;
     private Spinner spinnerEdad;
     private Spinner spinnerGenero;
@@ -47,15 +47,20 @@ public class CalculadoraPediatricaActivity extends AppCompatActivity {
     private Button btnCalcular;
     private Button btnCancelar;
     private Button btnBuscarMedicamento;
+    private Button btnFinalizarConsulta;
     private TextView tvResultado;
+    private TextView tvNombrePaciente;
+    private TextView tvEdadPaciente;
+    private TextView tvPesoPaciente;
 
+    // Datos
     private List<String> listaMedicamentos;
     private ArrayAdapter<String> adapterMedicamentos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_calculadora_pediatrica);
+        setContentView(R.layout.activity_atender_cita);
 
         // Configurar Toolbar y menús
         setupToolbarAndMenus();
@@ -68,6 +73,9 @@ public class CalculadoraPediatricaActivity extends AppCompatActivity {
 
         // Configurar botones
         setupButtons();
+
+        // Cargar datos del paciente
+        cargarDatosPaciente();
     }
 
     private void setupToolbarAndMenus() {
@@ -75,47 +83,52 @@ public class CalculadoraPediatricaActivity extends AppCompatActivity {
         navigationViewLeft = findViewById(R.id.navigation_view_left);
         navigationViewRight = findViewById(R.id.navigation_view_right);
 
-        // Abrir menú izquierdo
+        // Configurar listeners para los menús
         findViewById(R.id.menu_icon).setOnClickListener(v ->
                 drawerLayout.openDrawer(GravityCompat.START));
 
-        // Abrir menú derecho
         findViewById(R.id.options_icon).setOnClickListener(v ->
                 drawerLayout.openDrawer(GravityCompat.END));
 
-        // Manejar opciones del menú izquierdo
         navigationViewLeft.setNavigationItemSelectedListener(item -> {
-            int id = item.getItemId();
-            if (id == R.id.menu_inicio) {
-                startActivity(new Intent(this, VistaMedico.class));
-            } else if (id == R.id.menu_protocolos) {
-                startActivity(new Intent(this, ProtocolosActivity.class));
-            } else if (id == R.id.menu_sobre_nosotros) {
-                startActivity(new Intent(this, SobreNosotrosActivity.class));
-            } else if (id == R.id.menu_soporte) {
-                startActivity(new Intent(this, SoporteActivity.class));
-            }
-            drawerLayout.closeDrawer(GravityCompat.START);
+            handleNavigationItemSelected(item);
             return true;
         });
 
-        // Manejar opciones del menú derecho
         navigationViewRight.setNavigationItemSelectedListener(item -> {
-            int id = item.getItemId();
-            if (id == R.id.opciones_perfil) {
-                startActivity(new Intent(this, PerfilActivity.class));
-            } else if (id == R.id.opciones_configuracion) {
-                startActivity(new Intent(this, ConfiguracionActivity.class));
-            } else if (id == R.id.opciones_seguridad) {
-                startActivity(new Intent(this, SeguridadActivity.class));
-            } else if (id == R.id.opciones_notificaciones) {
-                startActivity(new Intent(this, NotificacionesActivity.class));
-            } else if (id == R.id.opciones_cerrar_sesion) {
-                cerrarSesion();
-            }
-            drawerLayout.closeDrawer(GravityCompat.END);
+            handleOptionsItemSelected(item);
             return true;
         });
+    }
+
+    private void handleNavigationItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.menu_inicio) {
+            startActivity(new Intent(this, VistaMedico.class));
+        } else if (id == R.id.menu_protocolos) {
+            startActivity(new Intent(this, ProtocolosActivity.class));
+        } else if (id == R.id.menu_sobre_nosotros) {
+            startActivity(new Intent(this, SobreNosotrosActivity.class));
+        } else if (id == R.id.menu_soporte) {
+            startActivity(new Intent(this, SoporteActivity.class));
+        }
+        drawerLayout.closeDrawer(GravityCompat.START);
+    }
+
+    private void handleOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.opciones_perfil) {
+            startActivity(new Intent(this, PerfilActivity.class));
+        } else if (id == R.id.opciones_configuracion) {
+            startActivity(new Intent(this, ConfiguracionActivity.class));
+        } else if (id == R.id.opciones_seguridad) {
+            startActivity(new Intent(this, SeguridadActivity.class));
+        } else if (id == R.id.opciones_notificaciones) {
+            startActivity(new Intent(this, NotificacionesActivity.class));
+        } else if (id == R.id.opciones_cerrar_sesion) {
+            cerrarSesion();
+        }
+        drawerLayout.closeDrawer(GravityCompat.END);
     }
 
     private void initViews() {
@@ -126,11 +139,32 @@ public class CalculadoraPediatricaActivity extends AppCompatActivity {
         btnCalcular = findViewById(R.id.btnCalcular);
         btnCancelar = findViewById(R.id.btnCancelar);
         btnBuscarMedicamento = findViewById(R.id.btnBuscarMedicamento);
+        btnFinalizarConsulta = findViewById(R.id.btnFinalizarConsulta);
         tvResultado = findViewById(R.id.tvResultado);
+        tvNombrePaciente = findViewById(R.id.tvNombrePaciente);
+        tvEdadPaciente = findViewById(R.id.tvEdadPaciente);
+        tvPesoPaciente = findViewById(R.id.tvPesoPaciente);
+    }
+
+    private void cargarDatosPaciente() {
+        Intent intent = getIntent();
+        if (intent != null && intent.hasExtra("nombrePaciente")) {
+            String nombre = intent.getStringExtra("nombrePaciente");
+            String edad = intent.getStringExtra("edadPaciente");
+            String peso = intent.getStringExtra("pesoPaciente");
+
+            tvNombrePaciente.setText("Nombre: " + nombre);
+            tvEdadPaciente.setText("Edad: " + edad);
+            tvPesoPaciente.setText("Peso: " + peso + " kg");
+            etPeso.setText(peso.replace(" kg", ""));
+        } else {
+            Toast.makeText(this, "No se recibieron datos del paciente", Toast.LENGTH_SHORT).show();
+            finish();
+        }
     }
 
     private void setupSpinners() {
-        // Configurar spinner de medicamentos (datos de ejemplo)
+        // Medicamentos
         listaMedicamentos = new ArrayList<>();
         listaMedicamentos.add("Paracetamol (120mg/5ml)");
         listaMedicamentos.add("Ibuprofeno (100mg/5ml)");
@@ -143,13 +177,13 @@ public class CalculadoraPediatricaActivity extends AppCompatActivity {
         adapterMedicamentos.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerMedicamentos.setAdapter(adapterMedicamentos);
 
-        // Configurar spinner de edad
+        // Edad
         ArrayAdapter<CharSequence> adapterEdad = ArrayAdapter.createFromResource(this,
                 R.array.edad_array, android.R.layout.simple_spinner_item);
         adapterEdad.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerEdad.setAdapter(adapterEdad);
 
-        // Configurar spinner de género
+        // Género
         ArrayAdapter<CharSequence> adapterGenero = ArrayAdapter.createFromResource(this,
                 R.array.genero_array, android.R.layout.simple_spinner_item);
         adapterGenero.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -157,81 +191,75 @@ public class CalculadoraPediatricaActivity extends AppCompatActivity {
     }
 
     private void setupButtons() {
-        // Botón de búsqueda de medicamento
         btnBuscarMedicamento.setOnClickListener(v -> {
-            // Implementar lógica de búsqueda/filtrado
-            Toast.makeText(this, "Funcionalidad de búsqueda en desarrollo", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.busqueda_medicamento, Toast.LENGTH_SHORT).show();
         });
 
-        // Botón de cancelar
         btnCancelar.setOnClickListener(v -> {
-            // Limpiar campos
-            spinnerMedicamentos.setSelection(0);
-            spinnerEdad.setSelection(0);
-            spinnerGenero.setSelection(0);
-            etPeso.setText("");
-            tvResultado.setVisibility(View.GONE);
+            resetCalculadora();
         });
 
-        // Botón de calcular
         btnCalcular.setOnClickListener(v -> {
             calcularDosis();
         });
+
+        btnFinalizarConsulta.setOnClickListener(v -> {
+            finalizarConsulta();
+        });
+    }
+
+    private void resetCalculadora() {
+        spinnerMedicamentos.setSelection(0);
+        spinnerEdad.setSelection(0);
+        spinnerGenero.setSelection(0);
+        etPeso.setText("");
+        tvResultado.setVisibility(View.GONE);
     }
 
     private void calcularDosis() {
-        // Validar campos
         if (etPeso.getText().toString().isEmpty()) {
-            Toast.makeText(this, "Por favor ingrese el peso del paciente", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.error_peso_vacio, Toast.LENGTH_SHORT).show();
             return;
         }
 
         try {
-            // Obtener valores seleccionados
             String medicamento = spinnerMedicamentos.getSelectedItem().toString();
             String edad = spinnerEdad.getSelectedItem().toString();
             double peso = Double.parseDouble(etPeso.getText().toString());
             String genero = spinnerGenero.getSelectedItem().toString();
 
-            // Calcular dosis (esto es un ejemplo simplificado)
             double dosis = calcularDosisSegunMedicamento(medicamento, peso);
 
-            // Mostrar resultado
-            String resultado = String.format(
-                    "Dosis recomendada para el medicamento %s es %.2f ml.\n" +
-                            "Para un paciente de género %s con peso de: %.2f kg",
+            String resultado = getString(R.string.resultado_calculadora,
                     medicamento, dosis, genero, peso);
 
             tvResultado.setText(resultado);
             tvResultado.setVisibility(View.VISIBLE);
 
         } catch (NumberFormatException e) {
-            Toast.makeText(this, "Por favor ingrese un peso válido", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.error_peso_invalido, Toast.LENGTH_SHORT).show();
         }
     }
 
     private double calcularDosisSegunMedicamento(String medicamento, double peso) {
-        // Esta es una implementación de ejemplo con cálculos simplificados
-        // En una aplicación real, estos cálculos deberían basarse en protocolos médicos
-
         if (medicamento.contains("Paracetamol")) {
-            // Dosis de paracetamol: 10-15 mg/kg/dosis
             return (peso * 15) / 24; // 120mg/5ml = 24mg/ml
         } else if (medicamento.contains("Ibuprofeno")) {
-            // Dosis de ibuprofeno: 5-10 mg/kg/dosis
             return (peso * 10) / 20; // 100mg/5ml = 20mg/ml
         } else if (medicamento.contains("Amoxicilina")) {
-            // Dosis de amoxicilina: 20-40 mg/kg/día dividido cada 8 horas
             return (peso * 40 / 3) / 50; // 250mg/5ml = 50mg/ml
         } else if (medicamento.contains("Dexametasona")) {
-            // Dosis de dexametasona: 0.1-0.3 mg/kg/dosis
             return peso * 0.3 / 0.5; // 0.5mg/ml
         } else if (medicamento.contains("Salbutamol")) {
-            // Dosis de salbutamol: 0.1-0.15 mg/kg/dosis
             return peso * 0.15 / 0.4; // 2mg/5ml = 0.4mg/ml
         }
-
         return 0.0;
+    }
+
+    private void finalizarConsulta() {
+        // Aquí iría la lógica para guardar los datos de la consulta
+        Toast.makeText(this, "Consulta finalizada correctamente", Toast.LENGTH_SHORT).show();
+        finish();
     }
 
     private void cerrarSesion() {

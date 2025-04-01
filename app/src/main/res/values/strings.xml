@@ -20,6 +20,19 @@
     <string name="calculadora_description">Solo Calculadora Pediátrica</string>
     <string name="add_cita_description">Agregar Cita</string>
 
+    <!-- Calculadora Pediátrica -->
+    <string name="titulo_calculadora">Calculadora de Dosis Pediátricas</string>
+    <string name="label_medicamento">Medicamento:</string>
+    <string name="label_edad">Edad:</string>
+    <string name="label_peso">Peso (kg):</string>
+    <string name="label_genero">Género:</string>
+    <string name="btn_buscar">Buscar</string>
+    <string name="btn_calcular">Calcular</string>
+    <string name="resultado_calculadora">Dosis recomendada para el medicamento %1$s es %2$.2f ml.\nPara un paciente de género %3$s con peso de: %4$.2f kg</string>
+    <string name="error_peso_vacio">Por favor ingrese el peso del paciente</string>
+    <string name="error_peso_invalido">Por favor ingrese un peso válido</string>
+    <string name="busqueda_medicamento">Funcionalidad de búsqueda en desarrollo</string>
+
     <!-- Botones -->
     <string name="cancelar">Cancelar</string>
     <string name="registrar">Registrar</string>
@@ -38,13 +51,21 @@
     <string name="apellidos">Apellidos: %s</string>
     <string name="genero">Género: %s</string>
 
-    <!-- Géneros -->
+    <!-- Arrays -->
     <string-array name="genero_array">
         <item>Hombre</item>
         <item>Mujer</item>
         <item>No binario</item>
         <item>Otro</item>
         <item>Prefiero no decir</item>
+    </string-array>
+
+    <string-array name="edad_array">
+        <item>Recién nacido (0-28 días)</item>
+        <item>Lactante (1-12 meses)</item>
+        <item>Preescolar (1-5 años)</item>
+        <item>Escolar (6-12 años)</item>
+        <item>Adolescente (13-18 años)</item>
     </string-array>
 
     <!-- Mensajes -->
@@ -81,7 +102,7 @@
     1. Esta aplicación cumple con las normativas HIPAA para protección de datos de salud.\n
     2. Los datos personales no serán compartidos con terceros sin consentimiento.\n
     3. Los titulares pueden solicitar acceso o corrección de sus datos en cualquier momento.
-</string>
+    </string>
 
     <!-- Sobre Nosotros -->
     <string name="sobre_nosotros_content">
@@ -90,7 +111,7 @@
     Nuestra aplicación busca ayudar tanto a practicantes como a expertos médicos, simplificando la gestión de citas y proporcionando una calculadora pediátrica precisa que considera las diferentes presentaciones de medicamentos y las variaciones de peso en niños.\n\n
 
     Identificamos que muchos doctores, especialmente aquellos que comienzan su práctica, tienen dificultades para realizar cálculos rápidos y precisos durante las consultas, lo que puede afectar la eficiencia y precisión en los tratamientos. MediKids soluciona este problema integrando todas las herramientas necesarias en una sola plataforma intuitiva.
-</string>
+    </string>
 
     <string name="desarrolladores">
     Casillas Tapia Aideé Vanessa\n
@@ -103,7 +124,7 @@
     Técnico Superior Universitario\n
     Generación 2023-2025\n
     Universidad Tecnológica de León
-</string>
+    </string>
 
     <!-- Soporte -->
     <string name="contacto_desarrolladores">
@@ -111,8 +132,8 @@
     Teléfono: 477 371 4924\n
     Email: heezly123@gmail.com\n\n
 
-    [Aqui los de mas ]
-</string>
+    [Aquí los demás]
+    </string>
 
     <!-- Configuración -->
     <string-array name="idiomas_array">
@@ -128,5 +149,4 @@
 
     <!-- Notificaciones -->
     <string name="notificaciones_guardadas">Configuración de notificaciones guardada</string>
-
 </resources>

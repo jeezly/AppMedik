@@ -86,6 +86,23 @@
             android:name=".VistaMedico.Acciones.DetallesHistorialCitaActivity"
             android:exported="true" />
 
+        <activity
+            android:name=".VistaMedico.Acciones.CalculadoraPediatricaActivity"
+            android:exported="false"
+            android:label="Calculadora Pediátrica"/>
+
+        <activity
+            android:name=".VistaMedico.Acciones.AtenderCitaActivity"
+            android:exported="false"
+            android:label="Atender Cita"
+            android:parentActivityName=".VistaMedico.Acciones.DetallesCitaActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".VistaMedico.Acciones.DetallesCitaActivity" />
+        </activity>
+
+
+
         <!-- NUEVAS ACTIVIDADES PARA TITULARES -->
         <activity
             android:name=".VistaMedico.Acciones.TitularesActivity"

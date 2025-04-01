@@ -1,9 +1,17 @@
 <resources>
-    <string name="app_name">calculadoraDosificadora</string>
+    <string name="app_name">MediKids</string>
+
+    <!-- General -->
     <string name="menu_icon_description">Menú</string>
     <string name="options_icon_description">Opciones</string>
-    <string name="greeting_text">Buen Día Dr. XXX</string>
+    <string name="registrar_titular_description">Registrar nuevo titular</string>
+    <string name="filter_icon_description">Filtrar</string>
+
+    <!-- Vista Médico -->
+    <string name="greeting_text">Buen Día Dr. %s</string>
     <string name="welcome_message">¿Qué vamos a hacer hoy?</string>
+    <string name="citas_title">Citas</string>
+    <string name="citas_description">Gestiona tus citas</string>
     <string name="historial_title">Historial de Citas</string>
     <string name="historial_description">¿A quienes hemos atendido?</string>
     <string name="titulares_title">Titulares</string>
@@ -11,14 +19,114 @@
     <string name="calculadora_title">Calculadora</string>
     <string name="calculadora_description">Solo Calculadora Pediátrica</string>
     <string name="add_cita_description">Agregar Cita</string>
-    <string name="citas_title">Citas</string>
-    <string name="citas_description">Gestiona tus citas</string>
-    <string name="filter_icon_description">Filtrar</string>
 
+    <!-- Botones -->
+    <string name="cancelar">Cancelar</string>
+    <string name="registrar">Registrar</string>
+    <string name="modificar">Modificar</string>
+    <string name="eliminar">Eliminar</string>
+    <string name="ok">OK</string>
+    <string name="guardar">Guardar</string>
+    <string name="si">Sí</string>
+
+    <!-- Etiquetas -->
+    <string name="clave_titular">Clave titular: %d</string>
+    <string name="usuario">Usuario: %s</string>
+    <string name="correo">Correo: %s</string>
+    <string name="telefono">Teléfono: %s</string>
+    <string name="nombres">Nombre(s): %s</string>
+    <string name="apellidos">Apellidos: %s</string>
+    <string name="genero">Género: %s</string>
+
+    <!-- Géneros -->
     <string-array name="genero_array">
         <item>Hombre</item>
         <item>Mujer</item>
         <item>No binario</item>
         <item>Otro</item>
+        <item>Prefiero no decir</item>
     </string-array>
+
+    <!-- Mensajes -->
+    <string name="titular_registrado_exito">Titular registrado con Éxito su usuario es: %s</string>
+    <string name="campos_requeridos">Favor de llenar todos los campos para registrar el Titular</string>
+    <string name="confirmar_eliminar">¿Estás seguro de que quieres eliminar este titular?</string>
+    <string name="confirmar_cancelar">¿Estás seguro de que quieres cancelar el registro?</string>
+    <string name="operacion_cancelada">Cancelado</string>
+    <string name="titular_eliminado">Titular eliminado correctamente</string>
+    <string name="cambios_guardados">Cambios guardados exitosamente</string>
+    <string name="campos_incompletos">Por favor complete todos los campos</string>
+
+    <!-- Títulos -->
+    <string name="titulo_registro_titular">Registro Titular</string>
+    <string name="titulo_detalles_titular">Datos de Titular</string>
+    <string name="titulo_titulares">Titulares / Tutores</string>
+    <string name="titulo_modificar_titular">Modificar Titular</string>
+
+    <!-- Protocolos -->
+    <string name="protocolos_content">
+    <b>Protocolos de Seguridad:</b>\n\n
+    1. Todos los datos médicos deben manejarse con estricta confidencialidad.\n
+    2. No compartir credenciales de acceso con personal no autorizado.\n
+    3. Registrar únicamente información verídica y verificada.\n
+    4. Mantener actualizados los datos de los pacientes.\n\n
+
+    <b>Guías de Uso:</b>\n\n
+    1. La calculadora pediátrica debe usarse solo como referencia, siempre verificar cálculos.\n
+    2. Registrar todas las citas con al menos 24 horas de anticipación.\n
+    3. En caso de errores en el sistema, reportar inmediatamente al área de soporte.\n
+    4. Realizar copias de seguridad periódicas de la información crítica.\n\n
+
+    <b>Políticas de Privacidad:</b>\n\n
+    1. Esta aplicación cumple con las normativas HIPAA para protección de datos de salud.\n
+    2. Los datos personales no serán compartidos con terceros sin consentimiento.\n
+    3. Los titulares pueden solicitar acceso o corrección de sus datos en cualquier momento.
+</string>
+
+    <!-- Sobre Nosotros -->
+    <string name="sobre_nosotros_content">
+    MediKids nació como proyecto integrador de estudiantes de la Universidad Tecnológica de León, con el objetivo de facilitar el trabajo en el área de salud pediátrica.\n\n
+
+    Nuestra aplicación busca ayudar tanto a practicantes como a expertos médicos, simplificando la gestión de citas y proporcionando una calculadora pediátrica precisa que considera las diferentes presentaciones de medicamentos y las variaciones de peso en niños.\n\n
+
+    Identificamos que muchos doctores, especialmente aquellos que comienzan su práctica, tienen dificultades para realizar cálculos rápidos y precisos durante las consultas, lo que puede afectar la eficiencia y precisión en los tratamientos. MediKids soluciona este problema integrando todas las herramientas necesarias en una sola plataforma intuitiva.
+</string>
+
+    <string name="desarrolladores">
+    Casillas Tapia Aideé Vanessa\n
+    García Hernández Juan Pablo\n
+    González Espadas Hugo Armando\n
+    Velázquez Martínez José Isaac\n
+    Ramírez Ramírez María José\n\n
+
+    Estudiantes de Desarrollo de Software Multiplataforma\n
+    Técnico Superior Universitario\n
+    Generación 2023-2025\n
+    Universidad Tecnológica de León
+</string>
+
+    <!-- Soporte -->
+    <string name="contacto_desarrolladores">
+    Juan Pablo García Hernández\n
+    Teléfono: 477 371 4924\n
+    Email: heezly123@gmail.com\n\n
+
+    [Aqui los de mas ]
+</string>
+
+    <!-- Configuración -->
+    <string-array name="idiomas_array">
+        <item>Español</item>
+        <item>English</item>
+    </string-array>
+
+    <!-- Seguridad -->
+    <string name="contrasenias_no_coinciden">Las contraseñas no coinciden</string>
+    <string name="contrasenia_cambiada">Contraseña cambiada exitosamente</string>
+    <string name="autenticacion_activada">Autenticación de dos factores activada</string>
+    <string name="autenticacion_desactivada">Autenticación de dos factores desactivada</string>
+
+    <!-- Notificaciones -->
+    <string name="notificaciones_guardadas">Configuración de notificaciones guardada</string>
+
 </resources>

@@ -23,6 +23,36 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".VistaMedico.Opciones.PerfilActivity"
+            android:exported="false"
+            android:label="Mi Perfil"/>
+        <activity
+            android:name=".VistaMedico.Opciones.ConfiguracionActivity"
+            android:exported="false"
+            android:label="Configuración"/>
+        <activity
+            android:name=".VistaMedico.Opciones.SeguridadActivity"
+            android:exported="false"
+            android:label="Seguridad"/>
+        <activity
+            android:name=".VistaMedico.Opciones.NotificacionesActivity"
+            android:exported="false"
+            android:label="Notificaciones"/>
+
+        <activity
+            android:name=".VistaMedico.Menu.ProtocolosActivity"
+            android:exported="false"
+            android:label="Protocolos y Guías"/>
+        <activity
+            android:name=".VistaMedico.Menu.SobreNosotrosActivity"
+            android:exported="false"
+            android:label="Sobre Nosotros"/>
+        <activity
+            android:name=".VistaMedico.Menu.SoporteActivity"
+            android:exported="false"
+            android:label="Soporte Técnico"/>
+
         <!-- Actividades de Vista Médico -->
         <activity
             android:name=".VistaMedico.Menu.PrincipalActivity"
@@ -55,6 +85,20 @@
         <activity
             android:name=".VistaMedico.Acciones.DetallesHistorialCitaActivity"
             android:exported="true" />
+
+        <!-- NUEVAS ACTIVIDADES PARA TITULARES -->
+        <activity
+            android:name=".VistaMedico.Acciones.TitularesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".VistaMedico.Acciones.RegistrarTitularActivity"
+            android:exported="false" />
+        <activity
+            android:name=".VistaMedico.Acciones.DetallesTitularActivity"
+            android:exported="false" />
+        <activity
+            android:name=".VistaMedico.Acciones.ModificarTitularActivity"
+            android:exported="false" />
 
         <!-- Actividades de Vista Titular -->
         <activity

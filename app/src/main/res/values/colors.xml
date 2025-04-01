@@ -13,7 +13,9 @@
     <color name="colorRedD">#E44646</color>
     <color name="colorYellowD">#F2CD58</color>
 
-
-
-
+    <!-- Nuevos colores grises -->
+    <color name="colorGray">#9E9E9E</color>
+    <color name="colorGrayLight">#E0E0E0</color>
+    <color name="colorGrayDark">#616161</color>
+    <color name="colorGrayVeryLight">#F5F5F5</color>
 </resources>

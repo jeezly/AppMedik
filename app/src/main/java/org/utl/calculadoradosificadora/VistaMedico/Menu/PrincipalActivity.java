@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import org.utl.calculadoradosificadora.MainActivity;
 import org.utl.calculadoradosificadora.R;
+import org.utl.calculadoradosificadora.VistaMedico.VistaMedico;
 
 public class PrincipalActivity extends AppCompatActivity {
 
@@ -23,7 +24,7 @@ public class PrincipalActivity extends AppCompatActivity {
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(PrincipalActivity.this, MainActivity.class);
+                Intent intent = new Intent(PrincipalActivity.this, VistaMedico.class);
                 startActivity(intent);
                 finish(); // Cierra la actividad actual
             }

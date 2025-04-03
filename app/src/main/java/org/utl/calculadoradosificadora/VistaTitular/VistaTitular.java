@@ -16,6 +16,10 @@ import com.google.android.material.navigation.NavigationView;
 import org.utl.calculadoradosificadora.InicioActivity;
 import org.utl.calculadoradosificadora.MainActivity;
 import org.utl.calculadoradosificadora.R;
+import org.utl.calculadoradosificadora.VistaMedico.Menu.SobreNosotrosActivity;
+import org.utl.calculadoradosificadora.VistaMedico.Menu.SoporteActivity;
+import org.utl.calculadoradosificadora.VistaMedico.Opciones.ConfiguracionActivity;
+import org.utl.calculadoradosificadora.VistaMedico.VistaMedico;
 
 public class VistaTitular extends AppCompatActivity {
 
@@ -58,9 +62,10 @@ public class VistaTitular extends AppCompatActivity {
                 if (id == R.id.menu_inicio) {
                     startActivity(new Intent (VistaTitular.this, InicioActivity.class));
                 } else if (id == R.id.menu_informacion_util) {
-                    // Navegar a Información Útil
+                    //Es esa activity? o falta otra?
+                    //startActivity(new Intent(VistaTitular.this, SobreNosotrosActivity.class));
                 } else if (id == R.id.menu_soporte) {
-                    // Navegar a Soporte
+                    startActivity(new Intent(VistaTitular.this, SoporteActivity.class));
                 }
 
                 drawerLayout.closeDrawer(GravityCompat.START);
@@ -75,9 +80,9 @@ public class VistaTitular extends AppCompatActivity {
                 int id = item.getItemId();
 
                 if (id == R.id.opciones_perfil) {
-                    // Navegar a Perfil
+                    // Navegar a Perfil //Falta Activity
                 } else if (id == R.id.opciones_configuracion) {
-                    // Navegar a Configuración
+                    startActivity(new Intent(VistaTitular.this, ConfiguracionActivity.class));
                 } else if (id == R.id.opciones_cerrar_sesion) {
                     cerrarSesion();
                 }

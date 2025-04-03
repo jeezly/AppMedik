@@ -12,48 +12,47 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CalculadoraDosificadora"
         tools:targetApi="31">
-
+        <activity
+            android:name=".VistaTitular.HistorialCitaActivity"
+            android:exported="false" />
         <!-- Actividad Principal (Login) -->
         <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".VistaMedico.Opciones.PerfilActivity"
             android:exported="false"
-            android:label="Mi Perfil"/>
+            android:label="Mi Perfil" />
         <activity
             android:name=".VistaMedico.Opciones.ConfiguracionActivity"
             android:exported="false"
-            android:label="Configuración"/>
+            android:label="Configuración" />
         <activity
             android:name=".VistaMedico.Opciones.SeguridadActivity"
             android:exported="false"
-            android:label="Seguridad"/>
+            android:label="Seguridad" />
         <activity
             android:name=".VistaMedico.Opciones.NotificacionesActivity"
             android:exported="false"
-            android:label="Notificaciones"/>
-
+            android:label="Notificaciones" />
         <activity
             android:name=".VistaMedico.Menu.ProtocolosActivity"
             android:exported="false"
-            android:label="Protocolos y Guías"/>
+            android:label="Protocolos y Guías" />
         <activity
             android:name=".VistaMedico.Menu.SobreNosotrosActivity"
             android:exported="false"
-            android:label="Sobre Nosotros"/>
+            android:label="Sobre Nosotros" />
         <activity
             android:name=".VistaMedico.Menu.SoporteActivity"
             android:exported="false"
-            android:label="Soporte Técnico"/>
-
-        <!-- Actividades de Vista Médico -->
+            android:label="Soporte Técnico" /> <!-- Actividades de Vista Médico -->
         <activity
             android:name=".VistaMedico.Menu.PrincipalActivity"
             android:exported="true" />
@@ -65,9 +64,7 @@
             android:exported="true" />
         <activity
             android:name=".VistaMedico.CuentaNueva.CrearMedicoDos"
-            android:exported="true" />
-
-        <!-- Actividades de Citas (Vista Médico) -->
+            android:exported="true" /> <!-- Actividades de Citas (Vista Médico) -->
         <activity
             android:name=".VistaMedico.Acciones.AgendaActivity"
             android:exported="true" />
@@ -76,21 +73,17 @@
             android:exported="true" />
         <activity
             android:name=".VistaMedico.Acciones.DetallesCitaActivity"
-            android:exported="true" />
-
-        <!-- Nuevas Actividades de Historial de Citas -->
+            android:exported="true" /> <!-- Nuevas Actividades de Historial de Citas -->
         <activity
             android:name=".VistaMedico.Acciones.HistorialCitasActivity"
             android:exported="true" />
         <activity
             android:name=".VistaMedico.Acciones.DetallesHistorialCitaActivity"
             android:exported="true" />
-
         <activity
             android:name=".VistaMedico.Acciones.CalculadoraPediatricaActivity"
             android:exported="false"
-            android:label="Calculadora Pediátrica"/>
-
+            android:label="Calculadora Pediátrica" />
         <activity
             android:name=".VistaMedico.Acciones.AtenderCitaActivity"
             android:exported="false"
@@ -99,11 +92,7 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".VistaMedico.Acciones.DetallesCitaActivity" />
-        </activity>
-
-
-
-        <!-- NUEVAS ACTIVIDADES PARA TITULARES -->
+        </activity> <!-- NUEVAS ACTIVIDADES PARA TITULARES -->
         <activity
             android:name=".VistaMedico.Acciones.TitularesActivity"
             android:exported="false" />
@@ -115,9 +104,7 @@
             android:exported="false" />
         <activity
             android:name=".VistaMedico.Acciones.ModificarTitularActivity"
-            android:exported="false" />
-
-        <!-- Actividades de Vista Titular -->
+            android:exported="false" /> <!-- Actividades de Vista Titular -->
         <activity
             android:name=".VistaTitular.VistaTitular"
             android:exported="true" />
@@ -135,13 +122,10 @@
             android:exported="true" />
         <activity
             android:name=".VistaTitular.CuentaNueva.CrearTitularDos"
-            android:exported="true" />
-
-        <!-- Otras Actividades -->
+            android:exported="true" /> <!-- Otras Actividades -->
         <activity
             android:name=".BienvenidaActivity"
             android:exported="true" />
-
     </application>
 
 </manifest>

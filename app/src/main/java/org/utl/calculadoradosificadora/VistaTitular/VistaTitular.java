@@ -13,6 +13,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.core.view.GravityCompat;
 import com.google.android.material.navigation.NavigationView;
 
+import org.utl.calculadoradosificadora.InicioActivity;
 import org.utl.calculadoradosificadora.MainActivity;
 import org.utl.calculadoradosificadora.R;
 
@@ -55,7 +56,7 @@ public class VistaTitular extends AppCompatActivity {
                 int id = item.getItemId();
 
                 if (id == R.id.menu_inicio) {
-                    // Navegar a Inicio
+                    startActivity(new Intent (VistaTitular.this, InicioActivity.class));
                 } else if (id == R.id.menu_informacion_util) {
                     // Navegar a Información Útil
                 } else if (id == R.id.menu_soporte) {

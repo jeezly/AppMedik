@@ -107,7 +107,8 @@ public class VistaTitular extends AppCompatActivity {
         cardHistorialCitas.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Navegar a Historial de Citas
+                Intent intent = new Intent(VistaTitular.this, HistorialCitaActivity.class);
+                startActivity(intent);
             }
         });
     }

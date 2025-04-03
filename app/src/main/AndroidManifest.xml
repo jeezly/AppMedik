@@ -13,9 +13,11 @@
         android:theme="@style/Theme.CalculadoraDosificadora"
         tools:targetApi="31">
         <activity
-            android:name=".VistaTitular.HistorialCitaActivity"
+            android:name=".DetallesHistorialCitaActivity"
             android:exported="false" />
-        <!-- Actividad Principal (Login) -->
+        <activity
+            android:name=".VistaTitular.HistorialCitaActivity"
+            android:exported="false" /> <!-- Actividad Principal (Login) -->
         <activity
             android:name=".MainActivity"
             android:exported="true">

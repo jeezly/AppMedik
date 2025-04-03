@@ -95,13 +95,18 @@
                 android:contentDescription="@string/filter_icon_description"/>
         </LinearLayout>
 
-        <!-- Lista de citas -->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvHistorialCitas"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:layout_marginTop="8dp"/>
+            android:layout_height="698dp"
+            android:layout_weight="1">
+            <!-- Lista de citas -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvHistorialCitas"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:layout_marginTop="8dp"/>
+        </ScrollView>
 
         <!-- Botón de salir -->
         <Button

@@ -5,9 +5,7 @@ import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -23,9 +21,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // Obtén las referencias a los componentes
-        EditText txtUsername = findViewById(R.id.txtUsername);
-        EditText txtPassword = findViewById(R.id.txtPassword);
-        Button btnLogin = findViewById(R.id.btnLogin);
+        Button btnMedico = findViewById(R.id.btnMedico);
+        Button btnTitular = findViewById(R.id.btnTitular);
         TextView tvCreateAccount = findViewById(R.id.textView2);
 
         // Configura el texto subrayado para "Crear una cuenta"
@@ -40,26 +37,15 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        // Configura el clic en el botón de inicio de sesión
-        btnLogin.setOnClickListener(v -> {
-            String username = txtUsername.getText().toString().trim();
-            String password = txtPassword.getText().toString().trim();
+        // Configura los botones para navegar directamente a las vistas
+        btnMedico.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, VistaMedico.class);
+            startActivity(intent);
+        });
 
-            // Verifica las credenciales
-            if (username.equals("Medico") && password.equals("1234")) {
-                // Credenciales correctas para médico, redirige a VistaMedico
-                Intent intent = new Intent(MainActivity.this, VistaMedico.class);
-                startActivity(intent);
-                finish(); // Opcional: cierra la actividad actual
-            } else if (username.equals("Titular") && password.equals("5678")) {
-                // Credenciales correctas para titular, redirige a VistaTitular
-                Intent intent = new Intent(MainActivity.this, VistaTitular.class);
-                startActivity(intent);
-                finish(); // Opcional: cierra la actividad actual
-            } else {
-                // Credenciales incorrectas, muestra un mensaje de error
-                Toast.makeText(MainActivity.this, "Usuario o contraseña incorrectos", Toast.LENGTH_SHORT).show();
-            }
+        btnTitular.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, VistaTitular.class);
+            startActivity(intent);
         });
     }
 }

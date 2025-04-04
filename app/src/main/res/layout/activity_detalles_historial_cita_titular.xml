@@ -223,8 +223,8 @@
             <!-- Botón Cancelar -->
             <Button
                 android:id="@+id/btnCancelarCitaT"
-                android:layout_width="112dp"
-                android:layout_height="55dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="top"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="10dp"

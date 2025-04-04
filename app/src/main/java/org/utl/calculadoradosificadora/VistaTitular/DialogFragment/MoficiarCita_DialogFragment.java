@@ -47,7 +47,12 @@ public class MoficiarCita_DialogFragment extends DialogFragment{
                         mensajeConfirmación();
                     }
                 })
-                .setNegativeButton("Cancelar", null);
+                .setNegativeButton("Cancelar", new DialogInterface.OnClickListener(){
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
 
         return builder.create();
     }

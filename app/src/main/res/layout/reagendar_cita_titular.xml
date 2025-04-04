@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:text="Reagendar Cita"
+            android:textStyle="bold"
+            android:textSize="18sp"/>
+        <ImageView
+            android:id="@+id/btnCancelarReagendar"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_cerrar"
+            android:contentDescription="@string/options_icon_description"/>
+    </androidx.appcompat.widget.Toolbar>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="190dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/f"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Ingresar fecha:" />
+            <EditText
+                android:id="@+id/txtDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="date" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="190dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/h"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Horario:" />
+
+            <Spinner
+                android:id="@+id/spinnerHorarioM"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="85dp"
+        android:gravity="center"
+        android:layout_marginStart="75dp"
+        android:orientation="horizontal">
+
+        <!-- Botón Cancelar -->
+        <Button
+            android:id="@+id/btnCancelarCitaT"
+            android:layout_width="112dp"
+            android:layout_height="55dp"
+            android:layout_gravity="top"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="10dp"
+            android:backgroundTint="@color/colorRedD"
+            android:text="Cancelar" />
+
+        <!-- Botón Modificar -->
+        <Button
+            android:id="@+id/btnModificarCitaT"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="@color/colorGreen"
+            android:text="Modificar" />
+    </LinearLayout>
+
+</LinearLayout>

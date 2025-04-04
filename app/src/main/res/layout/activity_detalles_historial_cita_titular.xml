@@ -6,7 +6,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DetallesHistorialCitaActivity">
+    tools:context=".VistaTitular.DetallesHistorialCitaActivity">
 
     <!-- Contenido principal -->
     <LinearLayout
@@ -84,7 +84,7 @@
 
         <!-- Usuario -->
         <TextView
-            android:id="@+id/tvUsuario"
+            android:id="@+id/tcUsuario"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Usuario: XXXXXX"
@@ -101,7 +101,7 @@
 
             <!-- Fecha -->
             <TextView
-                android:id="@+id/tvFecha"
+                android:id="@+id/tcFecha"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -110,7 +110,7 @@
 
             <!-- Hora -->
             <TextView
-                android:id="@+id/tvHora"
+                android:id="@+id/tcHora"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -127,7 +127,7 @@
 
         <!-- Titular -->
         <TextView
-            android:id="@+id/tvDoctor"
+            android:id="@+id/tcDoctor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Doctor que atendió:"
@@ -223,8 +223,8 @@
             <!-- Botón Cancelar -->
             <Button
                 android:id="@+id/btnCancelarCitaT"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="112dp"
+                android:layout_height="55dp"
                 android:layout_gravity="top"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="10dp"

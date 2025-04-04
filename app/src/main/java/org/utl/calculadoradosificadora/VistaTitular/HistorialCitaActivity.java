@@ -28,8 +28,10 @@ public class HistorialCitaActivity extends AppCompatActivity {
 
         btnSalir = findViewById(R.id.btnSalir);
         btnSalir.setOnClickListener(view -> {
-            Intent intent = new Intent(HistorialCitaActivity.this, VistaTitular.class);
+            Intent intent = new Intent(HistorialCitaActivity.this, DetallesHistorialCitaActivity.class);
             startActivity(intent);
+//            Intent intent = new Intent(HistorialCitaActivity.this, VistaTitular.class);
+//            startActivity(intent);
         });
     }
 }

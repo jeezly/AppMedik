@@ -62,13 +62,17 @@ public class HistorialCitasActivity extends AppCompatActivity {
         searchView = findViewById(R.id.searchView);
         btnSalir = findViewById(R.id.btnSalir);
 
+        listaCitas = new ArrayList<>();
+
+        // Configura el RecyclerView desde ya con el adapter vacío
+        adapter = new HistorialCitasAdapter(listaCitas);
         // Configurar RecyclerView
         rvHistorialCitas.setLayoutManager(new LinearLayoutManager(this));
+        rvHistorialCitas.setAdapter(adapter);
+
         // Obtener datos de prueba
         //listaCitas = obtenerCitasDePrueba();
         obtenerCitasAPI();
-        adapter = new HistorialCitasAdapter(listaCitas);
-        rvHistorialCitas.setAdapter(adapter);
 
         // Configurar SearchView
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -84,7 +88,7 @@ public class HistorialCitasActivity extends AppCompatActivity {
             }
         });
 
-        // Configurar botón de salir
+        // Configurar botón de salir //NO JALA :')
         btnSalir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -185,12 +189,19 @@ public class HistorialCitasActivity extends AppCompatActivity {
                 System.out.println(response.body());
 
                 if (response.isSuccessful() && response.body() != null) {
-                    listaCitas = response.body();
+                    listaCitas.clear(); // Limpia lista vieja
+                    listaCitas.addAll(response.body()); // Agrega nuevas
+                    adapter.notifyDataSetChanged(); // Notifica cambio
+                    Toast.makeText(HistorialCitasActivity.this, "Citas cargadas", Toast.LENGTH_SHORT).show();
+                }
+                if (listaCitas == null) {
+                    listaCitas = new ArrayList<>();
                 }
             }
 
             @Override
             public void onFailure(Call<List<Cita>> call, Throwable t) {
+                System.out.println("onFailure API");
                 t.printStackTrace();
             }
         });

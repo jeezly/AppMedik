@@ -7,8 +7,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.SearchView;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
@@ -29,16 +27,8 @@ import org.utl.calculadoradosificadora.VistaMedico.Opciones.SeguridadActivity;
 import org.utl.calculadoradosificadora.VistaMedico.VistaMedico;
 import org.utl.calculadoradosificadora.model.Cita;
 import org.utl.calculadoradosificadora.model.Paciente;
-import org.utl.calculadoradosificadora.service.ApiClient;
-import org.utl.calculadoradosificadora.service.CitaService;
-
 import java.util.ArrayList;
 import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
 
 public class HistorialCitasActivity extends AppCompatActivity {
 
@@ -62,17 +52,11 @@ public class HistorialCitasActivity extends AppCompatActivity {
         searchView = findViewById(R.id.searchView);
         btnSalir = findViewById(R.id.btnSalir);
 
-        listaCitas = new ArrayList<>();
-
-        // Configura el RecyclerView desde ya con el adapter vacío
-        adapter = new HistorialCitasAdapter(listaCitas);
         // Configurar RecyclerView
         rvHistorialCitas.setLayoutManager(new LinearLayoutManager(this));
-        rvHistorialCitas.setAdapter(adapter);
 
-        // Obtener datos de prueba
-        //listaCitas = obtenerCitasDePrueba();
-        obtenerCitasAPI();
+        adapter = new HistorialCitasAdapter(listaCitas);
+        rvHistorialCitas.setAdapter(adapter);
 
         // Configurar SearchView
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -88,7 +72,7 @@ public class HistorialCitasActivity extends AppCompatActivity {
             }
         });
 
-        // Configurar botón de salir //NO JALA :')
+        // Configurar botón de salir
         btnSalir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -176,41 +160,6 @@ public class HistorialCitasActivity extends AppCompatActivity {
         finish();
     }
 
-    private void obtenerCitasAPI(){
-        Retrofit retrofit = ApiClient.getClient();
-        CitaService servie = retrofit.create(CitaService.class);
-
-        Call<List<Cita>> getAll = servie.getAllCita();
-        getAll.enqueue(new Callback<List<Cita>>() {
-            @Override
-            public void onResponse(Call<List<Cita>> call, Response<List<Cita>> response) {
-                Toast.makeText(HistorialCitasActivity.this, "GetAll realizado", Toast.LENGTH_SHORT).show();
-                System.out.println(response.code());
-                System.out.println(response.body());
-
-                if (response.isSuccessful() && response.body() != null) {
-                    listaCitas.clear(); // Limpia lista vieja
-                    listaCitas.addAll(response.body()); // Agrega nuevas
-                    adapter.notifyDataSetChanged(); // Notifica cambio
-                    Toast.makeText(HistorialCitasActivity.this, "Citas cargadas", Toast.LENGTH_SHORT).show();
-                }
-                if (listaCitas == null) {
-                    listaCitas = new ArrayList<>();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<Cita>> call, Throwable t) {
-                System.out.println("onFailure API");
-                t.printStackTrace();
-            }
-        });
-    }
     // Método para obtener datos de prueba
-    private List<Cita> obtenerCitasDePrueba() {
-        List<Cita> citas = new ArrayList<>();
-        citas.add(new Cita(1, "2023-10-01", "10:00", "Control", "Atendida", new Paciente(1, "Juan", "Pérez", true, 1, "2000-01-01", 30.5, "Seguro Popular")));
-        citas.add(new Cita(2, "2023-10-02", "11:00", "Revisión", "Cancelada", new Paciente(2, "Ana", "Gómez", false, 2, "2005-05-05", 25.0, "IMSS")));
-        return citas;
-    }
+
 }

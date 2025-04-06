@@ -30,9 +30,17 @@ import org.utl.calculadoradosificadora.VistaMedico.Menu.ProtocolosActivity;
 import org.utl.calculadoradosificadora.VistaMedico.Menu.SobreNosotrosActivity;
 import org.utl.calculadoradosificadora.VistaMedico.Menu.SoporteActivity;
 import org.utl.calculadoradosificadora.VistaMedico.VistaMedico;
+import org.utl.calculadoradosificadora.model.Medicamento;
+import org.utl.calculadoradosificadora.service.ApiClient;
+import org.utl.calculadoradosificadora.service.MedicamentoService;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 public class CalculadoraPediatricaActivity extends AppCompatActivity {
 
@@ -50,7 +58,7 @@ public class CalculadoraPediatricaActivity extends AppCompatActivity {
     private TextView tvResultado;
 
     private List<String> listaMedicamentos;
-    private ArrayAdapter<String> adapterMedicamentos;
+    private ArrayAdapter<Medicamento> adapterMedicamentos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,18 +138,44 @@ public class CalculadoraPediatricaActivity extends AppCompatActivity {
     }
 
     private void setupSpinners() {
-        // Configurar spinner de medicamentos (datos de ejemplo)
-        listaMedicamentos = new ArrayList<>();
-        listaMedicamentos.add("Paracetamol (120mg/5ml)");
-        listaMedicamentos.add("Ibuprofeno (100mg/5ml)");
-        listaMedicamentos.add("Amoxicilina (250mg/5ml)");
-        listaMedicamentos.add("Dexametasona (0.5mg/ml)");
-        listaMedicamentos.add("Salbutamol (2mg/5ml)");
+        Retrofit retrofit = ApiClient.getClient();
+        MedicamentoService service = retrofit.create(MedicamentoService.class);
 
-        adapterMedicamentos = new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_item, listaMedicamentos);
-        adapterMedicamentos.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerMedicamentos.setAdapter(adapterMedicamentos);
+        Call<List<Medicamento>> getAll = service.getAllMedicamento();
+        getAll.enqueue(new Callback<List<Medicamento>>() {
+            @Override
+            public void onResponse(Call<List<Medicamento>> call, Response<List<Medicamento>> response) {
+                //Para corroborar que funciona
+                Toast.makeText(CalculadoraPediatricaActivity.this, "Medicamentos cargados :D", Toast.LENGTH_SHORT).show();
+                System.out.println(response.code());
+                System.out.println(response.body());
+
+                if(response.isSuccessful() && response.body() != null){
+                    List<Medicamento> medicamentos = response.body();
+                    adapterMedicamentos = new ArrayAdapter<>(CalculadoraPediatricaActivity.this,
+                            android.R.layout.simple_spinner_item,
+                            medicamentos);
+                    adapterMedicamentos.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    spinnerMedicamentos.setAdapter(adapterMedicamentos);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Medicamento>> call, Throwable t) {
+
+            }
+        });
+//        listaMedicamentos = new ArrayList<>();
+//        listaMedicamentos.add("Paracetamol (120mg/5ml)");
+//        listaMedicamentos.add("Ibuprofeno (100mg/5ml)");
+//        listaMedicamentos.add("Amoxicilina (250mg/5ml)");
+//        listaMedicamentos.add("Dexametasona (0.5mg/ml)");
+//        listaMedicamentos.add("Salbutamol (2mg/5ml)");
+//
+//        adapterMedicamentos = new ArrayAdapter<>(this,
+//                android.R.layout.simple_spinner_item, listaMedicamentos);
+//        adapterMedicamentos.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        spinnerMedicamentos.setAdapter(adapterMedicamentos);
 
         // Configurar spinner de edad
         ArrayAdapter<CharSequence> adapterEdad = ArrayAdapter.createFromResource(this,

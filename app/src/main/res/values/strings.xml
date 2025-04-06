@@ -77,6 +77,11 @@
     <string name="titular_eliminado">Titular eliminado correctamente</string>
     <string name="cambios_guardados">Cambios guardados exitosamente</string>
     <string name="campos_incompletos">Por favor complete todos los campos</string>
+    <string name="cita_agendada_exito">¡Cita Agendada!</string>
+    <string name="detalles_cita">Detalles de la cita:</string>
+    <string name="doctor_asignado">Doctor asignado:</string>
+    <string name="paciente_asignado">Paciente asignado:</string>
+    <string name="cita_agendada_correctamente">Cita agendada correctamente</string>
 
     <!-- Títulos -->
     <string name="titulo_registro_titular">Registro Titular</string>
@@ -149,4 +154,23 @@
 
     <!-- Notificaciones -->
     <string name="notificaciones_guardadas">Configuración de notificaciones guardada</string>
+
+    <!-- Horarios para el Spinner -->
+    <string-array name="horarios_array">
+        <item>09:00 AM</item>
+        <item>10:00 AM</item>
+        <item>11:00 AM</item>
+        <item>12:00 PM</item>
+        <item>01:00 PM</item>
+        <item>02:00 PM</item>
+        <item>03:00 PM</item>
+        <item>04:00 PM</item>
+        <item>05:00 PM</item>
+    </string-array>
+
+    <string-array name="filtros_titulares_array">
+        <item>Todos</item>
+        <item>Activos</item>
+        <item>Inactivos</item>
+    </string-array>
 </resources>

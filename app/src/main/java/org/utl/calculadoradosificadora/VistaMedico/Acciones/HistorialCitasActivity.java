@@ -54,7 +54,7 @@ public class HistorialCitasActivity extends AppCompatActivity {
 
         // Configurar RecyclerView
         rvHistorialCitas.setLayoutManager(new LinearLayoutManager(this));
-        listaCitas = obtenerCitasDePrueba(); // Obtener datos de prueba
+
         adapter = new HistorialCitasAdapter(listaCitas);
         rvHistorialCitas.setAdapter(adapter);
 
@@ -161,10 +161,5 @@ public class HistorialCitasActivity extends AppCompatActivity {
     }
 
     // Método para obtener datos de prueba
-    private List<Cita> obtenerCitasDePrueba() {
-        List<Cita> citas = new ArrayList<>();
-        citas.add(new Cita(1, "2023-10-01", "10:00", "Control", "Atendida", new Paciente(1, "Juan", "Pérez", true, 1, "2000-01-01", 30.5, "Seguro Popular")));
-        citas.add(new Cita(2, "2023-10-02", "11:00", "Revisión", "Cancelada", new Paciente(2, "Ana", "Gómez", false, 2, "2005-05-05", 25.0, "IMSS")));
-        return citas;
-    }
+
 }

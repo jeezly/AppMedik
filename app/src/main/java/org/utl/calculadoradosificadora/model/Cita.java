@@ -2,26 +2,20 @@ package org.utl.calculadoradosificadora.model;
 
 import java.io.Serializable;
 
-public class Cita implements Serializable { // Implementa Serializable
+public class Cita implements Serializable {
     private int idCita;
-    private String fecha;
+    private String fecha;  // Formato: "YYYY-MM-DD"
     private String hora;
-    private String razon;
-    private String estatus;
-    private Paciente paciente;
+    private String estatus;  // Ej: "Programada", "Cancelada", "Atendida"
+    private String razonCita;  // Nombre exacto como en el backend
+    private Medico medico;     // Requerido
+    private Paciente paciente; // Requerido
+    private Titular titular;   // Requerido
 
+    // Constructor vacío
     public Cita() {}
 
-    public Cita(int idCita, String fecha, String hora, String razon, String estatus, Paciente paciente) {
-        this.idCita = idCita;
-        this.fecha = fecha;
-        this.hora = hora;
-        this.razon = razon;
-        this.estatus = estatus;
-        this.paciente = paciente;
-    }
-
-    // Getters y Setters
+    // Getters y Setters (¡Todos deben existir!)
     public int getIdCita() {
         return idCita;
     }
@@ -46,20 +40,28 @@ public class Cita implements Serializable { // Implementa Serializable
         this.hora = hora;
     }
 
-    public String getRazon() {
-        return razon;
-    }
-
-    public void setRazon(String razon) {
-        this.razon = razon;
-    }
-
     public String getEstatus() {
         return estatus;
     }
 
     public void setEstatus(String estatus) {
         this.estatus = estatus;
+    }
+
+    public String getRazonCita() {
+        return razonCita;
+    }
+
+    public void setRazonCita(String razonCita) {
+        this.razonCita = razonCita;
+    }
+
+    public Medico getMedico() {
+        return medico;
+    }
+
+    public void setMedico(Medico medico) {
+        this.medico = medico;
     }
 
     public Paciente getPaciente() {
@@ -70,15 +72,11 @@ public class Cita implements Serializable { // Implementa Serializable
         this.paciente = paciente;
     }
 
-    @Override
-    public String toString() {
-        return "Cita{" +
-                "idCita=" + idCita +
-                ", fecha='" + fecha + '\'' +
-                ", hora='" + hora + '\'' +
-                ", razon='" + razon + '\'' +
-                ", estatus='" + estatus + '\'' +
-                ", paciente=" + paciente +
-                '}';
+    public Titular getTitular() {
+        return titular;
+    }
+
+    public void setTitular(Titular titular) {
+        this.titular = titular;
     }
 }

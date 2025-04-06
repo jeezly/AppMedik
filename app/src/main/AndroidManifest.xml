@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- Permisos (de Hugo y tuyos) -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
@@ -15,13 +16,61 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CalculadoraDosificadora"
         tools:targetApi="31"
-        android:usesCleartextTraffic="true">
+        android:usesCleartextTraffic="true"> <!-- Permite HTTP (necesario para desarrollo) -->
+
+        <!-- Actividad Principal (Launcher) -->
         <activity
-            android:name=".VistaTitular.DetallesHistorialCitaActivity"
-            android:exported="false" />
+            android:name=".MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- ==================== VISTA MÉDICO ==================== -->
+        <activity android:name=".VistaMedico.VistaMedico" android:exported="false"/>
+
+        <!-- Menú Médico -->
+        <activity android:name=".VistaMedico.Menu.ProtocolosActivity" android:exported="false"/>
+        <activity android:name=".VistaMedico.Menu.SobreNosotrosActivity" android:exported="false"/>
+        <activity android:name=".VistaMedico.Menu.SoporteActivity" android:exported="false"/>
+
+        <!-- Opciones Médico -->
+        <activity android:name=".VistaMedico.Opciones.PerfilActivity" android:exported="false"/>
+        <activity android:name=".VistaMedico.Opciones.ConfiguracionActivity" android:exported="false"/>
+        <activity android:name=".VistaMedico.Opciones.SeguridadActivity" android:exported="false"/>
+        <activity android:name=".VistaMedico.Opciones.NotificacionesActivity" android:exported="false"/>
+
+        <!-- Acciones Médico (Módulo Citas - Prioridad) -->
+        <activity android:name=".VistaMedico.Acciones.AgendaActivity" android:exported="false"/>
+        <activity android:name=".VistaMedico.Acciones.AgregarCitaActivity" android:exported="false"/>
+        <activity android:name=".VistaMedico.Acciones.AtenderCitaActivity" android:exported="false"/>
+        <activity android:name=".VistaMedico.Acciones.HistorialCitasActivity" android:exported="false"/>
+        <activity android:name=".VistaMedico.Acciones.DetallesHistorialCitaActivity" android:exported="false"/>
+
+        <!-- Calculadora Pediátrica -->
         <activity
-            android:name=".VistaTitular.HistorialCitaActivity"
-            android:exported="false" />
+            android:name=".VistaMedico.Acciones.CalculadoraPediatricaActivity"
+            android:exported="false"
+            android:label="Calculadora Pediátrica"/>
+
+        <!-- Titulares (Módulo secundario) -->
+        <activity android:name=".VistaMedico.Acciones.TitularesActivity" android:exported="false"/>
+        <activity android:name=".VistaMedico.Acciones.RegistrarTitularActivity" android:exported="false"/>
+
+        <!-- ==================== VISTA TITULAR ==================== -->
+        <activity android:name=".VistaTitular.VistaTitular" android:exported="false"/>
+        <activity android:name=".VistaTitular.AgendarCitasActivity" android:exported="false"/>
+        <activity android:name=".VistaTitular.HistorialCitaActivity" android:exported="false"/>
+        <activity android:name=".VistaTitular.DetallesHistorialCitaActivity" android:exported="false"/>
+
+        <!-- Actividades Generales (Login/Registro) -->
+        <activity android:name=".BienvenidaActivity" android:exported="false"/>
+        <activity android:name=".InicioActivity" android:exported="false"/>
+        <activity android:name=".VistaMedico.CuentaNueva.CrearCuentaMedico" android:exported="false"/>
+        <activity android:name=".VistaTitular.CuentaNueva.CrearCuentaTitular" android:exported="false"/>
 
     </application>
+
 </manifest>

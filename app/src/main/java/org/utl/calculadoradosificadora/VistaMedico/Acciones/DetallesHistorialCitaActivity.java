@@ -111,8 +111,8 @@ public class DetallesHistorialCitaActivity extends AppCompatActivity {
             tvHora.setText("Hora: " + cita.getHora());
             tvClaveNombreTitular.setText("Clave: " + cita.getPaciente().getIdPaciente() + " - Nombre: " + cita.getPaciente().getNombre() + " " + cita.getPaciente().getApellidos());
             tvClaveNombrePaciente.setText("Clave: " + cita.getPaciente().getIdPaciente() + " - Nombre: " + cita.getPaciente().getNombre() + " " + cita.getPaciente().getApellidos() + " - Fecha Nac: " + cita.getPaciente().getFechaNacimiento() + " - Peso: " + cita.getPaciente().getPeso() + " kg");
-            tvRazonCita.setText("Razón: " + cita.getRazon());
-            tvNotas.setText("Notas: " + cita.getRazon()); // Aquí puedes cambiar "Notas" por otro campo si es necesario
+            tvRazonCita.setText("Razón: " + cita.getRazonCita());
+            tvNotas.setText("Notas: " + cita.getRazonCita()); // Aquí puedes cambiar "Notas" por otro campo si es necesario
         }
 
         // Configurar botón "OK"

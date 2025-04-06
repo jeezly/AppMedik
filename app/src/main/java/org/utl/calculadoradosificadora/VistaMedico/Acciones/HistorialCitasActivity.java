@@ -7,6 +7,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.SearchView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
@@ -27,8 +29,16 @@ import org.utl.calculadoradosificadora.VistaMedico.Opciones.SeguridadActivity;
 import org.utl.calculadoradosificadora.VistaMedico.VistaMedico;
 import org.utl.calculadoradosificadora.model.Cita;
 import org.utl.calculadoradosificadora.model.Paciente;
+import org.utl.calculadoradosificadora.service.ApiClient;
+import org.utl.calculadoradosificadora.service.CitaService;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 public class HistorialCitasActivity extends AppCompatActivity {
 
@@ -54,7 +64,9 @@ public class HistorialCitasActivity extends AppCompatActivity {
 
         // Configurar RecyclerView
         rvHistorialCitas.setLayoutManager(new LinearLayoutManager(this));
-        listaCitas = obtenerCitasDePrueba(); // Obtener datos de prueba
+        // Obtener datos de prueba
+        //listaCitas = obtenerCitasDePrueba();
+        obtenerCitasAPI();
         adapter = new HistorialCitasAdapter(listaCitas);
         rvHistorialCitas.setAdapter(adapter);
 
@@ -160,6 +172,29 @@ public class HistorialCitasActivity extends AppCompatActivity {
         finish();
     }
 
+    private void obtenerCitasAPI(){
+        Retrofit retrofit = ApiClient.getClient();
+        CitaService servie = retrofit.create(CitaService.class);
+
+        Call<List<Cita>> getAll = servie.getAllCita();
+        getAll.enqueue(new Callback<List<Cita>>() {
+            @Override
+            public void onResponse(Call<List<Cita>> call, Response<List<Cita>> response) {
+                Toast.makeText(HistorialCitasActivity.this, "GetAll realizado", Toast.LENGTH_SHORT).show();
+                System.out.println(response.code());
+                System.out.println(response.body());
+
+                if (response.isSuccessful() && response.body() != null) {
+                    listaCitas = response.body();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Cita>> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+    }
     // Método para obtener datos de prueba
     private List<Cita> obtenerCitasDePrueba() {
         List<Cita> citas = new ArrayList<>();

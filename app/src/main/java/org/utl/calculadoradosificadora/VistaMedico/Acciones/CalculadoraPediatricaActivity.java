@@ -162,7 +162,7 @@ public class CalculadoraPediatricaActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<List<Medicamento>> call, Throwable t) {
-
+                t.printStackTrace();
             }
         });
 //        listaMedicamentos = new ArrayList<>();

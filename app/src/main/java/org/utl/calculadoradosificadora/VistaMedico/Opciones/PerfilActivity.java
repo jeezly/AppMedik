@@ -25,7 +25,7 @@ public class PerfilActivity extends AppCompatActivity {
         setContentView(R.layout.activity_perfil);
 
         // Obtener datos del médico (esto debería venir de tu base de datos/sesión)
-        medico = new Medico(1, "Juan", "Pérez", true, 1, "", 12345678);
+
 
         inicializarVistas();
         cargarDatosMedico();
@@ -46,8 +46,7 @@ public class PerfilActivity extends AppCompatActivity {
 
     private void cargarDatosMedico() {
         etCedula.setText(String.valueOf(medico.getNumCedula()));
-        etNombre.setText(medico.getNombre());
-        etApellidos.setText(medico.getApellidos());
+
         // Estos campos deberían venir de tu objeto Usuario asociado al Médico
         etCorreo.setText("juan.perez@example.com");
         etTelefono.setText("4771234567");
@@ -59,8 +58,7 @@ public class PerfilActivity extends AppCompatActivity {
         btnModificar.setOnClickListener(v -> {
             if (modoEdicion) {
                 // Guardar cambios
-                medico.setNombre(etNombre.getText().toString());
-                medico.setApellidos(etApellidos.getText().toString());
+
                 // Actualizar otros campos según sea necesario
 
                 Toast.makeText(this, "Cambios guardados", Toast.LENGTH_SHORT).show();

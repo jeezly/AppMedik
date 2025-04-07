@@ -44,6 +44,7 @@ dependencies {
 
     //Logging de Retrofit
     implementation(libs.logging.interceptor)
+    implementation(libs.swiperefreshlayout)
 
 
 

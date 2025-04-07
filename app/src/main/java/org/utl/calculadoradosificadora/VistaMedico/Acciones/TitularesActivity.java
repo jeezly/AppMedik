@@ -53,8 +53,6 @@ public class TitularesActivity extends AppCompatActivity {
 
         // Inicializar lista de titulares (esto debería venir de tu base de datos)
         listaTitulares = new ArrayList<>();
-        listaTitulares.add(new Titular(1, "Juan", "Pérez", "juan@example.com", "5551234567", "juan123", "Hombre"));
-        listaTitulares.add(new Titular(2, "María", "Gómez", "maria@example.com", "5557654321", "maria456", "Mujer"));
 
         adapter = new TitularesAdapter(listaTitulares);
         recyclerView.setAdapter(adapter);

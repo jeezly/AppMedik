@@ -4,18 +4,16 @@ import java.io.Serializable;
 
 public class Cita implements Serializable {
     private int idCita;
-    private String fecha;  // Formato: "YYYY-MM-DD"
+    private String fecha;
     private String hora;
-    private String estatus;  // Ej: "Programada", "Cancelada", "Atendida"
-    private String razonCita;  // Nombre exacto como en el backend
-    private Medico medico;     // Requerido
-    private Paciente paciente; // Requerido
-    private Titular titular;   // Requerido
+    private String estatus;
+    private String razonCita;
+    private Medico medico;
+    private Paciente paciente;
+    private Titular titular;
 
-    // Constructor vacío
     public Cita() {}
 
-    // Getters y Setters (¡Todos deben existir!)
     public int getIdCita() {
         return idCita;
     }
@@ -78,5 +76,9 @@ public class Cita implements Serializable {
 
     public void setTitular(Titular titular) {
         this.titular = titular;
+    }
+
+    public String getFechaHoraFormateada() {
+        return fecha + " " + hora;
     }
 }

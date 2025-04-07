@@ -2,15 +2,20 @@ package org.utl.calculadoradosificadora.VistaMedico.Acciones;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import org.utl.calculadoradosificadora.R;
 import org.utl.calculadoradosificadora.model.Cita;
 import org.utl.calculadoradosificadora.service.ApiClient;
+import org.utl.calculadoradosificadora.service.ApiResponse;
 import org.utl.calculadoradosificadora.service.CitaService;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -27,13 +32,8 @@ public class DetallesCitaActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalles_cita);
 
-        // Inicializar vistas
         initViews();
-
-        // Obtener datos de la cita desde el Intent
         loadCitaData();
-
-        // Configurar botones
         setupButtons();
     }
 
@@ -55,26 +55,31 @@ public class DetallesCitaActivity extends AppCompatActivity {
     }
 
     private void loadCitaData() {
-        Intent intent = getIntent();
-        if (intent != null) {
-            idCita = intent.getIntExtra("idCita", -1);
-            tvFecha.setText("Fecha: " + intent.getStringExtra("fecha"));
-            tvHora.setText("Hora: " + intent.getStringExtra("hora"));
-            tvRazon.setText("Razón: " + intent.getStringExtra("razon"));
+        Cita cita = (Cita) getIntent().getSerializableExtra("cita");
+        if (cita != null) {
+            idCita = cita.getIdCita();
+            tvFecha.setText("Fecha: " + cita.getFecha());
+            tvHora.setText("Hora: " + cita.getHora());
+            tvRazon.setText("Razón: " + cita.getRazonCita());
 
-            if (intent.hasExtra("nombreTitular")) {
-                tvNombreTitular.setText("Titular: " + intent.getStringExtra("nombreTitular"));
-                tvGenero.setText("Género: " + intent.getStringExtra("genero"));
-                tvCorreo.setText("Correo: " + intent.getStringExtra("correo"));
-                tvTelefono.setText("Teléfono: " + intent.getStringExtra("telefono"));
+            if (cita.getTitular() != null) {
+                tvNombreTitular.setText("Titular: " + cita.getTitular().getNombre() + " " + cita.getTitular().getApellidos());
+                tvGenero.setText("Género: " + cita.getTitular().getGenero());
+                tvCorreo.setText("Correo: " + cita.getTitular().getCorreo());
+                tvTelefono.setText("Teléfono: " + cita.getTitular().getTelefono());
             }
 
-            if (intent.hasExtra("nombrePaciente")) {
-                tvNombrePaciente.setText("Paciente: " + intent.getStringExtra("nombrePaciente"));
-                tvEdadPaciente.setText("Edad: " + intent.getStringExtra("edadPaciente"));
-                tvPesoPaciente.setText("Peso: " + intent.getStringExtra("pesoPaciente") + " kg");
+            if (cita.getPaciente() != null) {
+                tvNombrePaciente.setText("Paciente: " + cita.getPaciente().getNombre() + " " + cita.getPaciente().getApellidos());
+                tvEdadPaciente.setText("Edad: " + calcularEdad(cita.getPaciente().getFechaNacimiento()));
+                tvPesoPaciente.setText("Peso: " + cita.getPaciente().getPeso() + " kg");
             }
         }
+    }
+
+    private String calcularEdad(String fechaNacimiento) {
+        // Implementa tu lógica para calcular la edad
+        return "5 años"; // Ejemplo simplificado
     }
 
     private void setupButtons() {
@@ -87,12 +92,7 @@ public class DetallesCitaActivity extends AppCompatActivity {
 
         btnAtender.setOnClickListener(v -> {
             Intent intent = new Intent(DetallesCitaActivity.this, AtenderCitaActivity.class);
-
-            // Pasar datos del paciente
-            intent.putExtra("nombrePaciente", tvNombrePaciente.getText().toString().replace("Paciente: ", ""));
-            intent.putExtra("edadPaciente", tvEdadPaciente.getText().toString().replace("Edad: ", ""));
-            intent.putExtra("pesoPaciente", tvPesoPaciente.getText().toString().replace("Peso: ", "").replace(" kg", ""));
-
+            intent.putExtra("idCita", idCita);
             startActivity(intent);
         });
 
@@ -101,20 +101,23 @@ public class DetallesCitaActivity extends AppCompatActivity {
 
     private void cancelarCita() {
         CitaService service = ApiClient.getClient().create(CitaService.class);
-        service.cancelarCita(idCita).enqueue(new Callback<Void>() {
+        service.cancelarCita(idCita).enqueue(new Callback<ApiResponse<Void>>() {
             @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                if (response.isSuccessful()) {
+            public void onResponse(Call<ApiResponse<Void>> call, Response<ApiResponse<Void>> response) {
+                if (response.isSuccessful() && response.body() != null && response.body().isSuccess()) {
                     Toast.makeText(DetallesCitaActivity.this, "Cita cancelada correctamente", Toast.LENGTH_SHORT).show();
                     finish();
                 } else {
-                    Toast.makeText(DetallesCitaActivity.this, "Error al cancelar cita", Toast.LENGTH_SHORT).show();
+                    String errorMsg = response.body() != null ?
+                            response.body().getMessage() : "Error al cancelar cita";
+                    Toast.makeText(DetallesCitaActivity.this, errorMsg, Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
-            public void onFailure(Call<Void> call, Throwable t) {
+            public void onFailure(Call<ApiResponse<Void>> call, Throwable t) {
                 Toast.makeText(DetallesCitaActivity.this, "Error de red: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.e("API_ERROR", "Error en cancelarCita", t);
             }
         });
     }

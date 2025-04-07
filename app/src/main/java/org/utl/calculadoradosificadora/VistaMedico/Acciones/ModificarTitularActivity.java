@@ -66,11 +66,7 @@ public class ModificarTitularActivity extends AppCompatActivity {
         btnGuardar.setOnClickListener(v -> {
             if (validarCampos()) {
                 // Actualizar datos del titular
-                titular.setCorreo(etCorreo.getText().toString());
-                titular.setTelefono(etTelefono.getText().toString());
-                titular.setNombre(etNombre.getText().toString());
-                titular.setApellidos(etApellidos.getText().toString());
-                titular.setGenero(etGenero.getText().toString());
+
 
                 // Aquí deberías actualizar el titular en tu base de datos
                 // Por ahora solo mostramos un mensaje y regresamos

@@ -81,13 +81,7 @@ public class RegistrarTitularActivity extends AppCompatActivity {
             if (validarCampos()) {
                 // Crear nuevo titular
                 Titular titular = new Titular(
-                        claveTitular,
-                        etNombre.getText().toString(),
-                        etApellidos.getText().toString(),
-                        etCorreo.getText().toString(),
-                        etTelefono.getText().toString(),
-                        usuario,
-                        etGenero.getText().toString()
+
                 );
 
                 // Aquí deberías guardar el titular en tu base de datos

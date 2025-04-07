@@ -1,19 +1,25 @@
 package org.utl.calculadoradosificadora.model;
 
-public class Medico extends Persona {
+import java.io.Serializable;
+
+public class Medico implements Serializable {
     private int idMedico;
     private String foto;
-    private int numCedula; // Ahora es int
+    private String numCedula;
+    private Persona persona;
+    private Usuario usuario;
 
     public Medico() {}
 
-    public Medico(int idPersona, String nombre, String apellidos, boolean genero, int idMedico, String foto, int numCedula) {
-        super(idPersona, nombre, apellidos, genero);
+    public Medico(int idMedico, String foto, String numCedula, Persona persona, Usuario usuario) {
         this.idMedico = idMedico;
         this.foto = foto;
         this.numCedula = numCedula;
+        this.persona = persona;
+        this.usuario = usuario;
     }
 
+    // Getters y Setters
     public int getIdMedico() {
         return idMedico;
     }
@@ -30,20 +36,42 @@ public class Medico extends Persona {
         this.foto = foto;
     }
 
-    public int getNumCedula() {
+    public String getNumCedula() {
         return numCedula;
     }
 
-    public void setNumCedula(int numCedula) {
+    public void setNumCedula(String numCedula) {
         this.numCedula = numCedula;
+    }
+
+    public Persona getPersona() {
+        return persona;
+    }
+
+    public void setPersona(Persona persona) {
+        this.persona = persona;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
+    // Métodos de conveniencia
+    public String getNombreCompleto() {
+        return persona != null ? "Dr. " + persona.getNombre() + " " + persona.getApellidos() : "Médico no disponible";
+    }
+
+    public String getEspecialidad() {
+        // Puedes agregar lógica para especialidad si existe en tu modelo
+        return "Pediatría"; // Ejemplo estático
     }
 
     @Override
     public String toString() {
-        return "Medico{" +
-                "idMedico=" + idMedico +
-                ", foto='" + foto + '\'' +
-                ", numCedula=" + numCedula +
-                "} " + super.toString();
+        return getNombreCompleto() + " - Cédula: " + numCedula;
     }
 }

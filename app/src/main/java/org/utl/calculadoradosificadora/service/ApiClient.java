@@ -7,12 +7,11 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiClient {
-    private static final String BASE_URL = "https://td42dsqv-3000.usw3.devtunnels.ms/";
+    private static final String BASE_URL = "https://ps4zh6tj-3000.usw3.devtunnels.ms/"; // Asegúrate que esta URL es correcta
     private static Retrofit retrofit = null;
 
     public static Retrofit getClient() {
         if (retrofit == null) {
-            // Configurar interceptor para logging
             HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
             logging.setLevel(HttpLoggingInterceptor.Level.BODY);
 

@@ -1,22 +1,22 @@
 package org.utl.calculadoradosificadora.model;
 
-public class Usuario extends Persona {
+import java.io.Serializable;
+
+public class Usuario implements Serializable {
     private int idUsuario;
-    private String contrasenia;
+    private String usuario;
     private String correo;
-    private String nombreUsuario;
+    private String contrasenia;
+    private String token;
 
-    // Constructor vacío
-    public Usuario() {
-    }
+    public Usuario() {}
 
-    // Constructor con parámetros (corrigiendo el tipo de 'genero' de String a boolean)
-    public Usuario(int idPersona, String nombre, String apellidos, boolean genero, int idUsuario, String contrasenia, String correo, String nombreUsuario) {
-        super(idPersona, nombre, apellidos, genero); // Ahora 'genero' es boolean
+    public Usuario(int idUsuario, String usuario, String correo, String contrasenia, String token) {
         this.idUsuario = idUsuario;
-        this.contrasenia = contrasenia;
+        this.usuario = usuario;
         this.correo = correo;
-        this.nombreUsuario = nombreUsuario;
+        this.contrasenia = contrasenia;
+        this.token = token;
     }
 
     // Getters y Setters
@@ -28,12 +28,12 @@ public class Usuario extends Persona {
         this.idUsuario = idUsuario;
     }
 
-    public String getContrasenia() {
-        return contrasenia;
+    public String getUsuario() {
+        return usuario;
     }
 
-    public void setContrasenia(String contrasenia) {
-        this.contrasenia = contrasenia;
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
     }
 
     public String getCorreo() {
@@ -44,21 +44,19 @@ public class Usuario extends Persona {
         this.correo = correo;
     }
 
-    public String getNombreUsuario() {
-        return nombreUsuario;
+    public String getContrasenia() {
+        return contrasenia;
     }
 
-    public void setNombreUsuario(String nombreUsuario) {
-        this.nombreUsuario = nombreUsuario;
+    public void setContrasenia(String contrasenia) {
+        this.contrasenia = contrasenia;
     }
 
-    @Override
-    public String toString() {
-        return "Usuario{" +
-                "idUsuario=" + idUsuario +
-                ", contrasenia='" + contrasenia + '\'' +
-                ", correo='" + correo + '\'' +
-                ", nombreUsuario='" + nombreUsuario + '\'' +
-                "} " + super.toString();
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }

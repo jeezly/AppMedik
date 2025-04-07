@@ -6,6 +6,7 @@
     android:orientation="vertical"
     android:background="@android:color/white">
 
+    <!-- Toolbar -->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -61,20 +62,22 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/colorPeach"
-        android:padding="16dp">
+        android:padding="16dp"
+        android:fillViewport="true">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- Seleccionar Médico -->
+            <!-- Sección Médico -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Seleccionar Médico:"
                 android:textColor="@android:color/black"
-                android:textSize="18sp"/>
+                android:textSize="18sp"
+                android:layout_marginBottom="4dp"/>
 
             <Spinner
                 android:id="@+id/spMedicos"
@@ -82,30 +85,17 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"/>
 
-            <!-- Seleccionar Titular -->
+            <!-- Sección Titular -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Seleccionar Titular:"
                 android:textColor="@android:color/black"
-                android:textSize="18sp"/>
+                android:textSize="18sp"
+                android:layout_marginBottom="4dp"/>
 
             <Spinner
                 android:id="@+id/spTitulares"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"/>
-
-            <!-- Seleccionar Paciente -->
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Seleccionar Paciente:"
-                android:textColor="@android:color/black"
-                android:textSize="18sp"/>
-
-            <Spinner
-                android:id="@+id/spPacientes"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"/>
@@ -116,68 +106,126 @@
                 android:layout_height="wrap_content"
                 android:text="Datos del Titular:"
                 android:textColor="@android:color/black"
-                android:textSize="18sp"/>
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp"/>
 
-            <TextView
-                android:id="@+id/tvUsuario"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:text="Usuario:"
-                android:textColor="@android:color/black"
-                android:textSize="16sp"/>
-
-            <TextView
-                android:id="@+id/tvNombre"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:text="Nombre:"
-                android:textColor="@android:color/black"
-                android:textSize="16sp"/>
-
-            <TextView
-                android:id="@+id/tvApellidos"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:text="Apellidos:"
-                android:textColor="@android:color/black"
-                android:textSize="16sp"/>
-
-            <TextView
-                android:id="@+id/tvGenero"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:text="Género:"
-                android:textColor="@android:color/black"
-                android:textSize="16sp"/>
-
-            <TextView
-                android:id="@+id/tvCorreo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:text="Correo:"
-                android:textColor="@android:color/black"
-                android:textSize="16sp"/>
-
-            <TextView
-                android:id="@+id/tvTelefono"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:text="Teléfono:"
-                android:textColor="@android:color/black"
-                android:textSize="16sp"/>
-
-            <!-- Línea de separación -->
-            <View
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="8dp"
+                android:background="@android:color/white"
                 android:layout_marginBottom="16dp"
-                android:background="@android:color/darker_gray"/>
+                android:elevation="2dp">
+
+                <TextView
+                    android:id="@+id/tvUsuario"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Usuario: "
+                    android:textColor="@android:color/black"
+                    android:textSize="14sp"/>
+
+                <TextView
+                    android:id="@+id/tvNombre"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Nombre: "
+                    android:textColor="@android:color/black"
+                    android:textSize="14sp"/>
+
+                <TextView
+                    android:id="@+id/tvApellidos"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Apellidos: "
+                    android:textColor="@android:color/black"
+                    android:textSize="14sp"/>
+
+                <TextView
+                    android:id="@+id/tvGenero"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Género: "
+                    android:textColor="@android:color/black"
+                    android:textSize="14sp"/>
+
+                <TextView
+                    android:id="@+id/tvCorreo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Correo: "
+                    android:textColor="@android:color/black"
+                    android:textSize="14sp"/>
+
+                <TextView
+                    android:id="@+id/tvTelefono"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Teléfono: "
+                    android:textColor="@android:color/black"
+                    android:textSize="14sp"/>
+            </LinearLayout>
+
+            <!-- Sección Paciente -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Seleccionar Paciente:"
+                android:textColor="@android:color/black"
+                android:textSize="18sp"
+                android:layout_marginBottom="4dp"/>
+
+            <Spinner
+                android:id="@+id/spPacientes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"/>
+
+            <!-- Datos del Paciente -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Datos del Paciente:"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="8dp"
+                android:background="@android:color/white"
+                android:layout_marginBottom="16dp"
+                android:elevation="2dp">
+
+                <TextView
+                    android:id="@+id/tvNombrePaciente"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Paciente: "
+                    android:textColor="@android:color/black"
+                    android:textSize="14sp"/>
+
+                <TextView
+                    android:id="@+id/tvEdadPaciente"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Edad: "
+                    android:textColor="@android:color/black"
+                    android:textSize="14sp"/>
+
+                <TextView
+                    android:id="@+id/tvPesoPaciente"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Peso: "
+                    android:textColor="@android:color/black"
+                    android:textSize="14sp"/>
+            </LinearLayout>
 
             <!-- Razón de la Cita -->
             <TextView
@@ -185,36 +233,49 @@
                 android:layout_height="wrap_content"
                 android:text="Razón de la cita:"
                 android:textColor="@android:color/black"
-                android:textSize="18sp"/>
+                android:textSize="18sp"
+                android:layout_marginBottom="4dp"/>
 
             <EditText
                 android:id="@+id/etRazon"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
-                android:hint="Razón de la cita"/>
+                android:hint="Describa la razón de la cita"
+                android:inputType="textMultiLine"
+                android:minLines="3"
+                android:maxLines="5"/>
 
-            <!-- Seleccionar Fecha y Horarios -->
+            <!-- Fecha y Hora -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Fecha y Hora:"
+                android:textColor="@android:color/black"
+                android:textSize="18sp"
+                android:layout_marginBottom="8dp"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_marginBottom="16dp">
 
                 <!-- Fecha -->
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:layout_marginEnd="8dp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
-                        android:text="Seleccione fecha:"
+                        android:text="Fecha:"
                         android:textColor="@android:color/black"
-                        android:textSize="18sp"/>
+                        android:textSize="16sp"
+                        android:layout_marginBottom="4dp"/>
 
                     <EditText
                         android:id="@+id/etFecha"
@@ -222,10 +283,11 @@
                         android:layout_height="wrap_content"
                         android:clickable="true"
                         android:focusable="false"
-                        android:hint="Seleccione fecha"/>
+                        android:hint="Seleccione fecha"
+                        android:inputType="none"/>
                 </LinearLayout>
 
-                <!-- Horarios -->
+                <!-- Hora -->
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -235,10 +297,10 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
-                        android:text="Horarios disponibles:"
+                        android:text="Hora:"
                         android:textColor="@android:color/black"
-                        android:textSize="18sp"/>
+                        android:textSize="16sp"
+                        android:layout_marginBottom="4dp"/>
 
                     <Spinner
                         android:id="@+id/spHorarios"
@@ -247,30 +309,32 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <!-- Línea de separación -->
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginBottom="16dp"
-                android:background="@android:color/darker_gray"/>
-
-            <!-- Botón Agendar -->
-            <Button
-                android:id="@+id/btnAgendar"
+            <!-- Botones -->
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:backgroundTint="@color/colorBlueD"
-                android:text="Agendar"/>
+                android:orientation="horizontal"
+                android:layout_marginTop="16dp">
 
-            <!-- Botón Regresar -->
-            <Button
-                android:id="@+id/btnRegresar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:backgroundTint="@color/colorRedD"
-                android:text="Regresar"/>
+                <Button
+                    android:id="@+id/btnRegresar"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Regresar"
+                    android:textColor="@android:color/white"
+                    android:backgroundTint="@color/colorRedD"
+                    android:layout_marginEnd="8dp"/>
+
+                <Button
+                    android:id="@+id/btnAgendar"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Agendar"
+                    android:textColor="@android:color/white"
+                    android:backgroundTint="@color/colorPrimary"/>
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

@@ -4,18 +4,18 @@ import java.io.Serializable;
 
 public class Cita implements Serializable {
     private int idCita;
-    private String fecha;  // Formato: "YYYY-MM-DD"
+    private String fecha;
     private String hora;
-    private String estatus;  // Ej: "Programada", "Cancelada", "Atendida"
-    private String razonCita;  // Nombre exacto como en el backend
-    private Medico medico;     // Requerido
-    private Paciente paciente; // Requerido
-    private Titular titular;   // Requerido
+    private String estatus;
+    private String razonCita;
+    private Medico medico;
+    private Paciente paciente;
+    private Titular titular;
 
     // Constructor vacío
     public Cita() {}
 
-    // Getters y Setters (¡Todos deben existir!)
+    // Getters y setters
     public int getIdCita() {
         return idCita;
     }
@@ -78,5 +78,41 @@ public class Cita implements Serializable {
 
     public void setTitular(Titular titular) {
         this.titular = titular;
+    }
+
+    // Método para formatear fecha y hora
+    public String getFechaHoraFormateada() {
+        return fecha + " " + hora;
+    }
+
+    // Método para crear una copia mínima necesaria para las operaciones
+    public Cita crearCopiaMinima() {
+        Cita copia = new Cita();
+        copia.setIdCita(this.idCita);
+        copia.setFecha(this.fecha);
+        copia.setHora(this.hora);
+        copia.setEstatus(this.estatus);
+        copia.setRazonCita(this.razonCita);
+
+        // Solo incluir IDs para las relaciones
+        if (this.medico != null) {
+            Medico m = new Medico();
+            m.setIdMedico(this.medico.getIdMedico());
+            copia.setMedico(m);
+        }
+
+        if (this.paciente != null) {
+            Paciente p = new Paciente();
+            p.setIdPaciente(this.paciente.getIdPaciente());
+            copia.setPaciente(p);
+        }
+
+        if (this.titular != null) {
+            Titular t = new Titular();
+            t.setIdTitular(this.titular.getIdTitular());
+            copia.setTitular(t);
+        }
+
+        return copia;
     }
 }

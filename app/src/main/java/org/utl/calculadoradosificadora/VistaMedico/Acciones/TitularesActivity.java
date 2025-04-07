@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.SearchView;
@@ -27,6 +26,7 @@ import org.utl.calculadoradosificadora.VistaMedico.Opciones.NotificacionesActivi
 import org.utl.calculadoradosificadora.VistaMedico.Opciones.PerfilActivity;
 import org.utl.calculadoradosificadora.VistaMedico.Opciones.SeguridadActivity;
 import org.utl.calculadoradosificadora.VistaMedico.VistaMedico;
+import org.utl.calculadoradosificadora.adapters.TitularesAdapter;
 import org.utl.calculadoradosificadora.model.Titular;
 
 import java.util.ArrayList;
@@ -53,8 +53,6 @@ public class TitularesActivity extends AppCompatActivity {
 
         // Inicializar lista de titulares (esto debería venir de tu base de datos)
         listaTitulares = new ArrayList<>();
-        listaTitulares.add(new Titular(1, "Juan", "Pérez", "juan@example.com", "5551234567", "juan123", "Hombre"));
-        listaTitulares.add(new Titular(2, "María", "Gómez", "maria@example.com", "5557654321", "maria456", "Mujer"));
 
         adapter = new TitularesAdapter(listaTitulares);
         recyclerView.setAdapter(adapter);

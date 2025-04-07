@@ -6,6 +6,11 @@
     <string name="options_icon_description">Opciones</string>
     <string name="registrar_titular_description">Registrar nuevo titular</string>
     <string name="filter_icon_description">Filtrar</string>
+    <string name="filtrar">Filtrar</string>
+    <string name="regresar">Regresar</string>
+    <string name="cargando">Cargando...</string>
+    <string name="cargando_historial">Cargando historial...</string>
+    <string name="cargando_citas">Cargando citas...</string>
 
     <!-- Vista Médico -->
     <string name="greeting_text">Buen Día Dr. %s</string>
@@ -19,6 +24,8 @@
     <string name="calculadora_title">Calculadora</string>
     <string name="calculadora_description">Solo Calculadora Pediátrica</string>
     <string name="add_cita_description">Agregar Cita</string>
+    <string name="titulo_agenda">Agenda de Citas</string>
+    <string name="titulo_historial">Historial de Citas</string>
 
     <!-- Calculadora Pediátrica -->
     <string name="titulo_calculadora">Calculadora de Dosis Pediátricas</string>
@@ -50,6 +57,8 @@
     <string name="nombres">Nombre(s): %s</string>
     <string name="apellidos">Apellidos: %s</string>
     <string name="genero">Género: %s</string>
+    <string name="doctor_asignado">Doctor asignado:</string>
+    <string name="paciente_asignado">Paciente asignado:</string>
 
     <!-- Arrays -->
     <string-array name="genero_array">
@@ -68,6 +77,50 @@
         <item>Adolescente (13-18 años)</item>
     </string-array>
 
+    <!-- Filtros -->
+    <string-array name="filtros_citas">
+        <item>Todas</item>
+        <item>Programada</item>
+        <item>Atendida</item>
+        <item>Cancelada</item>
+    </string-array>
+
+    <string-array name="filtros_citas_historial">
+        <item>Todas</item>
+        <item>Atendida</item>
+        <item>Cancelada</item>
+    </string-array>
+
+    <string-array name="filtros_por_persona">
+        <item>Sin filtro</item>
+        <item>Por médico</item>
+        <item>Por paciente</item>
+        <item>Por titular</item>
+    </string-array>
+
+    <string-array name="filtros_titulares_array">
+        <item>Todos</item>
+        <item>Activos</item>
+        <item>Inactivos</item>
+    </string-array>
+
+    <string-array name="horarios_array">
+        <item>09:00 AM</item>
+        <item>10:00 AM</item>
+        <item>11:00 AM</item>
+        <item>12:00 PM</item>
+        <item>01:00 PM</item>
+        <item>02:00 PM</item>
+        <item>03:00 PM</item>
+        <item>04:00 PM</item>
+        <item>05:00 PM</item>
+    </string-array>
+
+    <string-array name="idiomas_array">
+        <item>Español</item>
+        <item>English</item>
+    </string-array>
+
     <!-- Mensajes -->
     <string name="titular_registrado_exito">Titular registrado con Éxito su usuario es: %s</string>
     <string name="campos_requeridos">Favor de llenar todos los campos para registrar el Titular</string>
@@ -79,9 +132,15 @@
     <string name="campos_incompletos">Por favor complete todos los campos</string>
     <string name="cita_agendada_exito">¡Cita Agendada!</string>
     <string name="detalles_cita">Detalles de la cita:</string>
-    <string name="doctor_asignado">Doctor asignado:</string>
-    <string name="paciente_asignado">Paciente asignado:</string>
     <string name="cita_agendada_correctamente">Cita agendada correctamente</string>
+    <string name="sin_citas_programadas">No hay citas programadas</string>
+    <string name="sin_citas_historial">No hay citas en el historial</string>
+    <string name="error_cargando_citas">Error al cargar las citas</string>
+    <string name="contrasenias_no_coinciden">Las contraseñas no coinciden</string>
+    <string name="contrasenia_cambiada">Contraseña cambiada exitosamente</string>
+    <string name="autenticacion_activada">Autenticación de dos factores activada</string>
+    <string name="autenticacion_desactivada">Autenticación de dos factores desactivada</string>
+    <string name="notificaciones_guardadas">Configuración de notificaciones guardada</string>
 
     <!-- Títulos -->
     <string name="titulo_registro_titular">Registro Titular</string>
@@ -139,38 +198,4 @@
 
     [Aquí los demás]
     </string>
-
-    <!-- Configuración -->
-    <string-array name="idiomas_array">
-        <item>Español</item>
-        <item>English</item>
-    </string-array>
-
-    <!-- Seguridad -->
-    <string name="contrasenias_no_coinciden">Las contraseñas no coinciden</string>
-    <string name="contrasenia_cambiada">Contraseña cambiada exitosamente</string>
-    <string name="autenticacion_activada">Autenticación de dos factores activada</string>
-    <string name="autenticacion_desactivada">Autenticación de dos factores desactivada</string>
-
-    <!-- Notificaciones -->
-    <string name="notificaciones_guardadas">Configuración de notificaciones guardada</string>
-
-    <!-- Horarios para el Spinner -->
-    <string-array name="horarios_array">
-        <item>09:00 AM</item>
-        <item>10:00 AM</item>
-        <item>11:00 AM</item>
-        <item>12:00 PM</item>
-        <item>01:00 PM</item>
-        <item>02:00 PM</item>
-        <item>03:00 PM</item>
-        <item>04:00 PM</item>
-        <item>05:00 PM</item>
-    </string-array>
-
-    <string-array name="filtros_titulares_array">
-        <item>Todos</item>
-        <item>Activos</item>
-        <item>Inactivos</item>
-    </string-array>
 </resources>

@@ -2,16 +2,19 @@
 <androidx.drawerlayout.widget.DrawerLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <!-- Contenido principal -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@color/colorPeach">
 
-        <!-- Toolbar estandarizado -->
+        <!-- Toolbar idéntico al de VistaMedico -->
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
@@ -41,10 +44,9 @@
                     android:layout_weight="1" />
 
                 <TextView
-                    android:id="@+id/tvTitulo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Agenda"
+                    android:text="Agenda de Citas"
                     android:textColor="@android:color/white"
                     android:textSize="18sp"
                     android:textStyle="bold" />
@@ -63,62 +65,74 @@
             </LinearLayout>
         </androidx.appcompat.widget.Toolbar>
 
-        <!-- Contenido principal -->
-        <LinearLayout
+        <!-- Contenido de la agenda -->
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefreshLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/colorPeach"
-            android:orientation="vertical"
-            android:padding="16dp">
+            android:layout_height="0dp"
+            android:layout_weight="1">
 
-            <!-- Fecha y horario -->
-            <TextView
-                android:id="@+id/tvFecha"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:text="Fecha: "
-                android:textSize="18sp"/>
-
-            <TextView
-                android:id="@+id/tvHorario"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:text="Horario: "
-                android:textSize="18sp"/>
-
-            <!-- Botón para agregar cita -->
-            <Button
-                android:id="@+id/btnAgregarCita"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:layout_marginBottom="16dp"
-                android:text="Agregar Cita"
-                android:backgroundTint="@color/colorPrimary"/>
-
-            <!-- Lista de citas -->
-            <ListView
-                android:id="@+id/listCitas"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:background="@android:color/white"/>
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="16dp">
 
-            <!-- Botón para regresar -->
-            <Button
-                android:id="@+id/btnRegresar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="16dp"
-                android:text="Regresar"
-                android:backgroundTint="@color/colorRedD"/>
-        </LinearLayout>
+                <!-- Botón verde para agregar cita -->
+                <Button
+                    android:id="@+id/btnAgregarCita"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginBottom="16dp"
+                    android:text="Agregar Cita"
+                    android:textColor="@android:color/white"
+                    android:backgroundTint="@color/colorGreen"/>
+
+                <!-- ProgressBar para carga -->
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    style="?android:attr/progressBarStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:visibility="gone"/>
+
+                <!-- Mensaje cuando no hay datos -->
+                <TextView
+                    android:id="@+id/tvEmptyView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="Cargando citas..."
+                    android:textSize="18sp"
+                    android:visibility="visible"/>
+
+                <!-- RecyclerView para mostrar las citas -->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerViewCitas"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clipToPadding="false"
+                    android:paddingBottom="16dp"
+                    android:visibility="gone"
+                    tools:listitem="@layout/item_cita"/>
+            </LinearLayout>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+        <!-- Botón rojo para regresar -->
+        <Button
+            android:id="@+id/btnRegresar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="16dp"
+            android:text="Regresar"
+            android:textColor="@android:color/white"
+            android:backgroundTint="@color/colorRed"/>
     </LinearLayout>
 
-    <!-- Menús laterales -->
+    <!-- Menú desplegable lateral izquierdo -->
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navigation_view_left"
         android:layout_width="wrap_content"
@@ -127,6 +141,7 @@
         app:headerLayout="@layout/nav_header"
         app:menu="@menu/drawer_menu"/>
 
+    <!-- Menú desplegable lateral derecho -->
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navigation_view_right"
         android:layout_width="wrap_content"

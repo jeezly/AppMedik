@@ -1,23 +1,27 @@
 package org.utl.calculadoradosificadora.model;
-import java.io.Serializable;
 
-public class Paciente extends Persona implements Serializable {
+import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+
+public class Paciente implements Serializable {
     private int idPaciente;
     private String fechaNacimiento;
     private double peso;
     private String seguro;
+    private Persona persona;
 
-    // Constructor vacío
-    public Paciente() {
-    }
+    public Paciente() {}
 
-    // Constructor con parámetros
-    public Paciente(int idPersona, String nombre, String apellidos, boolean genero, int idPaciente, String fechaNacimiento, double peso, String seguro) {
-        super(idPersona, nombre, apellidos, genero); // Corrección aquí
+    public Paciente(int idPaciente, String fechaNacimiento, double peso, String seguro, Persona persona) {
         this.idPaciente = idPaciente;
         this.fechaNacimiento = fechaNacimiento;
         this.peso = peso;
         this.seguro = seguro;
+        this.persona = persona;
     }
 
     // Getters y Setters
@@ -53,13 +57,52 @@ public class Paciente extends Persona implements Serializable {
         this.seguro = seguro;
     }
 
+    public Persona getPersona() {
+        return persona;
+    }
+
+    public void setPersona(Persona persona) {
+        this.persona = persona;
+    }
+
+    // Métodos de conveniencia
+    public String getNombre() {
+        return persona != null ? persona.getNombre() : "";
+    }
+
+    public String getApellidos() {
+        return persona != null ? persona.getApellidos() : "";
+    }
+
+    public String getNombreCompleto() {
+        return getNombre() + " " + getApellidos();
+    }
+
+    public int getEdad() {
+        if (fechaNacimiento == null || fechaNacimiento.isEmpty()) {
+            return 0;
+        }
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        try {
+            Date fechaNac = sdf.parse(fechaNacimiento);
+            Calendar dob = Calendar.getInstance();
+            dob.setTime(fechaNac);
+            Calendar today = Calendar.getInstance();
+
+            int age = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
+            if (today.get(Calendar.DAY_OF_YEAR) < dob.get(Calendar.DAY_OF_YEAR)) {
+                age--;
+            }
+            return age;
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
     @Override
     public String toString() {
-        return "Paciente{" +
-                "idPaciente=" + idPaciente +
-                ", fechaNacimiento='" + fechaNacimiento + '\'' +
-                ", peso=" + peso +
-                ", seguro='" + seguro + '\'' +
-                "} " + super.toString();
+        return getNombreCompleto();
     }
 }

@@ -12,27 +12,22 @@ import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
-import retrofit2.http.Query;
 
 public interface CitaService {
     @GET("getAllCitas")
     Call<ApiResponse<List<Cita>>> getAllCitas();
 
-    @GET("getCitasByMedico")
-    Call<ApiResponse<List<Cita>>> getCitasByMedico(@Query("idMedico") int idMedico);
-
-    @GET("getCitasByTitular")
-    Call<ApiResponse<List<Cita>>> getCitasByTitular(@Query("idTitular") int idTitular);
-
     @POST("InsertCita")
-    Call<ApiResponse<Cita>> agendarCita(@Body Cita cita);
+    Call<ApiResponse<Cita>> insertCita(@Body Cita cita);
 
     @PUT("UpdateCita/{id}")
-    Call<ApiResponse<Cita>> actualizarCita(@Path("id") int id, @Body Cita cita);
+    Call<ApiResponse<Cita>> updateCita(@Path("id") int id, @Body Cita cita);
 
+    // Endpoint específico para cancelar (PATCH sin body)
     @PATCH("DeleteCita/{id}/cancelar")
     Call<ApiResponse<Void>> cancelarCita(@Path("id") int id);
 
+    // Endpoint para marcar como atendida
     @PATCH("UpdateCita/{id}/atender")
-    Call<ApiResponse<Void>> marcarComoAtendida(@Path("id") int id);
+    Call<ApiResponse<Void>> atenderCita(@Path("id") int id);
 }

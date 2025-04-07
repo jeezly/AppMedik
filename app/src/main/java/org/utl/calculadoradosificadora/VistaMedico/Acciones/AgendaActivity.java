@@ -3,123 +3,262 @@ package org.utl.calculadoradosificadora.VistaMedico.Acciones;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListAdapter;
-import android.widget.ListView;
 import android.widget.Button;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
+import com.google.android.material.navigation.NavigationView;
 
 import org.utl.calculadoradosificadora.R;
+import org.utl.calculadoradosificadora.VistaMedico.Menu.ProtocolosActivity;
+import org.utl.calculadoradosificadora.VistaMedico.Menu.SobreNosotrosActivity;
+import org.utl.calculadoradosificadora.VistaMedico.Menu.SoporteActivity;
+import org.utl.calculadoradosificadora.VistaMedico.Opciones.ConfiguracionActivity;
+import org.utl.calculadoradosificadora.VistaMedico.Opciones.NotificacionesActivity;
+import org.utl.calculadoradosificadora.VistaMedico.Opciones.PerfilActivity;
+import org.utl.calculadoradosificadora.VistaMedico.Opciones.SeguridadActivity;
+import org.utl.calculadoradosificadora.VistaMedico.VistaMedico;
 import org.utl.calculadoradosificadora.adapters.CitaAdapter;
 import org.utl.calculadoradosificadora.model.Cita;
+import org.utl.calculadoradosificadora.model.Medico;
+import org.utl.calculadoradosificadora.model.Paciente;
+import org.utl.calculadoradosificadora.model.Titular;
 import org.utl.calculadoradosificadora.service.ApiClient;
 import org.utl.calculadoradosificadora.service.ApiResponse;
 import org.utl.calculadoradosificadora.service.CitaService;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class AgendaActivity extends AppCompatActivity {
+public class AgendaActivity extends AppCompatActivity implements CitaAdapter.OnItemClickListener {
 
-    private ListView listCitas;
-    private Button btnAgregarCita, btnRegresar;
+    private DrawerLayout drawerLayout;
+    private NavigationView navigationViewLeft;
+    private NavigationView navigationViewRight;
+    private RecyclerView recyclerViewCitas;
     private CitaAdapter citaAdapter;
-    private List<Cita> citasList;
+    private ProgressBar progressBar;
+    private TextView tvEmptyView;
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private List<Cita> citasList = new ArrayList<>();
+    private List<Cita> citasProgramadas = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_agenda);
 
-        listCitas = findViewById(R.id.listCitas);
-        btnAgregarCita = findViewById(R.id.btnAgregarCita);
-        btnRegresar = findViewById(R.id.btnRegresar);
+        setupToolbarAndDrawers();
+        initializeViews();
+        setupRecyclerView();
+        setupSwipeRefresh();
+        setupButtons();
+        loadCitas();
+    }
 
-        cargarCitas();
+    private void setupToolbarAndDrawers() {
+        drawerLayout = findViewById(R.id.drawer_layout);
+        navigationViewLeft = findViewById(R.id.navigation_view_left);
+        navigationViewRight = findViewById(R.id.navigation_view_right);
 
-        btnAgregarCita.setOnClickListener(v -> {
-            startActivity(new Intent(this, AgregarCitaActivity.class));
+        findViewById(R.id.menu_icon).setOnClickListener(v ->
+                drawerLayout.openDrawer(GravityCompat.START));
+
+        findViewById(R.id.options_icon).setOnClickListener(v ->
+                drawerLayout.openDrawer(GravityCompat.END));
+
+        navigationViewLeft.setNavigationItemSelectedListener(item -> {
+            int id = item.getItemId();
+            handleLeftMenuSelection(id);
+            drawerLayout.closeDrawer(GravityCompat.START);
+            return true;
         });
 
-        btnRegresar.setOnClickListener(v -> finish());
-
-        listCitas.setOnItemClickListener((parent, view, position, id) -> {
-            Cita citaSeleccionada = citasList.get(position);
-            abrirDetallesCita(citaSeleccionada);
+        navigationViewRight.setNavigationItemSelectedListener(item -> {
+            int id = item.getItemId();
+            handleRightMenuSelection(id);
+            drawerLayout.closeDrawer(GravityCompat.END);
+            return true;
         });
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        cargarCitas();
+    private void handleLeftMenuSelection(int id) {
+        if (id == R.id.menu_inicio) {
+            startActivity(new Intent(this, VistaMedico.class));
+        } else if (id == R.id.menu_protocolos) {
+            startActivity(new Intent(this, ProtocolosActivity.class));
+        } else if (id == R.id.menu_sobre_nosotros) {
+            startActivity(new Intent(this, SobreNosotrosActivity.class));
+        } else if (id == R.id.menu_soporte) {
+            startActivity(new Intent(this, SoporteActivity.class));
+        }
     }
 
-    private void cargarCitas() {
+    private void handleRightMenuSelection(int id) {
+        if (id == R.id.opciones_perfil) {
+            startActivity(new Intent(this, PerfilActivity.class));
+        } else if (id == R.id.opciones_configuracion) {
+            startActivity(new Intent(this, ConfiguracionActivity.class));
+        } else if (id == R.id.opciones_seguridad) {
+            startActivity(new Intent(this, SeguridadActivity.class));
+        } else if (id == R.id.opciones_notificaciones) {
+            startActivity(new Intent(this, NotificacionesActivity.class));
+        } else if (id == R.id.opciones_cerrar_sesion) {
+            finish();
+        }
+    }
+
+    private void initializeViews() {
+        recyclerViewCitas = findViewById(R.id.recyclerViewCitas);
+        progressBar = findViewById(R.id.progressBar);
+        tvEmptyView = findViewById(R.id.tvEmptyView);
+        swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
+    }
+
+    private void setupRecyclerView() {
+        recyclerViewCitas.setLayoutManager(new LinearLayoutManager(this));
+        citaAdapter = new CitaAdapter(citasProgramadas, this);
+        recyclerViewCitas.setAdapter(citaAdapter);
+    }
+
+    private void setupSwipeRefresh() {
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            loadCitas();
+            swipeRefreshLayout.setRefreshing(false);
+        });
+    }
+
+    private void setupButtons() {
+        Button btnAgregarCita = findViewById(R.id.btnAgregarCita);
+        btnAgregarCita.setBackgroundColor(getResources().getColor(R.color.colorGreen));
+        btnAgregarCita.setOnClickListener(v ->
+                startActivity(new Intent(this, AgregarCitaActivity.class)));
+
+        Button btnRegresar = findViewById(R.id.btnRegresar);
+        btnRegresar.setBackgroundColor(getResources().getColor(R.color.colorRed));
+        btnRegresar.setOnClickListener(v -> {
+            startActivity(new Intent(this, VistaMedico.class));
+            finish();
+        });
+    }
+
+    private void loadCitas() {
+        progressBar.setVisibility(View.VISIBLE);
+        tvEmptyView.setVisibility(View.GONE);
+        recyclerViewCitas.setVisibility(View.GONE);
+
         CitaService service = ApiClient.getClient().create(CitaService.class);
-        service.getAllCitas().enqueue(new Callback<ApiResponse<List<Cita>>>() {
+        Call<ApiResponse<List<Cita>>> call = service.getAllCitas();
+
+        call.enqueue(new Callback<ApiResponse<List<Cita>>>() {
             @Override
             public void onResponse(Call<ApiResponse<List<Cita>>> call, Response<ApiResponse<List<Cita>>> response) {
-                if (response.isSuccessful() && response.body() != null && response.body().isSuccess()) {
-                    citasList = response.body().getData();
-                    mostrarCitas();
+                progressBar.setVisibility(View.GONE);
+
+                if (response.isSuccessful() && response.body() != null) {
+                    ApiResponse<List<Cita>> apiResponse = response.body();
+
+                    if (apiResponse.isSuccess() && apiResponse.getData() != null) {
+                        citasList.clear();
+                        citasList.addAll(apiResponse.getData());
+
+                        // Filtrar solo citas programadas
+                        citasProgramadas = citasList.stream()
+                                .filter(c -> c.getEstatus() != null && "Programada".equalsIgnoreCase(c.getEstatus()))
+                                .collect(Collectors.toList());
+
+                        citaAdapter.updateData(citasProgramadas);
+
+                        if (citasProgramadas.isEmpty()) {
+                            tvEmptyView.setText("No hay citas programadas");
+                            tvEmptyView.setVisibility(View.VISIBLE);
+                        } else {
+                            recyclerViewCitas.setVisibility(View.VISIBLE);
+                        }
+                    } else {
+                        String errorMsg = apiResponse.getMessage() != null ?
+                                apiResponse.getMessage() : "Error en la respuesta del servidor";
+                        showError(errorMsg);
+                    }
                 } else {
-                    String errorMsg = response.body() != null ?
-                            response.body().getMessage() : "Error al cargar citas";
-                    Toast.makeText(AgendaActivity.this, errorMsg, Toast.LENGTH_SHORT).show();
-                    Log.e("API_ERROR", "Error: " + errorMsg);
+                    try {
+                        String errorBody = response.errorBody() != null ?
+                                response.errorBody().string() : "Error desconocido";
+                        showError("Error al obtener citas: " + errorBody);
+                        Log.e("API_ERROR", "Error body: " + errorBody);
+                    } catch (Exception e) {
+                        Log.e("API_ERROR", "Error al leer errorBody", e);
+                    }
                 }
             }
 
             @Override
             public void onFailure(Call<ApiResponse<List<Cita>>> call, Throwable t) {
-                Toast.makeText(AgendaActivity.this, "Error de conexión: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-                Log.e("API_ERROR", "Error en getAllCitas", t);
+                progressBar.setVisibility(View.GONE);
+                showError("Error de conexión: " + t.getMessage());
+                Log.e("API_ERROR", "Error en loadCitas", t);
             }
         });
     }
 
-    private void mostrarCitas() {
-        if (citasList != null && !citasList.isEmpty()) {
-            citaAdapter = new CitaAdapter(citasList);
-            listCitas.setAdapter((ListAdapter) citaAdapter);
-        } else {
-            Toast.makeText(this, "No hay citas programadas", Toast.LENGTH_SHORT).show();
+    private void showError(String message) {
+        tvEmptyView.setText(message);
+        tvEmptyView.setVisibility(View.VISIBLE);
+        recyclerViewCitas.setVisibility(View.GONE);
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onItemClick(Cita cita) {
+        try {
+            Intent intent = new Intent(this, DetallesCitaActivity.class);
+
+            // Crear una copia con datos completos
+            Cita citaParaDetalles = new Cita();
+            citaParaDetalles.setIdCita(cita.getIdCita());
+            citaParaDetalles.setFecha(cita.getFecha());
+            citaParaDetalles.setHora(cita.getHora());
+            citaParaDetalles.setEstatus(cita.getEstatus());
+            citaParaDetalles.setRazonCita(cita.getRazonCita());
+
+            // Copiar objetos completos para mostrar en detalles
+            if (cita.getMedico() != null) {
+                citaParaDetalles.setMedico(cita.getMedico());
+            }
+            if (cita.getPaciente() != null) {
+                citaParaDetalles.setPaciente(cita.getPaciente());
+            }
+            if (cita.getTitular() != null) {
+                citaParaDetalles.setTitular(cita.getTitular());
+            }
+
+            intent.putExtra("cita", citaParaDetalles);
+            startActivity(intent);
+        } catch (Exception e) {
+            Log.e("AGENDA_ERROR", "Error al abrir detalles", e);
+            Toast.makeText(this, "Error al abrir detalles de la cita", Toast.LENGTH_SHORT).show();
         }
     }
 
-    private void abrirDetallesCita(Cita cita) {
-        Intent intent = new Intent(this, DetallesCitaActivity.class);
-        intent.putExtra("idCita", cita.getIdCita());
-        intent.putExtra("fecha", cita.getFecha());
-        intent.putExtra("hora", cita.getHora());
-        intent.putExtra("razon", cita.getRazonCita());
-        intent.putExtra("estatus", cita.getEstatus());
-
-        if (cita.getTitular() != null) {
-            intent.putExtra("nombreTitular", cita.getTitular().getNombre() + " " + cita.getTitular().getApellidos());
-            intent.putExtra("genero", cita.getTitular().getGenero());
-            intent.putExtra("correo", cita.getTitular().getCorreo());
-            intent.putExtra("telefono", cita.getTitular().getTelefono());
-        }
-
-        if (cita.getPaciente() != null) {
-            intent.putExtra("nombrePaciente", cita.getPaciente().getNombre() + " " + cita.getPaciente().getApellidos());
-            intent.putExtra("edadPaciente", calcularEdad(cita.getPaciente().getFechaNacimiento()));
-            intent.putExtra("pesoPaciente", String.valueOf(cita.getPaciente().getPeso()));
-        }
-
-        startActivity(intent);
-    }
-
-    private String calcularEdad(String fechaNacimiento) {
-        // Implementación simplificada
-        return "5 años";
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadCitas();
     }
 }

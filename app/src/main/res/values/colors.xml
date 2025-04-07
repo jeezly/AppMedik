@@ -12,7 +12,10 @@
     <color name="colorOrangeD">#F68D6C</color>
     <color name="colorRedD">#E44646</color>
     <color name="colorYellowD">#F2CD58</color>
-    <color name="colorGray">#9E9E9E</color> <!-- Gray 500 como base -->
+    <color name="colorGray">#9E9E9E</color>
+    <color name="colorBlack">#000000</color>
+    <color name="colorPrimaryDark">#231F1F</color>
+    <color name="colorBlue">#03A9F4</color> <!-- Gray 500 como base -->
 
 
 

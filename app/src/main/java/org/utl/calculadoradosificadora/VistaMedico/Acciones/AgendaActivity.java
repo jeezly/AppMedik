@@ -37,6 +37,7 @@ import org.utl.calculadoradosificadora.service.CitaService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -53,29 +54,19 @@ public class AgendaActivity extends AppCompatActivity implements CitaAdapter.OnI
     private TextView tvEmptyView;
     private SwipeRefreshLayout swipeRefreshLayout;
     private List<Cita> citasList = new ArrayList<>();
+    private List<Cita> citasProgramadas = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_agenda);
 
-        // Configurar Toolbar y Drawers
         setupToolbarAndDrawers();
-
-        // Inicializar vistas
         initializeViews();
-
-        // Configurar RecyclerView
         setupRecyclerView();
-
-        // Configurar SwipeRefresh
         setupSwipeRefresh();
-
-        // Cargar citas
-        loadCitas();
-
-        // Configurar botones
         setupButtons();
+        loadCitas();
     }
 
     private void setupToolbarAndDrawers() {
@@ -83,15 +74,12 @@ public class AgendaActivity extends AppCompatActivity implements CitaAdapter.OnI
         navigationViewLeft = findViewById(R.id.navigation_view_left);
         navigationViewRight = findViewById(R.id.navigation_view_right);
 
-        // Configurar menú izquierdo
         findViewById(R.id.menu_icon).setOnClickListener(v ->
                 drawerLayout.openDrawer(GravityCompat.START));
 
-        // Configurar menú derecho
         findViewById(R.id.options_icon).setOnClickListener(v ->
                 drawerLayout.openDrawer(GravityCompat.END));
 
-        // Manejar opciones del menú izquierdo
         navigationViewLeft.setNavigationItemSelectedListener(item -> {
             int id = item.getItemId();
             handleLeftMenuSelection(id);
@@ -99,7 +87,6 @@ public class AgendaActivity extends AppCompatActivity implements CitaAdapter.OnI
             return true;
         });
 
-        // Manejar opciones del menú derecho
         navigationViewRight.setNavigationItemSelectedListener(item -> {
             int id = item.getItemId();
             handleRightMenuSelection(id);
@@ -130,7 +117,6 @@ public class AgendaActivity extends AppCompatActivity implements CitaAdapter.OnI
         } else if (id == R.id.opciones_notificaciones) {
             startActivity(new Intent(this, NotificacionesActivity.class));
         } else if (id == R.id.opciones_cerrar_sesion) {
-            // Implementar lógica de cierre de sesión
             finish();
         }
     }
@@ -144,7 +130,7 @@ public class AgendaActivity extends AppCompatActivity implements CitaAdapter.OnI
 
     private void setupRecyclerView() {
         recyclerViewCitas.setLayoutManager(new LinearLayoutManager(this));
-        citaAdapter = new CitaAdapter(citasList, this);
+        citaAdapter = new CitaAdapter(citasProgramadas, this);
         recyclerViewCitas.setAdapter(citaAdapter);
     }
 
@@ -156,13 +142,11 @@ public class AgendaActivity extends AppCompatActivity implements CitaAdapter.OnI
     }
 
     private void setupButtons() {
-        // Botón verde para agregar cita
         Button btnAgregarCita = findViewById(R.id.btnAgregarCita);
         btnAgregarCita.setBackgroundColor(getResources().getColor(R.color.colorGreen));
         btnAgregarCita.setOnClickListener(v ->
                 startActivity(new Intent(this, AgregarCitaActivity.class)));
 
-        // Botón rojo para regresar
         Button btnRegresar = findViewById(R.id.btnRegresar);
         btnRegresar.setBackgroundColor(getResources().getColor(R.color.colorRed));
         btnRegresar.setOnClickListener(v -> {
@@ -183,23 +167,22 @@ public class AgendaActivity extends AppCompatActivity implements CitaAdapter.OnI
             @Override
             public void onResponse(Call<ApiResponse<List<Cita>>> call, Response<ApiResponse<List<Cita>>> response) {
                 progressBar.setVisibility(View.GONE);
-                Log.d("API_RESPONSE", "Código: " + response.code());
 
                 if (response.isSuccessful() && response.body() != null) {
                     ApiResponse<List<Cita>> apiResponse = response.body();
 
-                    if (apiResponse.getData() != null) {
-                        Log.d("API_RESPONSE", "Citas recibidas: " + apiResponse.getData().size());
-                    } else {
-                        Log.d("API_RESPONSE", "Data es null");
-                    }
-
                     if (apiResponse.isSuccess() && apiResponse.getData() != null) {
                         citasList.clear();
                         citasList.addAll(apiResponse.getData());
-                        citaAdapter.notifyDataSetChanged();
 
-                        if (citasList.isEmpty()) {
+                        // Filtrar solo citas programadas
+                        citasProgramadas = citasList.stream()
+                                .filter(c -> "Programada".equalsIgnoreCase(c.getEstatus()))
+                                .collect(Collectors.toList());
+
+                        citaAdapter.updateData(citasProgramadas);
+
+                        if (citasProgramadas.isEmpty()) {
                             tvEmptyView.setText("No hay citas programadas");
                             tvEmptyView.setVisibility(View.VISIBLE);
                         } else {
@@ -211,23 +194,14 @@ public class AgendaActivity extends AppCompatActivity implements CitaAdapter.OnI
                         showError(errorMsg);
                     }
                 } else {
-                    String errorMsg = "Error al obtener citas: " + response.code();
-                    try {
-                        if (response.errorBody() != null) {
-                            errorMsg += " - " + response.errorBody().string();
-                        }
-                    } catch (Exception e) {
-                        Log.e("API_ERROR", "Error al leer errorBody", e);
-                    }
-                    showError(errorMsg);
+                    showError("Error al obtener citas: " + response.code());
                 }
             }
 
             @Override
             public void onFailure(Call<ApiResponse<List<Cita>>> call, Throwable t) {
                 progressBar.setVisibility(View.GONE);
-                String errorMsg = "Error de conexión: " + t.getMessage();
-                showError(errorMsg);
+                showError("Error de conexión: " + t.getMessage());
                 Log.e("API_ERROR", "Error en loadCitas", t);
             }
         });
@@ -238,7 +212,6 @@ public class AgendaActivity extends AppCompatActivity implements CitaAdapter.OnI
         tvEmptyView.setVisibility(View.VISIBLE);
         recyclerViewCitas.setVisibility(View.GONE);
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-        Log.e("AgendaActivity", message);
     }
 
     @Override

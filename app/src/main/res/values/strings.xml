@@ -41,6 +41,7 @@
     <string name="ok">OK</string>
     <string name="guardar">Guardar</string>
     <string name="si">Sí</string>
+    <string name="filtrar">Filtrar</string>
 
     <!-- Etiquetas -->
     <string name="clave_titular">Clave titular: %d</string>
@@ -68,6 +69,21 @@
         <item>Adolescente (13-18 años)</item>
     </string-array>
 
+    <!-- Nuevos arrays para filtros -->
+    <string-array name="filtros_citas">
+        <item>Todas</item>
+        <item>Programada</item>
+        <item>Atendida</item>
+        <item>Cancelada</item>
+    </string-array>
+
+    <string-array name="filtros_por_persona">
+        <item>Sin filtro</item>
+        <item>Por médico</item>
+        <item>Por paciente</item>
+        <item>Por titular</item>
+    </string-array>
+
     <!-- Mensajes -->
     <string name="titular_registrado_exito">Titular registrado con Éxito su usuario es: %s</string>
     <string name="campos_requeridos">Favor de llenar todos los campos para registrar el Titular</string>
@@ -82,12 +98,17 @@
     <string name="doctor_asignado">Doctor asignado:</string>
     <string name="paciente_asignado">Paciente asignado:</string>
     <string name="cita_agendada_correctamente">Cita agendada correctamente</string>
+    <string name="sin_citas_programadas">No hay citas programadas</string>
+    <string name="sin_citas_historial">No hay citas en el historial</string>
+    <string name="error_cargando_citas">Error al cargar las citas</string>
 
     <!-- Títulos -->
     <string name="titulo_registro_titular">Registro Titular</string>
     <string name="titulo_detalles_titular">Datos de Titular</string>
     <string name="titulo_titulares">Titulares / Tutores</string>
     <string name="titulo_modificar_titular">Modificar Titular</string>
+    <string name="titulo_agenda">Agenda de Citas</string>
+    <string name="titulo_historial">Historial de Citas</string>
 
     <!-- Protocolos -->
     <string name="protocolos_content">

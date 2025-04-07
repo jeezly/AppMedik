@@ -7,19 +7,22 @@ public class Usuario implements Serializable {
     private String usuario;
     private String correo;
     private String contrasenia;
+    private int idPersona; // ← Campo CRÍTICO que faltaba
     private String token;
 
     public Usuario() {}
 
-    public Usuario(int idUsuario, String usuario, String correo, String contrasenia, String token) {
+    // Constructor actualizado
+    public Usuario(int idUsuario, String usuario, String correo, String contrasenia, int idPersona, String token) {
         this.idUsuario = idUsuario;
         this.usuario = usuario;
         this.correo = correo;
         this.contrasenia = contrasenia;
+        this.idPersona = idPersona; // Nuevo campo
         this.token = token;
     }
 
-    // Getters y Setters
+    // Getters y Setters (actualizados)
     public int getIdUsuario() {
         return idUsuario;
     }
@@ -52,11 +55,30 @@ public class Usuario implements Serializable {
         this.contrasenia = contrasenia;
     }
 
+    // Nuevos getter y setter para idPersona
+    public int getIdPersona() {
+        return idPersona;
+    }
+
+    public void setIdPersona(int idPersona) {
+        this.idPersona = idPersona;
+    }
+
     public String getToken() {
         return token;
     }
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    @Override
+    public String toString() {
+        return "Usuario{" +
+                "idUsuario=" + idUsuario +
+                ", usuario='" + usuario + '\'' +
+                ", correo='" + correo + '\'' +
+                ", idPersona=" + idPersona + // ← Incluido en toString
+                '}';
     }
 }

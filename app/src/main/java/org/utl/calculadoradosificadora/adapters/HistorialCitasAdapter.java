@@ -1,4 +1,4 @@
-package org.utl.calculadoradosificadora.VistaMedico.Acciones;
+package org.utl.calculadoradosificadora.adapters;
 
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -8,6 +8,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import org.utl.calculadoradosificadora.R;
+import org.utl.calculadoradosificadora.VistaMedico.Acciones.DetallesHistorialCitaActivity;
 import org.utl.calculadoradosificadora.model.Cita;
 import java.util.ArrayList;
 import java.util.List;

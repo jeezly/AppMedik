@@ -1,8 +1,10 @@
 package org.utl.calculadoradosificadora.VistaMedico.Acciones;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -13,17 +15,26 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
 
 import org.utl.calculadoradosificadora.R;
+import org.utl.calculadoradosificadora.VistaMedico.Opciones.ConfiguracionActivity;
+import org.utl.calculadoradosificadora.VistaMedico.Opciones.NotificacionesActivity;
+import org.utl.calculadoradosificadora.VistaMedico.Opciones.PerfilActivity;
+import org.utl.calculadoradosificadora.VistaMedico.Opciones.SeguridadActivity;
 import org.utl.calculadoradosificadora.model.Cita;
 import org.utl.calculadoradosificadora.model.Medico;
 import org.utl.calculadoradosificadora.model.Paciente;
 import org.utl.calculadoradosificadora.model.Persona;
 import org.utl.calculadoradosificadora.model.Titular;
+import org.utl.calculadoradosificadora.model.Usuario;
 import org.utl.calculadoradosificadora.service.ApiClient;
 import org.utl.calculadoradosificadora.service.ApiResponse;
 import org.utl.calculadoradosificadora.service.CitaService;
@@ -58,12 +69,18 @@ public class AgregarCitaActivity extends AppCompatActivity {
     private Medico medicoSeleccionado;
     private Paciente pacienteSeleccionado;
 
+    private DrawerLayout drawerLayout;
+    private NavigationView navigationViewLeft;
+    private NavigationView navigationViewRight;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_agregar_cita);
 
         bindViews();
+        setupToolbar();
+        setupNavigationDrawer();
         setupSpinners();
         loadData();
         setupListeners();
@@ -91,8 +108,54 @@ public class AgregarCitaActivity extends AppCompatActivity {
         tvPesoPaciente = findViewById(R.id.tvPesoPaciente);
     }
 
+    private void setupToolbar() {
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+        }
+    }
+
+    private void setupNavigationDrawer() {
+        drawerLayout = findViewById(R.id.drawer_layout);
+        navigationViewLeft = findViewById(R.id.navigation_view_left);
+        navigationViewRight = findViewById(R.id.navigation_view_right);
+
+        findViewById(R.id.menu_icon).setOnClickListener(v -> drawerLayout.openDrawer(navigationViewLeft));
+        findViewById(R.id.options_icon).setOnClickListener(v -> drawerLayout.openDrawer(navigationViewRight));
+
+        navigationViewLeft.setNavigationItemSelectedListener(item -> {
+            int id = item.getItemId();
+            if (id == R.id.menu_inicio) {
+                startActivity(new Intent(this, org.utl.calculadoradosificadora.InicioActivity.class));
+            } else if (id == R.id.menu_protocolos) {
+                startActivity(new Intent(this, org.utl.calculadoradosificadora.VistaMedico.Menu.ProtocolosActivity.class));
+            } else if (id == R.id.menu_sobre_nosotros) {
+                startActivity(new Intent(this, org.utl.calculadoradosificadora.VistaMedico.Menu.SobreNosotrosActivity.class));
+            } else if (id == R.id.menu_soporte) {
+                startActivity(new Intent(this, org.utl.calculadoradosificadora.VistaMedico.Menu.SoporteActivity.class));
+            }
+            drawerLayout.closeDrawer(navigationViewLeft);
+            return true;
+        });
+
+        navigationViewRight.setNavigationItemSelectedListener(item -> {
+            int id = item.getItemId();
+            if (id == R.id.opciones_perfil) {
+                startActivity(new Intent(this, PerfilActivity.class));
+            } else if (id == R.id.opciones_configuracion) {
+                startActivity(new Intent(this, ConfiguracionActivity.class));
+            } else if (id == R.id.opciones_seguridad) {
+                startActivity(new Intent(this, SeguridadActivity.class));
+            } else if (id == R.id.opciones_notificaciones) {
+                startActivity(new Intent(this, NotificacionesActivity.class));
+            }
+            drawerLayout.closeDrawer(navigationViewRight);
+            return true;
+        });
+    }
+
     private void setupSpinners() {
-        // Spinner de horarios
         ArrayAdapter<CharSequence> horariosAdapter = ArrayAdapter.createFromResource(
                 this,
                 R.array.horarios_array,
@@ -101,7 +164,6 @@ public class AgregarCitaActivity extends AppCompatActivity {
         horariosAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spHorarios.setAdapter(horariosAdapter);
 
-        // Spinners vacíos inicialmente
         spMedicos.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, new ArrayList<>()));
         spTitulares.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, new ArrayList<>()));
         spPacientes.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, new ArrayList<>()));
@@ -241,7 +303,9 @@ public class AgregarCitaActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 titularSeleccionado = titulares.get(position);
                 updateTitularUI(titularSeleccionado);
-                loadPacientesPorTitular(titularSeleccionado.getIdTitular());
+                if (titularSeleccionado != null) {
+                    loadPacientesPorTitular(titularSeleccionado.getIdTitular());
+                }
             }
 
             @Override
@@ -254,7 +318,6 @@ public class AgregarCitaActivity extends AppCompatActivity {
     }
 
     private void updatePacientesSpinner() {
-        // Crear lista con elemento por defecto
         List<Paciente> pacientesConDefault = new ArrayList<>();
         Paciente placeholder = new Paciente();
         placeholder.setPersona(new Persona());
@@ -326,12 +389,14 @@ public class AgregarCitaActivity extends AppCompatActivity {
     }
 
     private void updateTitularUI(Titular titular) {
-        tvUsuario.setText("Usuario: " + titular.getUsuarioNombre());
-        tvNombre.setText("Nombre: " + titular.getNombre());
-        tvApellidos.setText("Apellidos: " + titular.getApellidos());
-        tvGenero.setText("Género: " + titular.getGenero());
-        tvCorreo.setText("Correo: " + titular.getCorreo());
-        tvTelefono.setText("Teléfono: " + titular.getTelefono());
+        if (titular != null) {
+            tvUsuario.setText("Usuario: " + titular.getUsuarioNombre());
+            tvNombre.setText("Nombre: " + titular.getNombre());
+            tvApellidos.setText("Apellidos: " + titular.getApellidos());
+            tvGenero.setText("Género: " + titular.getGenero());
+            tvCorreo.setText("Correo: " + titular.getCorreo());
+            tvTelefono.setText("Teléfono: " + titular.getTelefono());
+        }
     }
 
     private void clearTitularUI() {
@@ -441,71 +506,121 @@ public class AgregarCitaActivity extends AppCompatActivity {
         cita.setRazonCita(etRazon.getText().toString());
         cita.setEstatus("Programada");
 
-        // Solo enviar IDs necesarios
+        // Configurar médico con todos los campos requeridos
         if (medicoSeleccionado != null) {
             Medico medico = new Medico();
             medico.setIdMedico(medicoSeleccionado.getIdMedico());
+            medico.setNumCedula(medicoSeleccionado.getNumCedula());
+            medico.setFoto(medicoSeleccionado.getFoto());
+
+            Persona personaMedico = new Persona();
+            personaMedico.setIdPersona(medicoSeleccionado.getPersona().getIdPersona());
+            personaMedico.setNombre(medicoSeleccionado.getPersona().getNombre());
+            personaMedico.setApellidos(medicoSeleccionado.getPersona().getApellidos());
+            personaMedico.setGenero(medicoSeleccionado.getPersona().getGenero());
+            personaMedico.setEstado(medicoSeleccionado.getPersona().getEstado());
+            medico.setPersona(personaMedico);
+
+            Usuario usuarioMedico = new Usuario();
+            usuarioMedico.setIdUsuario(medicoSeleccionado.getUsuario().getIdUsuario());
+            usuarioMedico.setUsuario(medicoSeleccionado.getUsuario().getUsuario());
+            usuarioMedico.setCorreo(medicoSeleccionado.getUsuario().getCorreo());
+            usuarioMedico.setContrasenia(medicoSeleccionado.getUsuario().getContrasenia());
+            usuarioMedico.setToken(medicoSeleccionado.getUsuario().getToken());
+            usuarioMedico.setIdPersona(medicoSeleccionado.getPersona().getIdPersona());
+            medico.setUsuario(usuarioMedico);
+
             cita.setMedico(medico);
         }
 
+        // Configurar paciente con todos los campos requeridos
         if (pacienteSeleccionado != null) {
             Paciente paciente = new Paciente();
             paciente.setIdPaciente(pacienteSeleccionado.getIdPaciente());
+            paciente.setFechaNacimiento(pacienteSeleccionado.getFechaNacimiento());
+            paciente.setPeso(pacienteSeleccionado.getPeso());
+            paciente.setSeguro(pacienteSeleccionado.getSeguro());
+
+            Persona personaPaciente = new Persona();
+            personaPaciente.setIdPersona(pacienteSeleccionado.getPersona().getIdPersona());
+            personaPaciente.setNombre(pacienteSeleccionado.getPersona().getNombre());
+            personaPaciente.setApellidos(pacienteSeleccionado.getPersona().getApellidos());
+            personaPaciente.setGenero(pacienteSeleccionado.getPersona().getGenero());
+            personaPaciente.setEstado(pacienteSeleccionado.getPersona().getEstado());
+            paciente.setPersona(personaPaciente);
+
             cita.setPaciente(paciente);
         }
 
+        // Configurar titular con todos los campos requeridos
         if (titularSeleccionado != null) {
             Titular titular = new Titular();
             titular.setIdTitular(titularSeleccionado.getIdTitular());
+            titular.setTelefono(titularSeleccionado.getTelefono());
+
+            Persona personaTitular = new Persona();
+            personaTitular.setIdPersona(titularSeleccionado.getPersona().getIdPersona());
+            personaTitular.setNombre(titularSeleccionado.getPersona().getNombre());
+            personaTitular.setApellidos(titularSeleccionado.getPersona().getApellidos());
+            personaTitular.setGenero(titularSeleccionado.getPersona().getGenero());
+            personaTitular.setEstado(titularSeleccionado.getPersona().getEstado());
+            titular.setPersona(personaTitular);
+
+            if (titularSeleccionado.getUsuario() != null) {
+                Usuario usuarioTitular = new Usuario();
+                usuarioTitular.setIdUsuario(titularSeleccionado.getUsuario().getIdUsuario());
+                usuarioTitular.setUsuario(titularSeleccionado.getUsuario().getUsuario());
+                usuarioTitular.setCorreo(titularSeleccionado.getUsuario().getCorreo());
+                usuarioTitular.setContrasenia(titularSeleccionado.getUsuario().getContrasenia());
+                usuarioTitular.setToken(titularSeleccionado.getUsuario().getToken());
+                usuarioTitular.setIdPersona(titularSeleccionado.getPersona().getIdPersona());
+                titular.setUsuario(usuarioTitular);
+            }
+
             cita.setTitular(titular);
         }
+
+        // Log del JSON para depuración
+        Gson gson = new Gson();
+        String citaJson = gson.toJson(cita);
+        Log.d("CITA_JSON", "JSON a enviar: " + citaJson);
 
         return cita;
     }
 
     private void sendAppointmentToBackend(Cita cita) {
-        try {
-            // Convertir a JSON para debug
-            Gson gson = new Gson();
-            String citaJson = gson.toJson(cita);
-            Log.d("CITA_JSON", "JSON a enviar: " + citaJson);
+        CitaService service = ApiClient.getClient().create(CitaService.class);
+        Call<ApiResponse<Cita>> call = service.insertCita(cita);
 
-            CitaService service = ApiClient.getClient().create(CitaService.class);
-            Call<ApiResponse<Cita>> call = service.insertCita(cita);
-
-            call.enqueue(new Callback<ApiResponse<Cita>>() {
-                @Override
-                public void onResponse(Call<ApiResponse<Cita>> call, Response<ApiResponse<Cita>> response) {
-                    if (response.isSuccessful() && response.body() != null) {
-                        ApiResponse<Cita> apiResponse = response.body();
-                        if (apiResponse.isSuccess()) {
-                            showConfirmationDialog(apiResponse.getData());
-                            Toast.makeText(AgregarCitaActivity.this, "Cita creada exitosamente", Toast.LENGTH_SHORT).show();
-                        } else {
-                            showError(apiResponse.getMessage());
-                        }
+        call.enqueue(new Callback<ApiResponse<Cita>>() {
+            @Override
+            public void onResponse(Call<ApiResponse<Cita>> call, Response<ApiResponse<Cita>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    ApiResponse<Cita> apiResponse = response.body();
+                    if (apiResponse.isSuccess()) {
+                        showConfirmationDialog(apiResponse.getData());
                     } else {
-                        try {
-                            String errorBody = response.errorBody() != null ?
-                                    response.errorBody().string() : "empty error body";
-                            Log.e("API_ERROR", "Error body: " + errorBody);
-                            showError("Error del servidor: " + errorBody);
-                        } catch (Exception e) {
-                            Log.e("API_ERROR", "Error al leer errorBody", e);
-                        }
+                        showError(apiResponse.getMessage());
+                        Log.e("API_ERROR", "Error en la respuesta: " + apiResponse.getMessage());
+                    }
+                } else {
+                    try {
+                        String errorBody = response.errorBody() != null ?
+                                response.errorBody().string() : "empty error body";
+                        showError("Error del servidor: " + errorBody);
+                        Log.e("API_ERROR", "Error body: " + errorBody);
+                    } catch (Exception e) {
+                        Log.e("API_ERROR", "Error al leer errorBody", e);
                     }
                 }
+            }
 
-                @Override
-                public void onFailure(Call<ApiResponse<Cita>> call, Throwable t) {
-                    Log.e("API_ERROR", "Error de red", t);
-                    showError("Error de red: " + t.getMessage());
-                }
-            });
-        } catch (Exception e) {
-            Log.e("APP_ERROR", "Error al preparar cita", e);
-            showError("Error interno: " + e.getMessage());
-        }
+            @Override
+            public void onFailure(Call<ApiResponse<Cita>> call, Throwable t) {
+                showError("Error de red: " + t.getMessage());
+                Log.e("API_ERROR", "Error de red", t);
+            }
+        });
     }
 
     private void showConfirmationDialog(Cita cita) {
@@ -549,10 +664,24 @@ public class AgregarCitaActivity extends AppCompatActivity {
     private void setupListeners() {
         etFecha.setOnClickListener(v -> showDatePicker());
         btnAgendar.setOnClickListener(v -> scheduleAppointment());
-        btnRegresar.setOnClickListener(v -> finish());
+
+        btnRegresar.setOnClickListener(v -> {
+            Intent intent = new Intent(AgregarCitaActivity.this, AgendaActivity.class);
+            startActivity(intent);
+            finish();
+        });
     }
 
     private void showError(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

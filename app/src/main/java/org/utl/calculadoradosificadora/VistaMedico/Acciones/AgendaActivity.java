@@ -31,6 +31,9 @@ import org.utl.calculadoradosificadora.VistaMedico.Opciones.SeguridadActivity;
 import org.utl.calculadoradosificadora.VistaMedico.VistaMedico;
 import org.utl.calculadoradosificadora.adapters.CitaAdapter;
 import org.utl.calculadoradosificadora.model.Cita;
+import org.utl.calculadoradosificadora.model.Medico;
+import org.utl.calculadoradosificadora.model.Paciente;
+import org.utl.calculadoradosificadora.model.Titular;
 import org.utl.calculadoradosificadora.service.ApiClient;
 import org.utl.calculadoradosificadora.service.ApiResponse;
 import org.utl.calculadoradosificadora.service.CitaService;
@@ -177,7 +180,7 @@ public class AgendaActivity extends AppCompatActivity implements CitaAdapter.OnI
 
                         // Filtrar solo citas programadas
                         citasProgramadas = citasList.stream()
-                                .filter(c -> "Programada".equalsIgnoreCase(c.getEstatus()))
+                                .filter(c -> c.getEstatus() != null && "Programada".equalsIgnoreCase(c.getEstatus()))
                                 .collect(Collectors.toList());
 
                         citaAdapter.updateData(citasProgramadas);
@@ -194,7 +197,14 @@ public class AgendaActivity extends AppCompatActivity implements CitaAdapter.OnI
                         showError(errorMsg);
                     }
                 } else {
-                    showError("Error al obtener citas: " + response.code());
+                    try {
+                        String errorBody = response.errorBody() != null ?
+                                response.errorBody().string() : "Error desconocido";
+                        showError("Error al obtener citas: " + errorBody);
+                        Log.e("API_ERROR", "Error body: " + errorBody);
+                    } catch (Exception e) {
+                        Log.e("API_ERROR", "Error al leer errorBody", e);
+                    }
                 }
             }
 
@@ -216,9 +226,34 @@ public class AgendaActivity extends AppCompatActivity implements CitaAdapter.OnI
 
     @Override
     public void onItemClick(Cita cita) {
-        Intent intent = new Intent(this, DetallesCitaActivity.class);
-        intent.putExtra("cita", cita);
-        startActivity(intent);
+        try {
+            Intent intent = new Intent(this, DetallesCitaActivity.class);
+
+            // Crear una copia con datos completos
+            Cita citaParaDetalles = new Cita();
+            citaParaDetalles.setIdCita(cita.getIdCita());
+            citaParaDetalles.setFecha(cita.getFecha());
+            citaParaDetalles.setHora(cita.getHora());
+            citaParaDetalles.setEstatus(cita.getEstatus());
+            citaParaDetalles.setRazonCita(cita.getRazonCita());
+
+            // Copiar objetos completos para mostrar en detalles
+            if (cita.getMedico() != null) {
+                citaParaDetalles.setMedico(cita.getMedico());
+            }
+            if (cita.getPaciente() != null) {
+                citaParaDetalles.setPaciente(cita.getPaciente());
+            }
+            if (cita.getTitular() != null) {
+                citaParaDetalles.setTitular(cita.getTitular());
+            }
+
+            intent.putExtra("cita", citaParaDetalles);
+            startActivity(intent);
+        } catch (Exception e) {
+            Log.e("AGENDA_ERROR", "Error al abrir detalles", e);
+            Toast.makeText(this, "Error al abrir detalles de la cita", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override

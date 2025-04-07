@@ -12,8 +12,10 @@ public class Cita implements Serializable {
     private Paciente paciente;
     private Titular titular;
 
+    // Constructor vacío
     public Cita() {}
 
+    // Getters y setters
     public int getIdCita() {
         return idCita;
     }
@@ -78,7 +80,39 @@ public class Cita implements Serializable {
         this.titular = titular;
     }
 
+    // Método para formatear fecha y hora
     public String getFechaHoraFormateada() {
         return fecha + " " + hora;
+    }
+
+    // Método para crear una copia mínima necesaria para las operaciones
+    public Cita crearCopiaMinima() {
+        Cita copia = new Cita();
+        copia.setIdCita(this.idCita);
+        copia.setFecha(this.fecha);
+        copia.setHora(this.hora);
+        copia.setEstatus(this.estatus);
+        copia.setRazonCita(this.razonCita);
+
+        // Solo incluir IDs para las relaciones
+        if (this.medico != null) {
+            Medico m = new Medico();
+            m.setIdMedico(this.medico.getIdMedico());
+            copia.setMedico(m);
+        }
+
+        if (this.paciente != null) {
+            Paciente p = new Paciente();
+            p.setIdPaciente(this.paciente.getIdPaciente());
+            copia.setPaciente(p);
+        }
+
+        if (this.titular != null) {
+            Titular t = new Titular();
+            t.setIdTitular(this.titular.getIdTitular());
+            copia.setTitular(t);
+        }
+
+        return copia;
     }
 }

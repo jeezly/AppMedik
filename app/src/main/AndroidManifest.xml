@@ -47,6 +47,7 @@
         <activity android:name=".VistaMedico.Acciones.AgregarCitaActivity" android:exported="false"/>
         <activity android:name=".VistaMedico.Acciones.AtenderCitaActivity" android:exported="false"/>
         <activity android:name=".VistaMedico.Acciones.HistorialCitasActivity" android:exported="false"/>
+        <activity android:name=".VistaMedico.Acciones.DetallesCitaActivity" android:exported="false" />
         <activity android:name=".VistaMedico.Acciones.DetallesHistorialCitaActivity" android:exported="false"/>
 
         <!-- Calculadora Pediátrica -->

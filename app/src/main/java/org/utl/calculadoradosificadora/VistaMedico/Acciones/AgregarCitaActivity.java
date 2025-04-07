@@ -34,7 +34,6 @@ import org.utl.calculadoradosificadora.model.Medico;
 import org.utl.calculadoradosificadora.model.Paciente;
 import org.utl.calculadoradosificadora.model.Persona;
 import org.utl.calculadoradosificadora.model.Titular;
-import org.utl.calculadoradosificadora.model.Usuario;
 import org.utl.calculadoradosificadora.service.ApiClient;
 import org.utl.calculadoradosificadora.service.ApiResponse;
 import org.utl.calculadoradosificadora.service.CitaService;
@@ -458,10 +457,56 @@ public class AgregarCitaActivity extends AppCompatActivity {
         ).show();
     }
 
+    private int generarIdUnicoCita() {
+        // Genera un ID único basado en timestamp + random
+        long timestamp = System.currentTimeMillis() / 1000;
+        int random = (int) (Math.random() * 1000);
+        return (int) (timestamp % 1000000) * 1000 + random;
+    }
+
     private void scheduleAppointment() {
         if (validateFields()) {
-            Cita cita = createAppointment();
-            sendAppointmentToBackend(cita);
+            // Crear la cita con objetos completos temporalmente
+            Cita cita = new Cita();
+            cita.setIdCita(generarIdUnicoCita());
+            cita.setFecha(etFecha.getText().toString());
+            cita.setHora(spHorarios.getSelectedItem().toString());
+            cita.setRazonCita(etRazon.getText().toString());
+            cita.setEstatus("Programada");
+
+            // Asignar objetos completos (necesarios para el backend)
+            cita.setMedico(medicoSeleccionado);
+            cita.setPaciente(pacienteSeleccionado);
+            cita.setTitular(titularSeleccionado);
+
+            // Crear una versión simplificada para enviar
+            Cita citaParaEnviar = new Cita();
+            citaParaEnviar.setIdCita(cita.getIdCita());
+            citaParaEnviar.setFecha(cita.getFecha());
+            citaParaEnviar.setHora(cita.getHora());
+            citaParaEnviar.setRazonCita(cita.getRazonCita());
+            citaParaEnviar.setEstatus(cita.getEstatus());
+
+            // Solo incluir IDs para las relaciones
+            if (medicoSeleccionado != null) {
+                Medico medicoMin = new Medico();
+                medicoMin.setIdMedico(medicoSeleccionado.getIdMedico());
+                citaParaEnviar.setMedico(medicoMin);
+            }
+
+            if (pacienteSeleccionado != null) {
+                Paciente pacienteMin = new Paciente();
+                pacienteMin.setIdPaciente(pacienteSeleccionado.getIdPaciente());
+                citaParaEnviar.setPaciente(pacienteMin);
+            }
+
+            if (titularSeleccionado != null) {
+                Titular titularMin = new Titular();
+                titularMin.setIdTitular(titularSeleccionado.getIdTitular());
+                citaParaEnviar.setTitular(titularMin);
+            }
+
+            sendAppointmentToBackend(citaParaEnviar);
         }
     }
 
@@ -501,86 +546,31 @@ public class AgregarCitaActivity extends AppCompatActivity {
 
     private Cita createAppointment() {
         Cita cita = new Cita();
+        cita.setIdCita(generarIdUnicoCita());
         cita.setFecha(etFecha.getText().toString());
         cita.setHora(spHorarios.getSelectedItem().toString());
         cita.setRazonCita(etRazon.getText().toString());
         cita.setEstatus("Programada");
 
-        // Configurar médico con todos los campos requeridos
         if (medicoSeleccionado != null) {
             Medico medico = new Medico();
             medico.setIdMedico(medicoSeleccionado.getIdMedico());
-            medico.setNumCedula(medicoSeleccionado.getNumCedula());
-            medico.setFoto(medicoSeleccionado.getFoto());
-
-            Persona personaMedico = new Persona();
-            personaMedico.setIdPersona(medicoSeleccionado.getPersona().getIdPersona());
-            personaMedico.setNombre(medicoSeleccionado.getPersona().getNombre());
-            personaMedico.setApellidos(medicoSeleccionado.getPersona().getApellidos());
-            personaMedico.setGenero(medicoSeleccionado.getPersona().getGenero());
-            personaMedico.setEstado(medicoSeleccionado.getPersona().getEstado());
-            medico.setPersona(personaMedico);
-
-            Usuario usuarioMedico = new Usuario();
-            usuarioMedico.setIdUsuario(medicoSeleccionado.getUsuario().getIdUsuario());
-            usuarioMedico.setUsuario(medicoSeleccionado.getUsuario().getUsuario());
-            usuarioMedico.setCorreo(medicoSeleccionado.getUsuario().getCorreo());
-            usuarioMedico.setContrasenia(medicoSeleccionado.getUsuario().getContrasenia());
-            usuarioMedico.setToken(medicoSeleccionado.getUsuario().getToken());
-            usuarioMedico.setIdPersona(medicoSeleccionado.getPersona().getIdPersona());
-            medico.setUsuario(usuarioMedico);
-
             cita.setMedico(medico);
         }
 
-        // Configurar paciente con todos los campos requeridos
         if (pacienteSeleccionado != null) {
             Paciente paciente = new Paciente();
             paciente.setIdPaciente(pacienteSeleccionado.getIdPaciente());
-            paciente.setFechaNacimiento(pacienteSeleccionado.getFechaNacimiento());
-            paciente.setPeso(pacienteSeleccionado.getPeso());
-            paciente.setSeguro(pacienteSeleccionado.getSeguro());
-
-            Persona personaPaciente = new Persona();
-            personaPaciente.setIdPersona(pacienteSeleccionado.getPersona().getIdPersona());
-            personaPaciente.setNombre(pacienteSeleccionado.getPersona().getNombre());
-            personaPaciente.setApellidos(pacienteSeleccionado.getPersona().getApellidos());
-            personaPaciente.setGenero(pacienteSeleccionado.getPersona().getGenero());
-            personaPaciente.setEstado(pacienteSeleccionado.getPersona().getEstado());
-            paciente.setPersona(personaPaciente);
-
             cita.setPaciente(paciente);
         }
 
-        // Configurar titular con todos los campos requeridos
         if (titularSeleccionado != null) {
             Titular titular = new Titular();
             titular.setIdTitular(titularSeleccionado.getIdTitular());
-            titular.setTelefono(titularSeleccionado.getTelefono());
-
-            Persona personaTitular = new Persona();
-            personaTitular.setIdPersona(titularSeleccionado.getPersona().getIdPersona());
-            personaTitular.setNombre(titularSeleccionado.getPersona().getNombre());
-            personaTitular.setApellidos(titularSeleccionado.getPersona().getApellidos());
-            personaTitular.setGenero(titularSeleccionado.getPersona().getGenero());
-            personaTitular.setEstado(titularSeleccionado.getPersona().getEstado());
-            titular.setPersona(personaTitular);
-
-            if (titularSeleccionado.getUsuario() != null) {
-                Usuario usuarioTitular = new Usuario();
-                usuarioTitular.setIdUsuario(titularSeleccionado.getUsuario().getIdUsuario());
-                usuarioTitular.setUsuario(titularSeleccionado.getUsuario().getUsuario());
-                usuarioTitular.setCorreo(titularSeleccionado.getUsuario().getCorreo());
-                usuarioTitular.setContrasenia(titularSeleccionado.getUsuario().getContrasenia());
-                usuarioTitular.setToken(titularSeleccionado.getUsuario().getToken());
-                usuarioTitular.setIdPersona(titularSeleccionado.getPersona().getIdPersona());
-                titular.setUsuario(usuarioTitular);
-            }
-
             cita.setTitular(titular);
         }
 
-        // Log del JSON para depuración
+        // Log para depuración
         Gson gson = new Gson();
         String citaJson = gson.toJson(cita);
         Log.d("CITA_JSON", "JSON a enviar: " + citaJson);
@@ -589,8 +579,27 @@ public class AgregarCitaActivity extends AppCompatActivity {
     }
 
     private void sendAppointmentToBackend(Cita cita) {
+        // Crear una versión completa temporalmente para el backend
+        Cita citaCompleta = new Cita();
+        citaCompleta.setIdCita(cita.getIdCita());
+        citaCompleta.setFecha(cita.getFecha());
+        citaCompleta.setHora(cita.getHora());
+        citaCompleta.setRazonCita(cita.getRazonCita());
+        citaCompleta.setEstatus(cita.getEstatus());
+
+        // Asignar objetos completos (necesarios para el backend)
+        if (medicoSeleccionado != null) {
+            citaCompleta.setMedico(medicoSeleccionado);
+        }
+        if (pacienteSeleccionado != null) {
+            citaCompleta.setPaciente(pacienteSeleccionado);
+        }
+        if (titularSeleccionado != null) {
+            citaCompleta.setTitular(titularSeleccionado);
+        }
+
         CitaService service = ApiClient.getClient().create(CitaService.class);
-        Call<ApiResponse<Cita>> call = service.insertCita(cita);
+        Call<ApiResponse<Cita>> call = service.insertCita(citaCompleta);
 
         call.enqueue(new Callback<ApiResponse<Cita>>() {
             @Override
@@ -622,7 +631,6 @@ public class AgregarCitaActivity extends AppCompatActivity {
             }
         });
     }
-
     private void showConfirmationDialog(Cita cita) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         View dialogView = getLayoutInflater().inflate(R.layout.dialog_confirmacion_cita, null);

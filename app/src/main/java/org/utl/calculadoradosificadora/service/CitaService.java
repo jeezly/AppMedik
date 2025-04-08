@@ -36,4 +36,6 @@ public interface CitaService {
             @Path("id") int id,
             @Body Cita cita
     );
+
+    Call<ApiResponse<List<Cita>>> getCitasByTitular(int idTitular);
 }

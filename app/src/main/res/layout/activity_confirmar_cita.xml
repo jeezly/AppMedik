@@ -7,7 +7,7 @@
     android:background="@color/colorPeach"
     android:orientation="vertical"
     android:padding="16dp"
-    tools:context=".VistaTitular.ConfirmarCitaActivity">
+    tools:context=".VistaTitular.Acciones.ConfirmarCitaActivity">
 
     <!-- Barra Superior (Toolbar) -->
     <androidx.appcompat.widget.Toolbar

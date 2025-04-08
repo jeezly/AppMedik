@@ -5,21 +5,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".VistaMedico.Acciones.CalculadoraPediatricaActivity">
+    android:layout_height="match_parent">
 
     <!-- Contenido principal -->
-
-    <!-- Menús laterales (iguales a VistaMedico) -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorPeach"
-        android:backgroundTint="@color/colorPeach"
         android:orientation="vertical"
         android:padding="16dp">
 
-        <!-- Toolbar igual al de VistaMedico -->
+        <!-- Toolbar con el mismo estilo que VistaMedico -->
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
@@ -35,160 +30,192 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
+                <!-- Botón de menú (3 líneas) -->
                 <ImageView
                     android:id="@+id/menu_icon"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:layout_marginEnd="16dp"
-                    android:contentDescription="@string/menu_icon_description"
-                    android:src="@drawable/ic_menu" />
+                    android:src="@drawable/ic_menu"
+                    tools:ignore="ContentDescription" />
 
-                <Space
+                <!-- Título centrado -->
+                <TextView
+                    android:id="@+id/tvTituloToolbar"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Calculadora"
+                    android:layout_weight="1"
+                    android:text="Calculadora Pediátrica"
+                    android:textColor="@android:color/white"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
-                <Space
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
-
+                <!-- Botón de opciones (3 puntos) -->
                 <ImageView
                     android:id="@+id/options_icon"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:contentDescription="@string/options_icon_description"
-                    android:src="@drawable/ic_more_vert" />
+                    android:src="@drawable/ic_more_vert"
+                    tools:ignore="ContentDescription" />
             </LinearLayout>
         </androidx.appcompat.widget.Toolbar>
 
-        <!-- Título "Calculadora de Dosis Pediátricas" -->
-        <TextView
+        <!-- Contenido de la calculadora -->
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
-            android:text="Calculadora de Dosis Pediátricas"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            android:layout_height="match_parent"
+            android:padding="16dp"
+            android:background="@color/colorPeach">
 
-        <!-- Campo Medicamento -->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Medicamento:"
-            android:textSize="16sp" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:orientation="horizontal">
-
-            <Spinner
-                android:id="@+id/spinnerMedicamentos"
-                android:layout_width="0dp"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                android:orientation="vertical">
 
-            <Button
-                android:id="@+id/btnBuscarMedicamento"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:text="Buscar" />
-        </LinearLayout>
+                <!-- Medicamento -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Medicamento:"
+                    android:textColor="#333333"
+                    android:textSize="16sp"
+                    android:layout_marginBottom="4dp"/>
 
-        <!-- Campos de entrada -->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Edad:"
-            android:textSize="16sp" />
+                <Spinner
+                    android:id="@+id/spinnerMedicamentos"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:background="@android:drawable/btn_dropdown"
+                    android:spinnerMode="dropdown"
+                    android:layout_marginBottom="16dp"/>
 
-        <Spinner
-            android:id="@+id/spinnerEdad"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp" />
+                <!-- Datos del paciente -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Datos del paciente:"
+                    android:textColor="#333333"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="8dp"/>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Peso (kg):"
-            android:textSize="16sp" />
+                <!-- Género -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Género:"
+                    android:textColor="#333333"
+                    android:textSize="16sp"
+                    android:layout_marginBottom="4dp"/>
 
-        <EditText
-            android:id="@+id/etPeso"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:inputType="numberDecimal" />
+                <RadioGroup
+                    android:id="@+id/rgGenero"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:orientation="horizontal">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Género:"
-            android:textSize="16sp" />
+                    <RadioButton
+                        android:id="@+id/rbMasculino"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="16dp"
+                        android:text="Masculino"
+                        android:checked="true"/>
 
-        <Spinner
-            android:id="@+id/spinnerGenero"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp" />
+                    <RadioButton
+                        android:id="@+id/rbFemenino"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Femenino"/>
+                </RadioGroup>
 
-        <!-- Línea separadora -->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginVertical="16dp"
-            android:background="@android:color/darker_gray" />
+                <!-- Edad -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Edad (años):"
+                    android:textColor="#333333"
+                    android:textSize="16sp"
+                    android:layout_marginBottom="4dp"/>
 
-        <!-- Botones -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal">
+                <EditText
+                    android:id="@+id/etEdad"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:inputType="number"
 
-            <Button
-                android:id="@+id/btnCancelar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:backgroundTint="@color/colorRed"
-                android:text="@string/cancelar"
-                android:textColor="@android:color/white" />
+                    android:paddingHorizontal="12dp"
+                    android:layout_marginBottom="16dp"/>
 
-            <Button
-                android:id="@+id/btnCalcular"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@color/colorPrimary"
-                android:text="Calcular"
-                android:textColor="@android:color/white" />
-        </LinearLayout>
+                <!-- Peso -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Peso (kg):"
+                    android:textColor="#333333"
+                    android:textSize="16sp"
+                    android:layout_marginBottom="4dp"/>
 
-        <!-- Resultado -->
-        <TextView
-            android:id="@+id/tvResultado"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:textSize="16sp"
-            android:visibility="gone" />
+                <EditText
+                    android:id="@+id/etPeso"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:inputType="numberDecimal"
+
+                    android:paddingHorizontal="12dp"
+                    android:layout_marginBottom="16dp"/>
+
+                <!-- Botón Calcular -->
+                <Button
+                    android:id="@+id/btnCalcular"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="16dp"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:text="Calcular"
+                    android:textAllCaps="false"
+                    android:textColor="#FFFFFF"/>
+
+                <!-- Resultado -->
+                <TextView
+                    android:id="@+id/tvResultado"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:visibility="gone"
+                    android:textSize="16sp"
+                    android:textColor="#333333"
+                    android:background="#E8F5E9"
+                    android:padding="12dp"/>
+
+                <!-- Botón OK (solo visible después del cálculo) -->
+                <Button
+                    android:id="@+id/btnOk"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="16dp"
+                    android:visibility="gone"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:text="OK"
+                    android:textAllCaps="false"
+                    android:textColor="#FFFFFF"/>
+
+                <!-- Botón Regresar (rojo) -->
+                <Button
+                    android:id="@+id/btnRegresar"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="16dp"
+                    android:backgroundTint="#FF0000"
+                    android:text="Regresar"
+                    android:textAllCaps="false"
+                    android:textColor="#FFFFFF"/>
+            </LinearLayout>
+        </ScrollView>
     </LinearLayout>
 
+    <!-- Menú desplegable lateral izquierdo -->
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navigation_view_left"
         android:layout_width="wrap_content"
@@ -197,6 +224,7 @@
         app:headerLayout="@layout/nav_header"
         app:menu="@menu/drawer_menu"/>
 
+    <!-- Menú desplegable lateral derecho -->
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navigation_view_right"
         android:layout_width="wrap_content"
@@ -204,4 +232,5 @@
         android:layout_gravity="end"
         app:headerLayout="@layout/nav_header"
         app:menu="@menu/options_menu"/>
+
 </androidx.drawerlayout.widget.DrawerLayout>

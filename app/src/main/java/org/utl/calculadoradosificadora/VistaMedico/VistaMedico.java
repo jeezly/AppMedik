@@ -16,11 +16,9 @@ import com.google.android.material.navigation.NavigationView;
 import org.utl.calculadoradosificadora.MainActivity;
 import org.utl.calculadoradosificadora.VistaMedico.Acciones.AgendaActivity;
 import org.utl.calculadoradosificadora.VistaMedico.Acciones.CalculadoraPediatricaActivity;
-import org.utl.calculadoradosificadora.VistaMedico.Acciones.CitasActivity;
 import org.utl.calculadoradosificadora.VistaMedico.Acciones.HistorialCitasActivity;
 import org.utl.calculadoradosificadora.VistaMedico.Acciones.TitularesActivity;
 import org.utl.calculadoradosificadora.VistaMedico.Opciones.ConfiguracionActivity;
-import org.utl.calculadoradosificadora.InicioActivity;
 import org.utl.calculadoradosificadora.VistaMedico.Opciones.NotificacionesActivity;
 import org.utl.calculadoradosificadora.VistaMedico.Opciones.PerfilActivity;
 import org.utl.calculadoradosificadora.VistaMedico.Opciones.SeguridadActivity;
@@ -68,7 +66,7 @@ public class VistaMedico extends AppCompatActivity {
                 int id = item.getItemId();
 
                 if (id == R.id.menu_inicio) {
-                    startActivity(new Intent(VistaMedico.this, InicioActivity.class));
+                    startActivity(new Intent(VistaMedico.this, VistaMedico.class));
                 } else if (id == R.id.menu_protocolos) {
                     startActivity(new Intent(VistaMedico.this, ProtocolosActivity.class));
                 } else if (id == R.id.menu_sobre_nosotros) {

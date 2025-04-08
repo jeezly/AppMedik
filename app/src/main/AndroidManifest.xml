@@ -62,13 +62,12 @@
 
         <!-- ==================== VISTA TITULAR ==================== -->
         <activity android:name=".VistaTitular.VistaTitular" android:exported="false"/>
-        <activity android:name=".VistaTitular.AgendarCitasActivity" android:exported="false"/>
-        <activity android:name=".VistaTitular.HistorialCitaActivity" android:exported="false"/>
-        <activity android:name=".VistaTitular.DetallesHistorialCitaActivity" android:exported="false"/>
+        <activity android:name=".VistaTitular.Acciones.AgendarCitasActivity" android:exported="false"/>
+        <activity android:name=".VistaTitular.Acciones.HistorialCitaActivity" android:exported="false"/>
+        <activity android:name=".VistaTitular.Acciones.DetallesHistorialCitaActivity" android:exported="false"/>
 
         <!-- Actividades Generales (Login/Registro) -->
         <activity android:name=".BienvenidaActivity" android:exported="false"/>
-        <activity android:name=".InicioActivity" android:exported="false"/>
         <activity android:name=".VistaMedico.CuentaNueva.CrearCuentaMedico" android:exported="false"/>
         <activity android:name=".VistaTitular.CuentaNueva.CrearCuentaTitular" android:exported="false"/>
 

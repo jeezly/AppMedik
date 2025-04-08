@@ -43,23 +43,25 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 
 public class CalculadoraPediatricaActivity extends AppCompatActivity {
+    private Spinner spinnerMedicamentos, spinnerEdad, spinnerGenero;
+    private EditText etPeso;
+    private Button btnCalcular, btnCancelar, btnBuscarMedicamento;
+    private TextView tvResultado;
+    private DrawerLayout drawerLayout;
+    private NavigationView navigationViewLeft, navigationViewRight;
+    private ArrayAdapter<Medicamento> adapterMedicamentos;
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_calculadora_pediatrica); // Asegúrate de tener este layout
 
-
-}
-
-
-
-<<<<<<< HEAD
-        // Inicializar vistas
         initViews();
-
-        // Configurar spinners
+        setupToolbarAndMenus();
         setupSpinners();
-
-        // Configurar botones
         setupButtons();
     }
+
 
     private void setupToolbarAndMenus() {
         drawerLayout = findViewById(R.id.drawer_layout);
@@ -121,7 +123,7 @@ public class CalculadoraPediatricaActivity extends AppCompatActivity {
     }
 
     private void setupSpinners() {
-        getAllMedicamentos();
+        //getAllMedicamentos();
 //        listaMedicamentos = new ArrayList<>();
 //        listaMedicamentos.add("Paracetamol (120mg/5ml)");
 //        listaMedicamentos.add("Ibuprofeno (100mg/5ml)");
@@ -170,37 +172,38 @@ public class CalculadoraPediatricaActivity extends AppCompatActivity {
         });
     }
 
-    private void getAllMedicamentos(){
-        System.out.println("Iniciando API getAll");
-        Retrofit retrofit = ApiClient.getClient();
-        MedicamentoService service = retrofit.create(MedicamentoService.class);
+//    private void getAllMedicamentos() {
+//        System.out.println("Iniciando API getAll");
+//        Retrofit retrofit = ApiClient.getClient();
+//        MedicamentoService service = retrofit.create(MedicamentoService.class);
+//        Call<List<Medicamento>> getAll = service.getAllMedicamento();
+//
+//        getAll.enqueue(new Callback<List<Medicamento>>() {
+//            @Override
+//            public void onResponse(Call<List<Medicamento>> call, Response<List<Medicamento>> response) {
+//                //Para corroborar que funciona
+//                Toast.makeText(CalculadoraPediatricaActivity.this, "Medicamentos cargados :D", Toast.LENGTH_SHORT).show();
+//                System.out.println(response.code());
+//                System.out.println(response.body());
+//
+//                if (response.isSuccessful() && response.body() != null) {
+//                    List<Medicamento> medicamentos = response.body();
+//                    adapterMedicamentos = new ArrayAdapter<>(CalculadoraPediatricaActivity.this,
+//                            android.R.layout.simple_spinner_item,
+//                            medicamentos);
+//                    adapterMedicamentos.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//                    spinnerMedicamentos.setAdapter(adapterMedicamentos);
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<List<Medicamento>> call, Throwable t) {
+//                Toast.makeText(CalculadoraPediatricaActivity.this, "Medicamentos NO cargados", Toast.LENGTH_SHORT).show();
+//                t.printStackTrace();
+//            }
+//        });
+//    }
 
-        Call<List<Medicamento>> getAll = service.getAllMedicamento();
-        getAll.enqueue(new Callback<List<Medicamento>>() {
-            @Override
-            public void onResponse(Call<List<Medicamento>> call, Response<List<Medicamento>> response) {
-                //Para corroborar que funciona
-                Toast.makeText(CalculadoraPediatricaActivity.this, "Medicamentos cargados :D", Toast.LENGTH_SHORT).show();
-                System.out.println(response.code());
-                System.out.println(response.body());
-
-                if(response.isSuccessful() && response.body() != null){
-                    List<Medicamento> medicamentos = response.body();
-                    adapterMedicamentos = new ArrayAdapter<>(CalculadoraPediatricaActivity.this,
-                            android.R.layout.simple_spinner_item,
-                            medicamentos);
-                    adapterMedicamentos.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    spinnerMedicamentos.setAdapter(adapterMedicamentos);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<Medicamento>> call, Throwable t) {
-                Toast.makeText(CalculadoraPediatricaActivity.this, "Medicamentos NO cargados", Toast.LENGTH_SHORT).show();
-                t.printStackTrace();
-            }
-        });
-    }
     private void calcularDosis() {
         // Validar campos
         if (etPeso.getText().toString().isEmpty()) {
@@ -268,5 +271,3 @@ public class CalculadoraPediatricaActivity extends AppCompatActivity {
         finish();
     }
 }
-=======
->>>>>>> 971eba21309322345b9001c1aa473d0e14aab02a

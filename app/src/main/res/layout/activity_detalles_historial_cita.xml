@@ -4,16 +4,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/colorPeach">
 
-    <!-- Contenido principal -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:orientation="vertical">
 
-        <!-- Barra Superior (Toolbar) -->
+        <!-- Toolbar -->
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
@@ -23,178 +22,150 @@
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
-            <!-- Contenedor para organizar los elementos -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
-                <!-- Menú de 3 líneas (ícono de menú) -->
                 <ImageView
                     android:id="@+id/menu_icon"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:src="@drawable/ic_menu"
-                    android:contentDescription="@string/menu_icon_description"
-                    android:layout_marginEnd="16dp"/>
+                    android:layout_marginEnd="16dp"
+                    android:contentDescription="Menú"
+                    android:src="@drawable/ic_menu" />
 
-                <!-- Espacio flexible para centrar el título -->
                 <Space
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"/>
+                    android:layout_weight="1" />
 
-                <!-- Título "CITA" -->
                 <TextView
+                    android:id="@+id/tvTituloToolbar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="CITA"
+                    android:text="Detalles de Cita"
+                    android:textColor="@android:color/white"
                     android:textSize="18sp"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold" />
 
-                <!-- Espacio flexible para alinear el ícono de opciones a la derecha -->
                 <Space
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"/>
+                    android:layout_weight="1" />
 
-                <!-- Ícono de 3 puntos verticales (opciones) -->
                 <ImageView
                     android:id="@+id/options_icon"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:src="@drawable/ic_more_vert"
-                    android:contentDescription="@string/options_icon_description"/>
+                    android:contentDescription="Opciones"
+                    android:src="@drawable/ic_more_vert" />
             </LinearLayout>
         </androidx.appcompat.widget.Toolbar>
 
-        <!-- Datos de la cita -->
-        <TextView
-            android:id="@+id/tvDatosCita"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Datos de la cita"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:layout_marginTop="16dp"/>
-
-        <!-- Fecha y hora -->
-        <LinearLayout
+        <!-- Contenido principal -->
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="8dp">
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:padding="16dp">
 
-            <!-- Fecha -->
-            <TextView
-                android:id="@+id/tvFecha"
-                android:layout_width="0dp"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Fecha: 01/01/2023"
-                android:textSize="14sp"/>
+                android:orientation="vertical">
 
-            <!-- Hora -->
-            <TextView
-                android:id="@+id/tvHora"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Hora: 10:00 AM"
-                android:textSize="14sp"/>
-        </LinearLayout>
+                <!-- Información de la cita -->
+                <TextView
+                    android:id="@+id/tvFecha"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:textSize="16sp"/>
 
-        <!-- Línea -->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@android:color/darker_gray"
-            android:layout_marginTop="8dp"/>
+                <TextView
+                    android:id="@+id/tvHora"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:textSize="16sp"/>
 
-        <!-- Titular -->
-        <TextView
-            android:id="@+id/tvTitular"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Titular"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:layout_marginTop="16dp"/>
+                <!-- Titular -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Titular:"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="4dp"/>
 
-        <!-- Clave y nombre del titular -->
-        <TextView
-            android:id="@+id/tvClaveNombreTitular"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Clave: 12345 - Nombre: Juan Pérez"
-            android:textSize="14sp"
-            android:layout_marginTop="8dp"/>
+                <TextView
+                    android:id="@+id/tvClaveNombreTitular"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:textSize="16sp"/>
 
-        <!-- Línea -->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@android:color/darker_gray"
-            android:layout_marginTop="8dp"/>
+                <!-- Paciente -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Paciente:"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="4dp"/>
 
-        <!-- Paciente -->
-        <TextView
-            android:id="@+id/tvPaciente"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Paciente"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:layout_marginTop="16dp"/>
+                <TextView
+                    android:id="@+id/tvClaveNombrePaciente"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:textSize="16sp"/>
 
-        <!-- Clave, nombre, fecha de nacimiento y peso del paciente -->
-        <TextView
-            android:id="@+id/tvClaveNombrePaciente"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Clave: 67890 - Nombre: Ana Pérez - Fecha Nac: 01/01/2010 - Peso: 30 kg"
-            android:textSize="14sp"
-            android:layout_marginTop="8dp"/>
+                <!-- Razón -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Razón de la cita:"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="4dp"/>
 
-        <!-- Línea -->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@android:color/darker_gray"
-            android:layout_marginTop="8dp"/>
+                <TextView
+                    android:id="@+id/tvRazonCita"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:textSize="16sp"/>
 
-        <!-- Razón de la cita -->
-        <TextView
-            android:id="@+id/tvRazonCita"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Razón de la cita"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:layout_marginTop="16dp"/>
+                <!-- Notas -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Notas médicas:"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="4dp"/>
 
-        <!-- Notas -->
-        <TextView
-            android:id="@+id/tvNotas"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Notas: Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-            android:textSize="14sp"
-            android:layout_marginTop="8dp"/>
+                <TextView
+                    android:id="@+id/tvNotas"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:textSize="16sp"/>
+            </LinearLayout>
+        </ScrollView>
 
         <!-- Botón OK -->
         <Button
             android:id="@+id/btnOk"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="16dp"
             android:text="OK"
-            android:layout_gravity="end"
-            android:layout_marginTop="16dp"
+            android:textColor="@android:color/white"
             android:backgroundTint="@color/colorPrimary"/>
     </LinearLayout>
 
-    <!-- Menú desplegable lateral izquierdo -->
+    <!-- Menús laterales -->
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navigation_view_left"
         android:layout_width="wrap_content"
@@ -203,7 +174,6 @@
         app:headerLayout="@layout/nav_header"
         app:menu="@menu/drawer_menu"/>
 
-    <!-- Menú desplegable lateral derecho -->
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navigation_view_right"
         android:layout_width="wrap_content"

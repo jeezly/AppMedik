@@ -30,4 +30,10 @@ public interface CitaService {
     // Endpoint para marcar como atendida
     @PATCH("UpdateCita/{id}/atender")
     Call<ApiResponse<Void>> atenderCita(@Path("id") int id);
+
+    @PUT("UpdateCita/{id}")
+    Call<ApiResponse<Cita>> marcarCitaComoAtendida(
+            @Path("id") int id,
+            @Body Cita cita
+    );
 }

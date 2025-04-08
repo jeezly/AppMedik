@@ -2,18 +2,18 @@
 <androidx.drawerlayout.widget.DrawerLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".VistaMedico.Acciones.AtenderCitaActivity">
+    android:background="@color/colorPeach">
 
+    <!-- Contenido principal -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <!-- Toolbar estandarizado -->
+        <!-- Toolbar -->
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
@@ -34,7 +34,7 @@
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:layout_marginEnd="16dp"
-                    android:contentDescription="@string/menu_icon_description"
+                    android:contentDescription="Menú"
                     android:src="@drawable/ic_menu" />
 
                 <Space
@@ -43,10 +43,9 @@
                     android:layout_weight="1" />
 
                 <TextView
-                    android:id="@+id/tvTitulo"
+                    android:id="@+id/tvTituloToolbar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Atender Cita"
                     android:textColor="@android:color/white"
                     android:textSize="18sp"
                     android:textStyle="bold" />
@@ -60,16 +59,15 @@
                     android:id="@+id/options_icon"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:contentDescription="@string/options_icon_description"
+                    android:contentDescription="Opciones"
                     android:src="@drawable/ic_more_vert" />
             </LinearLayout>
         </androidx.appcompat.widget.Toolbar>
 
-        <!-- Contenido principal -->
+        <!-- Contenido -->
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/colorPeach"
             android:padding="16dp">
 
             <LinearLayout
@@ -77,173 +75,189 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <!-- Información del paciente -->
-                <androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    app:cardCornerRadius="8dp"
-                    app:cardElevation="4dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:padding="16dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Información del Paciente"
-                            android:textSize="18sp"
-                            android:textStyle="bold"/>
-
-                        <TextView
-                            android:id="@+id/tvNombrePaciente"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:text="Nombre: "
-                            android:textSize="16sp"/>
-
-                        <TextView
-                            android:id="@+id/tvEdadPaciente"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Edad: "
-                            android:textSize="16sp"/>
-
-                        <TextView
-                            android:id="@+id/tvPesoPaciente"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Peso: "
-                            android:textSize="16sp"/>
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
-
-                <!-- Calculadora Pediátrica -->
+                <!-- Sección CITA -->
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Calculadora Pediátrica"
-                    android:textSize="20sp"
+                    android:text="CITA"
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp"
                     android:textStyle="bold"
+                    android:layout_marginBottom="8dp"/>
+
+                <TextView
+                    android:id="@+id/tvFecha"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp"
+                    android:layout_marginBottom="4dp"/>
+
+                <TextView
+                    android:id="@+id/tvHora"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp"
+                    android:layout_marginBottom="8dp"/>
+
+                <TextView
+                    android:id="@+id/tvRazon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp"
                     android:layout_marginBottom="16dp"/>
 
-                <!-- Medicamento -->
+                <!-- Sección TITULAR -->
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="TITULAR"
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="8dp"/>
 
-                    android:textSize="16sp"/>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="8dp">
-
-                    <Spinner
-                        android:id="@+id/spinnerMedicamentos"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"/>
-
-                    <Button
-                        android:id="@+id/btnBuscarMedicamento"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-
-                        android:layout_marginStart="8dp"/>
-                </LinearLayout>
-
-                <!-- Edad -->
                 <TextView
-                    android:layout_width="match_parent"
+                    android:id="@+id/tvTitularUsuario"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-
+                    android:textColor="@android:color/black"
                     android:textSize="16sp"
-                    android:layout_marginTop="16dp"/>
+                    android:layout_marginBottom="4dp"/>
 
-                <Spinner
-                    android:id="@+id/spinnerEdad"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"/>
-
-                <!-- Peso -->
                 <TextView
-                    android:layout_width="match_parent"
+                    android:id="@+id/tvTitularNombre"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-
+                    android:textColor="@android:color/black"
                     android:textSize="16sp"
-                    android:layout_marginTop="16dp"/>
+                    android:layout_marginBottom="4dp"/>
+
+                <TextView
+                    android:id="@+id/tvTitularGenero"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp"
+                    android:layout_marginBottom="4dp"/>
+
+                <TextView
+                    android:id="@+id/tvTitularCorreo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp"
+                    android:layout_marginBottom="4dp"/>
+
+                <TextView
+                    android:id="@+id/tvTitularTelefono"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp"
+                    android:layout_marginBottom="16dp"/>
+
+                <!-- Sección PACIENTE -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="PACIENTE"
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="8dp"/>
+
+                <TextView
+                    android:id="@+id/tvPacienteNombre"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp"
+                    android:layout_marginBottom="4dp"/>
+
+                <TextView
+                    android:id="@+id/tvPacienteEdad"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp"
+                    android:layout_marginBottom="4dp"/>
+
+                <TextView
+                    android:id="@+id/tvPacienteGenero"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp"
+                    android:layout_marginBottom="4dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Peso (kg):"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp"
+                    android:layout_marginBottom="4dp"/>
 
                 <EditText
-                    android:id="@+id/etPeso"
+                    android:id="@+id/etPesoPaciente"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="numberDecimal"
-                    android:layout_marginTop="8dp"/>
+                    android:layout_marginBottom="16dp"/>
 
-                <!-- Género -->
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-
-                    android:textSize="16sp"
-                    android:layout_marginTop="16dp"/>
-
-                <Spinner
-                    android:id="@+id/spinnerGenero"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"/>
-
-                <!-- Botones -->
+                <!-- Sección NOTAS -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:gravity="center"
-                    android:layout_marginTop="16dp">
+                    android:layout_marginBottom="16dp">
 
-                    <Button
-                        android:id="@+id/btnCancelar"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
 
-                        android:backgroundTint="@color/colorRed"
-                        android:textColor="@android:color/white"
-                        android:layout_marginEnd="16dp"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="NOTAS"
+                            android:textColor="@android:color/black"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:layout_marginBottom="8dp"/>
 
-                    <Button
-                        android:id="@+id/btnCalcular"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/btn_calcular"
-                        android:backgroundTint="@color/colorPrimary"
-                        android:textColor="@android:color/white"/>
+                        <EditText
+                            android:id="@+id/etNotas"
+                            android:layout_width="match_parent"
+                            android:layout_height="120dp"
+                            android:gravity="top"
+                            android:hint="Instrucciones para el paciente"
+                            android:inputType="textMultiLine"
+                            android:padding="8dp"/>
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/ivCalculadora"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="16dp"
+                        android:src="@drawable/ic_calculator"
+                        android:contentDescription="Calculadora"/>
                 </LinearLayout>
 
-                <!-- Resultado -->
-                <TextView
-                    android:id="@+id/tvResultado"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
-                    android:textSize="16sp"
-                    android:visibility="gone"/>
-
-                <!-- Botón Finalizar Consulta -->
+                <!-- Botón Finalizar -->
                 <Button
-                    android:id="@+id/btnFinalizarConsulta"
+                    android:id="@+id/btnFinalizar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
+                    android:layout_marginTop="16dp"
+                    android:backgroundTint="@color/colorPrimary"
                     android:text="Finalizar Consulta"
-                    android:backgroundTint="@color/colorGreen"
                     android:textColor="@android:color/white"/>
             </LinearLayout>
         </ScrollView>

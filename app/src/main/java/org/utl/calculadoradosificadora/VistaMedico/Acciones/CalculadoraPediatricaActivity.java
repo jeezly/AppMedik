@@ -44,30 +44,13 @@ import retrofit2.Retrofit;
 
 public class CalculadoraPediatricaActivity extends AppCompatActivity {
 
-    private DrawerLayout drawerLayout;
-    private NavigationView navigationViewLeft;
-    private NavigationView navigationViewRight;
 
-    private Spinner spinnerMedicamentos;
-    private Spinner spinnerEdad;
-    private Spinner spinnerGenero;
-    private EditText etPeso;
-    private Button btnCalcular;
-    private Button btnCancelar;
-    private Button btnBuscarMedicamento;
-    private TextView tvResultado;
 
-    private List<String> listaMedicamentos;
-    private ArrayAdapter<Medicamento> adapterMedicamentos;
+}
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_calculadora_pediatrica);
 
-        // Configurar Toolbar y menús
-        setupToolbarAndMenus();
 
+<<<<<<< HEAD
         // Inicializar vistas
         initViews();
 
@@ -285,3 +268,5 @@ public class CalculadoraPediatricaActivity extends AppCompatActivity {
         finish();
     }
 }
+=======
+>>>>>>> 971eba21309322345b9001c1aa473d0e14aab02a

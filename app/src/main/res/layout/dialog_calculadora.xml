@@ -46,11 +46,21 @@
         android:inputType="numberDecimal"
         android:layout_marginBottom="16dp"/>
 
+    <TextView
+        android:id="@+id/tvResultadoCalculadora"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:textSize="16sp"
+        android:visibility="gone"
+        android:textColor="@color/colorPrimaryDark"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:gravity="center">
+        android:gravity="center"
+        android:layout_marginBottom="8dp">
 
         <Button
             android:id="@+id/btnCancelarDialog"
@@ -67,8 +77,18 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:layout_marginEnd="8dp"
             android:backgroundTint="@color/colorPrimary"
             android:text="Calcular"
             android:textColor="@android:color/white"/>
     </LinearLayout>
+
+    <Button
+        android:id="@+id/btnAgregarANotas"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/colorGreen"
+        android:text="Agregar a Notas"
+        android:textColor="@android:color/white"
+        android:visibility="gone"/>
 </LinearLayout>

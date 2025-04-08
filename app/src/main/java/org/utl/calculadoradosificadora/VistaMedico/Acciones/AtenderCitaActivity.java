@@ -31,11 +31,14 @@ import org.utl.calculadoradosificadora.VistaMedico.Opciones.SeguridadActivity;
 import org.utl.calculadoradosificadora.model.Cita;
 import org.utl.calculadoradosificadora.model.Medicamento;
 import org.utl.calculadoradosificadora.model.Nota;
+import org.utl.calculadoradosificadora.model.Paciente;
+import org.utl.calculadoradosificadora.model.Persona;
 import org.utl.calculadoradosificadora.service.ApiClient;
 import org.utl.calculadoradosificadora.service.ApiResponse;
 import org.utl.calculadoradosificadora.service.CitaService;
 import org.utl.calculadoradosificadora.service.MedicamentoService;
 import org.utl.calculadoradosificadora.service.NotaService;
+import org.utl.calculadoradosificadora.service.PacienteService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,6 +61,7 @@ public class AtenderCitaActivity extends AppCompatActivity {
     private Spinner spinnerMedicamentos;
     private EditText etPesoCalculadora;
     private TextView tvEdadCalculadora, tvGeneroCalculadora;
+    private TextView tvResultadoCalculadora;
 
     // Navigation
     private DrawerLayout drawerLayout;
@@ -68,6 +72,7 @@ public class AtenderCitaActivity extends AppCompatActivity {
     private Cita cita;
     private List<Medicamento> medicamentos = new ArrayList<>();
     private Medicamento medicamentoSeleccionado;
+    private String resultadoCalculadora;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,7 +93,7 @@ public class AtenderCitaActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
         TextView tvTitulo = findViewById(R.id.tvTituloToolbar);
-        tvTitulo.setText("Atendiendo");
+        tvTitulo.setText("Atendiendo Cita");
     }
 
     private void setupNavigationDrawer() {
@@ -176,21 +181,20 @@ public class AtenderCitaActivity extends AppCompatActivity {
 
         // Datos del titular
         if (cita.getTitular() != null) {
-            tvTitularUsuario.setText("Usuario: " + cita.getTitular().getUsuario().getUsuario());
-            tvTitularNombre.setText("Nombre: " + cita.getTitular().getPersona().getNombre() + " " +
-                    cita.getTitular().getPersona().getApellidos());
-            tvTitularGenero.setText("Género: " + (cita.getTitular().getPersona().getGenero() == 1 ? "Masculino" : "Femenino"));
-            tvTitularCorreo.setText("Correo: " + cita.getTitular().getUsuario().getCorreo());
+            tvTitularUsuario.setText("Usuario: " + cita.getTitular().getUsuarioNombre());
+            tvTitularNombre.setText("Nombre: " + cita.getTitular().getNombre() + " " +
+                    cita.getTitular().getApellidos());
+            tvTitularGenero.setText("Género: " + cita.getTitular().getGenero());
+            tvTitularCorreo.setText("Correo: " + cita.getTitular().getCorreo());
             tvTitularTelefono.setText("Teléfono: " + cita.getTitular().getTelefono());
         }
 
         // Datos del paciente
         if (cita.getPaciente() != null) {
-            tvPacienteNombre.setText("Nombre: " + cita.getPaciente().getPersona().getNombre() + " " +
-                    cita.getPaciente().getPersona().getApellidos());
+            tvPacienteNombre.setText("Nombre: " + cita.getPaciente().getNombreCompleto());
             tvPacienteEdad.setText("Edad: " + cita.getPaciente().getEdad() + " años");
             tvPacienteGenero.setText("Género: " + (cita.getPaciente().getPersona().getGenero() == 1 ? "Masculino" : "Femenino"));
-            etPesoPaciente.setText(String.valueOf(cita.getPaciente().getPeso()));
+            etPesoPaciente.setText(String.format("%.5f", cita.getPaciente().getPeso()));
         }
     }
 
@@ -217,7 +221,7 @@ public class AtenderCitaActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<ApiResponse<List<Medicamento>>> call, Throwable t) {
-                Toast.makeText(AtenderCitaActivity.this, "Error de conexión", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AtenderCitaActivity.this, "Error de conexión: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -233,6 +237,7 @@ public class AtenderCitaActivity extends AppCompatActivity {
         etPesoCalculadora = view.findViewById(R.id.etPesoCalculadora);
         tvEdadCalculadora = view.findViewById(R.id.tvEdadCalculadora);
         tvGeneroCalculadora = view.findViewById(R.id.tvGeneroCalculadora);
+        tvResultadoCalculadora = view.findViewById(R.id.tvResultadoCalculadora);
         Button btnCalcular = view.findViewById(R.id.btnCalcularDialog);
         Button btnCancelar = view.findViewById(R.id.btnCancelarDialog);
 
@@ -254,7 +259,7 @@ public class AtenderCitaActivity extends AppCompatActivity {
 
         btnCalcular.setOnClickListener(v -> {
             calcularDosis();
-            dialog.dismiss();
+            // No cerramos el diálogo para que el médico pueda ver el resultado
         });
 
         btnCancelar.setOnClickListener(v -> dialog.dismiss());
@@ -267,91 +272,149 @@ public class AtenderCitaActivity extends AppCompatActivity {
             medicamentoSeleccionado = (Medicamento) spinnerMedicamentos.getSelectedItem();
             double peso = Double.parseDouble(etPesoCalculadora.getText().toString());
 
-            // Actualizar peso en pantalla principal si cambió
-            etPesoPaciente.setText(String.valueOf(peso));
+            // Validar peso
+            if (peso <= 0) {
+                Toast.makeText(this, "El peso debe ser mayor a cero", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            // Actualizar peso en pantalla principal
+            etPesoPaciente.setText(String.format("%.5f", peso));
 
             // Calcular dosis según medicamento
             double dosis = calcularDosisMedicamento(medicamentoSeleccionado, peso);
 
-            // Mostrar resultado
-            String mensaje = String.format(
-                    "Dosis recomendada para:\n%s %s\n\n%.2f ml\n\nPara un paciente de género: %s\ncon peso de: %.2f kg",
+            // Formatear resultado con 5 decimales
+            resultadoCalculadora = String.format(
+                    "Dosis recomendada para %s %s:\n\n%.5f ml\n\nPara un paciente de %d años, género %s con peso de %.5f kg",
                     medicamentoSeleccionado.getNombre(),
                     medicamentoSeleccionado.getPresentacion(),
                     dosis,
+                    cita.getPaciente().getEdad(),
                     (cita.getPaciente().getPersona().getGenero() == 1 ? "Masculino" : "Femenino"),
                     peso
             );
 
-            new AlertDialog.Builder(this)
-                    .setTitle("Resultado")
-                    .setMessage(mensaje)
-                    .setPositiveButton("OK", null)
-                    .show();
+            // Mostrar resultado en el diálogo
+            tvResultadoCalculadora.setText(resultadoCalculadora);
+            tvResultadoCalculadora.setVisibility(View.VISIBLE);
 
+        } catch (NumberFormatException e) {
+            Toast.makeText(this, "Ingrese un peso válido", Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
-            Toast.makeText(this, "Error en cálculo", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Error en cálculo: " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
     private double calcularDosisMedicamento(Medicamento medicamento, double peso) {
-        // Lógica de cálculo específica para cada medicamento
+        // Lógica de cálculo específica para cada medicamento con precisión de 5 decimales
         switch (medicamento.getIdMedicamentos()) {
             case 1: // Paracetamol
-                return (peso * 15) / 500; // 15mg/kg/dosis (tabletas de 500mg)
+                return (peso * 15.0) / 500.0; // 15mg/kg/dosis (tabletas de 500mg)
             case 2: // Ibuprofeno (100mg/5ml)
-                return (peso * 5) / 20; // 5-10mg/kg/dosis
+                return (peso * 5.0) / 20.0; // 5-10mg/kg/dosis
             case 3: // Amoxicilina (250mg/5ml)
-                return (peso * 20) / 50; // 20-40mg/kg/día dividido cada 8-12h
+                return (peso * 20.0) / 50.0; // 20-40mg/kg/día dividido cada 8-12h
             case 4: // Dexametasona (0.5mg/ml)
                 return (peso * 0.15) / 0.5; // 0.15mg/kg/dosis
             case 5: // Salbutamol (2mg/5ml)
                 return (peso * 0.1) / 0.4; // 0.1mg/kg/dosis (máx 2.5mg)
             default:
-                return 0;
+                return 0.0;
         }
     }
 
     private void finalizarConsulta() {
-        // 1. Actualizar peso del paciente si cambió
+        // 1. Validar y actualizar peso del paciente
         try {
             double nuevoPeso = Double.parseDouble(etPesoPaciente.getText().toString());
+            if (nuevoPeso <= 0) {
+                Toast.makeText(this, "El peso debe ser mayor a cero", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            // Actualizar el objeto paciente localmente
             cita.getPaciente().setPeso(nuevoPeso);
-        } catch (Exception e) {
-            Toast.makeText(this, "Peso no válido", Toast.LENGTH_SHORT).show();
+
+            // Aquí deberías llamar al servicio para actualizar el peso en el backend
+            actualizarPesoPaciente(cita.getPaciente().getIdPaciente(), nuevoPeso);
+
+        } catch (NumberFormatException e) {
+            Toast.makeText(this, "Ingrese un peso válido", Toast.LENGTH_SHORT).show();
             return;
         }
 
         // 2. Marcar cita como atendida
+        marcarCitaComoAtendida();
+    }
+
+    private void actualizarPesoPaciente(int idPaciente, double nuevoPeso) {
+        PacienteService pacienteService = ApiClient.getClient().create(PacienteService.class);
+
+        // Crear un objeto Paciente mínimo con solo el ID y el peso para la actualización
+        Paciente paciente = new Paciente();
+        paciente.setIdPaciente(idPaciente);
+        paciente.setPeso(nuevoPeso);
+
+        // Crear un objeto Persona mínimo para evitar errores de serialización
+        Persona persona = new Persona();
+        persona.setIdPersona(cita.getPaciente().getPersona().getIdPersona());
+        paciente.setPersona(persona);
+
+        Call<ApiResponse<Paciente>> call = pacienteService.updatePaciente(idPaciente, paciente);
+        call.enqueue(new Callback<ApiResponse<Paciente>>() {
+            @Override
+            public void onResponse(Call<ApiResponse<Paciente>> call, Response<ApiResponse<Paciente>> response) {
+                if (!response.isSuccessful() || response.body() == null || !response.body().isSuccess()) {
+                    Toast.makeText(AtenderCitaActivity.this,
+                            "Error al actualizar peso del paciente",
+                            Toast.LENGTH_SHORT).show();
+                } else {
+                    // Actualización exitosa
+                    cita.getPaciente().setPeso(nuevoPeso);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ApiResponse<Paciente>> call, Throwable t) {
+                Toast.makeText(AtenderCitaActivity.this,
+                        "Error de conexión al actualizar peso: " + t.getMessage(),
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void marcarCitaComoAtendida() {
         CitaService citaService = ApiClient.getClient().create(CitaService.class);
         citaService.atenderCita(cita.getIdCita()).enqueue(new Callback<ApiResponse<Void>>() {
             @Override
             public void onResponse(Call<ApiResponse<Void>> call, Response<ApiResponse<Void>> response) {
-                if (response.isSuccessful()) {
+                if (response.isSuccessful() && response.body() != null && response.body().isSuccess()) {
                     guardarNotas();
                 } else {
-                    Toast.makeText(AtenderCitaActivity.this, "Error al finalizar", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AtenderCitaActivity.this, "Error al marcar cita como atendida", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<ApiResponse<Void>> call, Throwable t) {
-                Toast.makeText(AtenderCitaActivity.this, "Error de conexión", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AtenderCitaActivity.this, "Error de conexión: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     private void guardarNotas() {
-        if (etNotas.getText().toString().isEmpty() && medicamentoSeleccionado == null) {
-            finishWithSuccess();
-            return;
+        String notasCompletas = etNotas.getText().toString();
+
+        // Agregar resultado de calculadora si existe
+        if (resultadoCalculadora != null && !resultadoCalculadora.isEmpty()) {
+            notasCompletas += "\n\n" + resultadoCalculadora;
         }
 
-        String notasCompletas = etNotas.getText().toString();
-        if (medicamentoSeleccionado != null) {
-            notasCompletas += "\n\nMedicamento recetado: " +
-                    medicamentoSeleccionado.getNombre() + " " +
-                    medicamentoSeleccionado.getPresentacion();
+        // Si no hay nada que guardar, terminamos
+        if (notasCompletas.trim().isEmpty()) {
+            finishWithSuccess();
+            return;
         }
 
         Nota nota = new Nota();
@@ -362,13 +425,18 @@ public class AtenderCitaActivity extends AppCompatActivity {
         notaService.insertNota(nota).enqueue(new Callback<ApiResponse<Nota>>() {
             @Override
             public void onResponse(Call<ApiResponse<Nota>> call, Response<ApiResponse<Nota>> response) {
-                finishWithSuccess();
+                if (response.isSuccessful() && response.body() != null && response.body().isSuccess()) {
+                    finishWithSuccess();
+                } else {
+                    Toast.makeText(AtenderCitaActivity.this, "Error al guardar notas", Toast.LENGTH_SHORT).show();
+                    finishWithSuccess(); // Terminamos igual aunque no se guardaron las notas
+                }
             }
 
             @Override
             public void onFailure(Call<ApiResponse<Nota>> call, Throwable t) {
-                Toast.makeText(AtenderCitaActivity.this, "Notas no guardadas", Toast.LENGTH_SHORT).show();
-                finishWithSuccess();
+                Toast.makeText(AtenderCitaActivity.this, "Error de conexión al guardar notas", Toast.LENGTH_SHORT).show();
+                finishWithSuccess(); // Terminamos igual aunque no se guardaron las notas
             }
         });
     }

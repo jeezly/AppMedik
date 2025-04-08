@@ -73,12 +73,5 @@ public class Usuario implements Serializable {
     }
 
     @Override
-    public String toString() {
-        return "Usuario{" +
-                "idUsuario=" + idUsuario +
-                ", usuario='" + usuario + '\'' +
-                ", correo='" + correo + '\'' +
-                ", idPersona=" + idPersona + // ← Incluido en toString
-                '}';
-    }
+    public String toString() { return getUsuario(); }
 }

@@ -3,6 +3,7 @@ package org.utl.calculadoradosificadora.VistaMedico.Acciones;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -26,9 +27,18 @@ import org.utl.calculadoradosificadora.VistaMedico.Opciones.NotificacionesActivi
 import org.utl.calculadoradosificadora.VistaMedico.Opciones.PerfilActivity;
 import org.utl.calculadoradosificadora.VistaMedico.Opciones.SeguridadActivity;
 import org.utl.calculadoradosificadora.VistaMedico.VistaMedico;
+import org.utl.calculadoradosificadora.model.Persona;
 import org.utl.calculadoradosificadora.model.Titular;
+import org.utl.calculadoradosificadora.model.Usuario;
+import org.utl.calculadoradosificadora.service.ApiClient;
+import org.utl.calculadoradosificadora.service.ApiResponse;
+import org.utl.calculadoradosificadora.service.TitularService;
 
 import java.util.Random;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class RegistrarTitularActivity extends AppCompatActivity {
 
@@ -39,7 +49,7 @@ public class RegistrarTitularActivity extends AppCompatActivity {
     private TextView tvClaveTitular, tvUsuario;
     private EditText etCorreo, etTelefono, etNombre, etApellidos, etGenero;
     private Button btnCancelar, btnRegistrar;
-
+    private int idTitular;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,20 +94,7 @@ public class RegistrarTitularActivity extends AppCompatActivity {
 
                 );
 
-                // Aquí deberías guardar el titular en tu base de datos
-                // Por ahora solo mostramos un mensaje
-
-                new AlertDialog.Builder(this)
-                        .setTitle("Registro de usuario")
-                        .setMessage("Titular registrado con Éxito su usuario es: " + usuario)
-                        .setPositiveButton("OK", (dialog, which) -> {
-                            // Regresar a la actividad de titulares
-                            Intent intent = new Intent(RegistrarTitularActivity.this, TitularesActivity.class);
-                            intent.putExtra("nuevoTitular", titular);
-                            startActivity(intent);
-                            finish();
-                        })
-                        .show();
+                insertTitular(fillTitularInsert());
             } else {
                 new AlertDialog.Builder(this)
                         .setTitle("Registro de usuario")
@@ -171,6 +168,82 @@ public class RegistrarTitularActivity extends AppCompatActivity {
                 !etGenero.getText().toString().isEmpty();
     }
 
+    private void insertTitular(Titular titular){
+        TitularService service = ApiClient.getClient().create(TitularService.class);
+        Call<ApiResponse<Titular>> call = service.insertTitular(titular);
+
+        call.enqueue(new Callback<ApiResponse<Titular>>() {
+            @Override
+            public void onResponse(Call<ApiResponse<Titular>> call, Response<ApiResponse<Titular>> response) {
+                if (response.isSuccessful() && response.body() != null){
+                    ApiResponse<Titular> apiResponse = response.body();
+                    if(apiResponse.isSuccess()){
+                        Toast.makeText(getBaseContext(), "Titular insertado!!", Toast.LENGTH_SHORT).show();
+                        new AlertDialog.Builder(getBaseContext())
+                                .setTitle("Registro de usuario")
+                                .setMessage("Titular registrado con Éxito")
+                                .setPositiveButton("OK", (dialog, which) -> {
+                                    finish();
+                                })
+                                .show();
+                    }else{
+                        showError(apiResponse.getMessage());
+                        Log.e("API ERROR", "Error en la respuesta: " + apiResponse.getMessage());
+                    }
+                }else {
+                    try {
+                        String errorBody = response.errorBody() != null ?
+                                response.errorBody().string() : "empty error body";
+                        showError("Error del servidor: " + errorBody);
+                        Log.e("API_ERROR", "Error body: " + errorBody);
+                    } catch (Exception e) {
+                        Log.e("API_ERROR", "Error al leer errorBody", e);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ApiResponse<Titular>> call, Throwable t) {
+                showError("Error de red: " + t.getMessage());
+                Log.e("API_ERROR", "Error de red", t);
+            }
+        });
+
+    }
+
+    private Titular fillTitularInsert(){
+        idTitular = (int) getIntent().getSerializableExtra("idTitular");
+        //System.out.println(idTitular);
+        //Obtenemos los datos de persona
+        Persona personaTitular = new Persona();
+        //personaTitular.setIdPersona();
+        personaTitular.setNombre(etNombre.getText().toString());
+        personaTitular.setApellidos(etApellidos.getText().toString());
+//        int generoSeleccionado = spGenero.getSelectedItemPosition(); // 0 -> Masculino, 1 -> Femenino
+//        personaTitular.setGenero(generoSeleccionado + 1); // 1 -> Masculino, 2 -> Femenino
+        personaTitular.setGenero(etGenero.getText().length());
+        personaTitular.setEstado(1);
+        //Obtenemos los datos de usuario
+        Usuario usuarioTitular = new Usuario();
+        //usuarioTitular.setIdUsuario(0);
+        usuarioTitular.setUsuario(tvUsuario.getText().toString());
+        usuarioTitular.setCorreo(etCorreo.getText().toString());
+        usuarioTitular.setContrasenia("default");
+        //usuarioTitular.setIdPersona();
+        usuarioTitular.setToken(null);
+
+        //Cargamos el modelo Titular
+        Titular titularInsert = new Titular();
+        titularInsert.setIdTitular(idTitular);
+        titularInsert.setTelefono(etTelefono.getText().toString());
+        titularInsert.setPersona(personaTitular);
+        titularInsert.setUsuario(usuarioTitular);
+        return titularInsert;
+    }
+
+    private void showError(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
     private void cerrarSesion() {
         SharedPreferences preferences = getSharedPreferences("Sesion", MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();

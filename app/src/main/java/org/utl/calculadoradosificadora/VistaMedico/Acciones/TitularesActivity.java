@@ -7,6 +7,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
@@ -55,10 +56,10 @@ public class TitularesActivity extends AppCompatActivity implements TitularesAda
     private SearchView searchView;
     private ProgressBar progressBarTitular;
     private TextView tvEmptyViewT;
+    private Button btnSalirT;
 
     private ImageView ivRegistrarTitular;
     private List<Titular> listaTitulares = new ArrayList<>();
-    private List<Titular> listaTitularesFiltrada = new ArrayList<>();
     private Spinner spinnerFiltro;
 
     @Override
@@ -73,8 +74,10 @@ public class TitularesActivity extends AppCompatActivity implements TitularesAda
 
         ivRegistrarTitular.setOnClickListener(v -> {
             Intent intent = new Intent(TitularesActivity.this, RegistrarTitularActivity.class);
+            intent.putExtra("idTitular", listaTitulares.size() + 1);
             startActivity(intent);
         });
+        btnSalirT.setOnClickListener(v -> {finish();});
     }
 
     private void initializeViews(){
@@ -86,8 +89,9 @@ public class TitularesActivity extends AppCompatActivity implements TitularesAda
         recyclerViewT.setLayoutManager(new LinearLayoutManager(this));
         adapter = new TitularesAdapter(listaTitulares, this);
         recyclerViewT.setAdapter(adapter);
-        // Configurar botón de registrar titular
+        // Configurar botón de registrar titular y salir
         ivRegistrarTitular = findViewById(R.id.ivRegistrarTitular);
+        btnSalirT = findViewById(R.id.btnSalirT);
 
         // Configurar SearchView
         searchView = findViewById(R.id.searchViewTitulares);
@@ -249,7 +253,7 @@ public class TitularesActivity extends AppCompatActivity implements TitularesAda
     }
     @Override
     public void onItemClick(Titular titular) {
-        Intent intent = new Intent(this, DetallesTitularActivity.class);
+        Intent intent = new Intent(TitularesActivity.this, DetallesTitularActivity.class);
         intent.putExtra("titular", titular);
         startActivity(intent);
     }

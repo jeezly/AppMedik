@@ -59,6 +59,9 @@
         <!-- Titulares (Módulo secundario) -->
         <activity android:name=".VistaMedico.Acciones.TitularesActivity" android:exported="false"/>
         <activity android:name=".VistaMedico.Acciones.RegistrarTitularActivity" android:exported="false"/>
+        <activity android:name=".VistaMedico.Acciones.DetallesTitularActivity" android:exported="false"/>
+        <activity android:name=".VistaMedico.Acciones.ModificarTitularActivity" android:exported="false"/>
+
 
         <!-- ==================== VISTA TITULAR ==================== -->
         <activity android:name=".VistaTitular.VistaTitular" android:exported="false"/>

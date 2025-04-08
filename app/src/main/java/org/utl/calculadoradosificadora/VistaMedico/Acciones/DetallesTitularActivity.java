@@ -3,12 +3,14 @@ package org.utl.calculadoradosificadora.VistaMedico.Acciones;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -24,7 +26,15 @@ import org.utl.calculadoradosificadora.VistaMedico.Opciones.NotificacionesActivi
 import org.utl.calculadoradosificadora.VistaMedico.Opciones.PerfilActivity;
 import org.utl.calculadoradosificadora.VistaMedico.Opciones.SeguridadActivity;
 import org.utl.calculadoradosificadora.VistaMedico.VistaMedico;
+import org.utl.calculadoradosificadora.model.Persona;
 import org.utl.calculadoradosificadora.model.Titular;
+import org.utl.calculadoradosificadora.service.ApiClient;
+import org.utl.calculadoradosificadora.service.ApiResponse;
+import org.utl.calculadoradosificadora.service.TitularService;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class DetallesTitularActivity extends AppCompatActivity {
 
@@ -98,7 +108,8 @@ public class DetallesTitularActivity extends AppCompatActivity {
                 .setMessage(R.string.confirmar_eliminar)
                 .setPositiveButton(R.string.si, (dialog, which) -> {
                     // Aquí iría la lógica para eliminar de la base de datos
-                    Toast.makeText(this, R.string.titular_eliminado, Toast.LENGTH_SHORT).show();
+                    deleteTitular(titular.getIdTitular()); //QUEDA PENDIENTE EL FILL
+                    //Toast.makeText(this, R.string.titular_eliminado, Toast.LENGTH_SHORT).show();
                     setResult(RESULT_OK);
                     finish();
                 })
@@ -106,6 +117,58 @@ public class DetallesTitularActivity extends AppCompatActivity {
                 .show();
     }
 
+    private void deleteTitular(int idTitular){
+        TitularService service = ApiClient.getClient().create(TitularService.class);
+        Call<ApiResponse<Void>> call = service.deleteTitular(idTitular);
+
+        call.enqueue(new Callback<ApiResponse<Void>>() {
+            @Override
+            public void onResponse(Call<ApiResponse<Void>> call, Response<ApiResponse<Void>> response) {
+                if (response.isSuccessful() && response.body() != null){
+                    ApiResponse<Void> apiResponse = response.body();
+                    if(apiResponse.isSuccess()){
+                        Toast.makeText(getBaseContext(), "Titular eliminado correctamente", Toast.LENGTH_SHORT).show();
+                        new AlertDialog.Builder(getBaseContext())
+                                .setTitle("Eliminación")
+                                .setMessage("Titular eliminado con Éxito")
+                                .setPositiveButton("OK", (dialog, which) -> {
+                                    finish();
+                                })
+                                .show();
+                    }else{
+                        showError(apiResponse.getMessage());
+                        Log.e("API ERROR", "Error en la respuesta: " + apiResponse.getMessage());
+                    }
+                }else {
+                    try {
+                        String errorBody = response.errorBody() != null ?
+                                response.errorBody().string() : "empty error body";
+                        showError("Error del servidor: " + errorBody);
+                        Log.e("API_ERROR", "Error body: " + errorBody);
+                    } catch (Exception e) {
+                        Log.e("API_ERROR", "Error al leer errorBody", e);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ApiResponse<Void>> call, Throwable t) {
+                showError("Error de red: " + t.getMessage());
+                Log.e("API_ERROR", "Error de red", t);
+            }
+        });
+    }
+
+    private void showError(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    private Titular fillTitular(){
+        Persona personaT = new Persona();
+
+        //ESTE NO SE REGRESA, FALTA EL FILL CHIDO
+        return titular;
+    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

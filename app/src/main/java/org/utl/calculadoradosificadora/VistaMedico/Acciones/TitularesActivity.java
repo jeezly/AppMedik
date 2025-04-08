@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -57,6 +58,8 @@ public class TitularesActivity extends AppCompatActivity implements TitularesAda
 
     private ImageView ivRegistrarTitular;
     private List<Titular> listaTitulares = new ArrayList<>();
+    private List<Titular> listaTitularesFiltrada = new ArrayList<>();
+    private Spinner spinnerFiltro;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,20 +75,6 @@ public class TitularesActivity extends AppCompatActivity implements TitularesAda
             Intent intent = new Intent(TitularesActivity.this, RegistrarTitularActivity.class);
             startActivity(intent);
         });
-
-
-//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-//            @Override
-//            public boolean onQueryTextSubmit(String query) {
-//                return false;
-//            }
-//
-//            @Override
-//            public boolean onQueryTextChange(String newText) {
-//                adapter.filtrar(newText);
-//                return false;
-//            }
-//        });
     }
 
     private void initializeViews(){
@@ -97,21 +86,45 @@ public class TitularesActivity extends AppCompatActivity implements TitularesAda
         recyclerViewT.setLayoutManager(new LinearLayoutManager(this));
         adapter = new TitularesAdapter(listaTitulares, this);
         recyclerViewT.setAdapter(adapter);
+        // Configurar botón de registrar titular
+        ivRegistrarTitular = findViewById(R.id.ivRegistrarTitular);
 
         // Configurar SearchView
         searchView = findViewById(R.id.searchViewTitulares);
-        // Configurar botón de registrar titular
-        ivRegistrarTitular = findViewById(R.id.ivRegistrarTitular);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                aplicarFiltros();
+                return true;
+            }
+        });
+
     }
 
     private void setupSippner(){
         // Configurar Spinner de filtro
-        Spinner spinnerFiltro = findViewById(R.id.spinnerFiltro);
+        spinnerFiltro = findViewById(R.id.spinnerFiltro);
         ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(this,
-                R.array.genero_array, android.R.layout.simple_spinner_item);
+                R.array.genero_array_titulares, android.R.layout.simple_spinner_item);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerFiltro.setAdapter(spinnerAdapter);
+        spinnerFiltro.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                aplicarFiltros();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {}
+        });
     }
+
+
 
     private void setupToolbarAndDrawers(){
         // Configurar el menú lateral
@@ -210,6 +223,11 @@ public class TitularesActivity extends AppCompatActivity implements TitularesAda
         });
     }
 
+    private void aplicarFiltros(){
+        String texto = searchView.getQuery().toString();
+        String generoSeleccionado = spinnerFiltro.getSelectedItem().toString();
+        adapter.filtrar(texto, generoSeleccionado);
+    }
     private void showError(String message) {
         tvEmptyViewT.setText(message);
         tvEmptyViewT.setVisibility(View.VISIBLE);

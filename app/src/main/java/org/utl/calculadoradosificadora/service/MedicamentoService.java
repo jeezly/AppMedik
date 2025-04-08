@@ -9,6 +9,6 @@ import retrofit2.Call;
 import retrofit2.http.GET;
 
 public interface MedicamentoService {
-    @GET("GetAllMedicamento")
+    @GET("getAllMedicamento")
     Call<ApiResponse<List<Medicamento>>> getAllMedicamento();
 }

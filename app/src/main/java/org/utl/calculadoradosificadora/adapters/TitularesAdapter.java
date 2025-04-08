@@ -18,16 +18,16 @@ import java.util.List;
 public class TitularesAdapter extends RecyclerView.Adapter<TitularesAdapter.ViewHolder> {
 
     private List<Titular> listaTitulares;
-    private TitularesAdapter.OnItemClickListener listener;
     private List<Titular> listaTitularesFiltrada;
+    private TitularesAdapter.OnItemClickListener listener;
 
     public interface  OnItemClickListener {
         void onItemClick(Titular titular);
     }
 
     public TitularesAdapter(List<Titular> listaTitulares, TitularesAdapter.OnItemClickListener listener) {
-        this.listaTitulares = listaTitulares;
-//        this.listaTitularesFiltrada = new ArrayList<>(listaTitulares);
+        this.listaTitulares = new ArrayList<>(listaTitulares);
+        this.listaTitularesFiltrada = new ArrayList<>(listaTitulares);
         this.listener = listener;
     }
 
@@ -40,19 +40,13 @@ public class TitularesAdapter extends RecyclerView.Adapter<TitularesAdapter.View
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Titular titular = listaTitulares.get(position);
+        Titular titular = listaTitularesFiltrada.get(position);
         holder.bind(titular, listener);
-        // Manejar clic en el elemento
-//        holder.itemView.setOnClickListener(v -> {
-//            Intent intent = new Intent(v.getContext(), DetallesTitularActivity.class);
-//            intent.putExtra("titular", titular); // Pasar el titular seleccionado
-//            v.getContext().startActivity(intent);
-//        });
     }
 
     @Override
     public int getItemCount() {
-        return listaTitulares.size();
+        return listaTitularesFiltrada.size();
     }
 
 //    public void filtrar(String texto) {
@@ -70,24 +64,51 @@ public class TitularesAdapter extends RecyclerView.Adapter<TitularesAdapter.View
 //        notifyDataSetChanged();
 //    }
     public void updateData(List<Titular> newTitulares) {
-        listaTitulares = newTitulares;
+        this.listaTitulares = new ArrayList<>(newTitulares);
+        this.listaTitularesFiltrada = new ArrayList<>(newTitulares);
         notifyDataSetChanged();
     }
 
+    public void filtrar(String texto, String generoSeleccionado) {
+        listaTitularesFiltrada.clear();
+
+        for (Titular titular : listaTitulares) {
+            // Filtro por nombre (insensible a mayúsculas/minúsculas)
+            boolean coincideNombre = texto == null || texto.isEmpty() ||
+                    titular.getNombre().toLowerCase().contains(texto.toLowerCase());
+
+            // Filtro por género usando el método del modelo
+            String generoTitularTexto = titular.getGenero();
+            boolean coincideGenero = generoSeleccionado == null || generoSeleccionado.equalsIgnoreCase("Todos")
+                    || generoTitularTexto.equalsIgnoreCase(generoSeleccionado);
+
+            if (coincideNombre && coincideGenero) {
+                listaTitularesFiltrada.add(titular);
+            }
+        }
+        notifyDataSetChanged();
+    }
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView itvClaveTitular;
         TextView itvCNombreTitular;
+        TextView itvCorreoTitular;
+        TextView itvTelefonoTitular;
+
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             itvClaveTitular = itemView.findViewById(R.id.itvClaveTitular);
             itvCNombreTitular = itemView.findViewById(R.id.itvCNombreTitular);
+            itvCorreoTitular = itemView.findViewById(R.id.itvCorreoTitular);
+            itvTelefonoTitular = itemView.findViewById(R.id.itvTelefonoTitular);
         }
 
         public void bind(final Titular titular, final OnItemClickListener listener){
             if(titular != null){
                 itvClaveTitular.setText("Clave: " + titular.getIdTitular());
                 itvCNombreTitular.setText(titular.getNombre() + " " + titular.getApellidos());
+                itvCorreoTitular.setText("Correo electrónico: " + titular.getUsuario().getCorreo());
+                itvTelefonoTitular.setText("Teléfono: " + titular.getTelefono());
             }else{
                 itvCNombreTitular.setText("Clave: XXXXXX");
                 itvCNombreTitular.setText("Titular no disponible");

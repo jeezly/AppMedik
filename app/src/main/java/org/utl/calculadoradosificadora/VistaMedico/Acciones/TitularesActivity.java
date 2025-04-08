@@ -4,10 +4,15 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
@@ -28,64 +33,87 @@ import org.utl.calculadoradosificadora.VistaMedico.Opciones.SeguridadActivity;
 import org.utl.calculadoradosificadora.VistaMedico.VistaMedico;
 import org.utl.calculadoradosificadora.adapters.TitularesAdapter;
 import org.utl.calculadoradosificadora.model.Titular;
+import org.utl.calculadoradosificadora.service.ApiClient;
+import org.utl.calculadoradosificadora.service.ApiResponse;
+import org.utl.calculadoradosificadora.service.TitularService;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class TitularesActivity extends AppCompatActivity {
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+public class TitularesActivity extends AppCompatActivity implements TitularesAdapter.OnItemClickListener{
 
     private DrawerLayout drawerLayout;
     private NavigationView navigationViewLeft;
     private NavigationView navigationViewRight;
-    private RecyclerView recyclerView;
+    private RecyclerView recyclerViewT;
     private TitularesAdapter adapter;
-    private List<Titular> listaTitulares;
+    private SearchView searchView;
+    private ProgressBar progressBarTitular;
+    private TextView tvEmptyViewT;
+
     private ImageView ivRegistrarTitular;
+    private List<Titular> listaTitulares = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_titulares);
 
-        // Configurar el RecyclerView
-        recyclerView = findViewById(R.id.rvTitulares);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        setupToolbarAndDrawers();
+        initializeViews();
+        setupSippner();
+        loadTitulares();
 
-        // Inicializar lista de titulares (esto debería venir de tu base de datos)
-        listaTitulares = new ArrayList<>();
-
-        adapter = new TitularesAdapter(listaTitulares);
-        recyclerView.setAdapter(adapter);
-
-        // Configurar SearchView
-        SearchView searchView = findViewById(R.id.searchView);
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                adapter.filtrar(newText);
-                return false;
-            }
+        ivRegistrarTitular.setOnClickListener(v -> {
+            Intent intent = new Intent(TitularesActivity.this, RegistrarTitularActivity.class);
+            startActivity(intent);
         });
 
+
+//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+//            @Override
+//            public boolean onQueryTextSubmit(String query) {
+//                return false;
+//            }
+//
+//            @Override
+//            public boolean onQueryTextChange(String newText) {
+//                adapter.filtrar(newText);
+//                return false;
+//            }
+//        });
+    }
+
+    private void initializeViews(){
+        //Configurar carga titulares
+        progressBarTitular = findViewById(R.id.progressBarTitular);
+        tvEmptyViewT = findViewById(R.id.tvEmptyViewT);
+        // Configurar el RecyclerView
+        recyclerViewT = findViewById(R.id.rvTitulares);
+        recyclerViewT.setLayoutManager(new LinearLayoutManager(this));
+        adapter = new TitularesAdapter(listaTitulares, this);
+        recyclerViewT.setAdapter(adapter);
+
+        // Configurar SearchView
+        searchView = findViewById(R.id.searchViewTitulares);
+        // Configurar botón de registrar titular
+        ivRegistrarTitular = findViewById(R.id.ivRegistrarTitular);
+    }
+
+    private void setupSippner(){
         // Configurar Spinner de filtro
         Spinner spinnerFiltro = findViewById(R.id.spinnerFiltro);
         ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(this,
                 R.array.genero_array, android.R.layout.simple_spinner_item);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerFiltro.setAdapter(spinnerAdapter);
+    }
 
-        // Configurar botón de registrar titular
-        ivRegistrarTitular = findViewById(R.id.ivRegistrarTitular);
-        ivRegistrarTitular.setOnClickListener(v -> {
-            Intent intent = new Intent(TitularesActivity.this, RegistrarTitularActivity.class);
-            startActivity(intent);
-        });
-
+    private void setupToolbarAndDrawers(){
         // Configurar el menú lateral
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationViewLeft = findViewById(R.id.navigation_view_left);
@@ -96,51 +124,99 @@ public class TitularesActivity extends AppCompatActivity {
 
         // Abrir menú derecho
         findViewById(R.id.options_icon).setOnClickListener(v -> drawerLayout.openDrawer(GravityCompat.END));
-
-        // Manejar las opciones del menú izquierdo
-        navigationViewLeft.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                int id = item.getItemId();
-
-                if (id == R.id.menu_inicio) {
-                    startActivity(new Intent(TitularesActivity.this, VistaMedico.class));
-                } else if (id == R.id.menu_protocolos) {
-                    startActivity(new Intent(TitularesActivity.this, ProtocolosActivity.class));
-                } else if (id == R.id.menu_sobre_nosotros) {
-                    startActivity(new Intent(TitularesActivity.this, SobreNosotrosActivity.class));
-                } else if (id == R.id.menu_soporte) {
-                    startActivity(new Intent(TitularesActivity.this, SoporteActivity.class));
-                }
-
-                drawerLayout.closeDrawer(GravityCompat.START);
-                return true;
-            }
+        navigationViewLeft.setNavigationItemSelectedListener(item -> {
+            int id = item.getItemId();
+            handleLeftMenuSelection(id);
+            drawerLayout.closeDrawer(GravityCompat.START);
+            return true;
         });
 
-        // Manejar las opciones del menú derecho
-        navigationViewRight.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+        navigationViewRight.setNavigationItemSelectedListener(item -> {
+            int id = item.getItemId();
+            handleRightMenuSelection(id);
+            drawerLayout.closeDrawer(GravityCompat.END);
+            return true;
+        });
+    }
+
+    private void handleLeftMenuSelection(int id) {
+        if (id == R.id.menu_inicio) {
+            startActivity(new Intent(this, VistaMedico.class));
+        } else if (id == R.id.menu_protocolos) {
+            startActivity(new Intent(this, ProtocolosActivity.class));
+        } else if (id == R.id.menu_sobre_nosotros) {
+            startActivity(new Intent(this, SobreNosotrosActivity.class));
+        } else if (id == R.id.menu_soporte) {
+            startActivity(new Intent(this, SoporteActivity.class));
+        }
+    }
+
+    private void handleRightMenuSelection(int id) {
+        if (id == R.id.opciones_perfil) {
+            startActivity(new Intent(this, PerfilActivity.class));
+        } else if (id == R.id.opciones_configuracion) {
+            startActivity(new Intent(this, ConfiguracionActivity.class));
+        } else if (id == R.id.opciones_seguridad) {
+            startActivity(new Intent(this, SeguridadActivity.class));
+        } else if (id == R.id.opciones_notificaciones) {
+            startActivity(new Intent(this, NotificacionesActivity.class));
+        } else if (id == R.id.opciones_cerrar_sesion) {
+            cerrarSesion();
+        }
+    }
+
+    private void loadTitulares(){
+        progressBarTitular.setVisibility(View.VISIBLE);
+        tvEmptyViewT.setVisibility(View.GONE);
+        recyclerViewT.setVisibility(View.GONE);
+
+        TitularService service = ApiClient.getClient().create(TitularService.class);
+        Call<ApiResponse<List<Titular>>> call = service.getAllTitulares();
+
+        call.enqueue(new Callback<ApiResponse<List<Titular>>>() {
             @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                int id = item.getItemId();
+            public void onResponse(Call<ApiResponse<List<Titular>>> call, Response<ApiResponse<List<Titular>>> response) {
+                progressBarTitular.setVisibility(View.GONE);
 
-                if (id == R.id.opciones_perfil) {
-                    startActivity(new Intent(TitularesActivity.this, PerfilActivity.class));
-                } else if (id == R.id.opciones_configuracion) {
-                    startActivity(new Intent(TitularesActivity.this, ConfiguracionActivity.class));
-                } else if (id == R.id.opciones_seguridad) {
-                    startActivity(new Intent(TitularesActivity.this, SeguridadActivity.class));
-                } else if (id == R.id.opciones_notificaciones) {
-                    startActivity(new Intent(TitularesActivity.this, NotificacionesActivity.class));
-                } else if (id == R.id.opciones_cerrar_sesion) {
-                    cerrarSesion();
+                if (response.isSuccessful() && response.body() != null) {
+                    ApiResponse<List<Titular>> apiResponse = response.body();
+//                    System.out.println(apiResponse.getData());
+
+                    if (apiResponse.isSuccess() && apiResponse.getData() != null) {
+                        listaTitulares.clear();
+                        listaTitulares.addAll(apiResponse.getData());
+                        adapter.updateData(listaTitulares);
+
+                        if (listaTitulares.isEmpty()) {
+                            tvEmptyViewT.setText(getString(R.string.sin_titulares));
+                            tvEmptyViewT.setVisibility(View.VISIBLE);
+                        } else {
+                            recyclerViewT.setVisibility(View.VISIBLE);
+                        }
+                    } else {
+                        showError(apiResponse.getMessage() != null ?
+                                apiResponse.getMessage() : getString(R.string.error_cargando_titulares));
+                    }
+                } else {
+                    showError(getString(R.string.error_cargando_titulares) + ": " + response.code());
                 }
+            }
 
-                drawerLayout.closeDrawer(GravityCompat.END);
-                return true;
+            @Override
+            public void onFailure(Call<ApiResponse<List<Titular>>> call, Throwable t) {
+                progressBarTitular.setVisibility(View.GONE);
+                showError(getString(R.string.error_cargando_titulares) + ": " + t.getMessage());
             }
         });
     }
+
+    private void showError(String message) {
+        tvEmptyViewT.setText(message);
+        tvEmptyViewT.setVisibility(View.VISIBLE);
+        recyclerViewT.setVisibility(View.GONE);
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
 
     private void cerrarSesion() {
         SharedPreferences preferences = getSharedPreferences("Sesion", MODE_PRIVATE);
@@ -152,5 +228,17 @@ public class TitularesActivity extends AppCompatActivity {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();
+    }
+    @Override
+    public void onItemClick(Titular titular) {
+        Intent intent = new Intent(this, DetallesTitularActivity.class);
+        intent.putExtra("titular", titular);
+        startActivity(intent);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadTitulares();
     }
 }

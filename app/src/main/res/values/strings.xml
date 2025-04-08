@@ -136,6 +136,8 @@
     <string name="sin_citas_programadas">No hay citas programadas</string>
     <string name="sin_citas_historial">No hay citas en el historial</string>
     <string name="error_cargando_citas">Error al cargar las citas</string>
+    <string name="sin_titulares">No cuentas con titulares</string>
+    <string name="error_cargando_titulares">Error al cargar los titulares</string>
     <string name="contrasenias_no_coinciden">Las contraseñas no coinciden</string>
     <string name="contrasenia_cambiada">Contraseña cambiada exitosamente</string>
     <string name="autenticacion_activada">Autenticación de dos factores activada</string>

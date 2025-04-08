@@ -79,7 +79,7 @@
 
             <!-- SearchView -->
             <SearchView
-                android:id="@+id/searchView"
+                android:id="@+id/searchViewTitulares"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -104,13 +104,35 @@
                 android:contentDescription="@string/registrar_titular_description"/>
         </LinearLayout>
 
-        <!-- Lista de titulares -->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvTitulares"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:layout_marginTop="8dp"/>
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <ProgressBar
+                android:id="@+id/progressBarTitular"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="gone"/>
+
+            <TextView
+                android:id="@+id/tvEmptyViewT"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="@string/cargando_historial"
+                android:textSize="18sp"
+                android:visibility="visible"/>
+            <!-- Lista de titulares -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvTitulares"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:layout_marginTop="8dp"/>
+        </LinearLayout>
     </LinearLayout>
 
     <!-- Menú desplegable lateral izquierdo -->

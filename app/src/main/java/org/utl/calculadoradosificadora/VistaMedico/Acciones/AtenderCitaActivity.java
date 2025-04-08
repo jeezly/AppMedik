@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -230,9 +231,11 @@ public class AtenderCitaActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         View view = getLayoutInflater().inflate(R.layout.dialog_calculadora, null);
         builder.setView(view);
-        builder.setTitle("Calculadora Pediátrica");
 
-        // Inicializar views del diálogo
+        AlertDialog dialog = builder.create();
+        dialog.setCanceledOnTouchOutside(false);
+
+        // Inicializar views
         spinnerMedicamentos = view.findViewById(R.id.spinnerMedicamentosDialog);
         etPesoCalculadora = view.findViewById(R.id.etPesoCalculadora);
         tvEdadCalculadora = view.findViewById(R.id.tvEdadCalculadora);
@@ -240,8 +243,12 @@ public class AtenderCitaActivity extends AppCompatActivity {
         tvResultadoCalculadora = view.findViewById(R.id.tvResultadoCalculadora);
         Button btnCalcular = view.findViewById(R.id.btnCalcularDialog);
         Button btnCancelar = view.findViewById(R.id.btnCancelarDialog);
+        Button btnOk = view.findViewById(R.id.btnOkDialog);
+        Button btnAgregarANotas = view.findViewById(R.id.btnAgregarANotas);
+        LinearLayout layoutBotonesCalculadora = view.findViewById(R.id.layoutBotonesCalculadora);
+        LinearLayout layoutBotonesResultado = view.findViewById(R.id.layoutBotonesResultado);
 
-        // Configurar spinner
+        // Configurar spinner y datos
         ArrayAdapter<Medicamento> adapter = new ArrayAdapter<>(
                 this,
                 android.R.layout.simple_spinner_item,
@@ -250,21 +257,61 @@ public class AtenderCitaActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerMedicamentos.setAdapter(adapter);
 
-        // Configurar datos del paciente
         tvEdadCalculadora.setText("Edad: " + cita.getPaciente().getEdad() + " años");
         tvGeneroCalculadora.setText("Género: " + (cita.getPaciente().getPersona().getGenero() == 1 ? "Masculino" : "Femenino"));
         etPesoCalculadora.setText(etPesoPaciente.getText().toString());
 
-        AlertDialog dialog = builder.create();
-
         btnCalcular.setOnClickListener(v -> {
-            calcularDosis();
-            // No cerramos el diálogo para que el médico pueda ver el resultado
+            try {
+                medicamentoSeleccionado = (Medicamento) spinnerMedicamentos.getSelectedItem();
+                double peso = Double.parseDouble(etPesoCalculadora.getText().toString());
+
+                if (peso <= 0) {
+                    Toast.makeText(this, "El peso debe ser mayor a cero", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                etPesoPaciente.setText(String.valueOf(peso));
+                double dosis = calcularDosisMedicamento(medicamentoSeleccionado, peso);
+
+                resultadoCalculadora = String.format(
+                        "Dosis recomendada para %s %s:\n\n%.5f ml\n\nPara un paciente de %d años, género %s con peso de %.1f kg",
+                        medicamentoSeleccionado.getNombre(),
+                        medicamentoSeleccionado.getPresentacion(),
+                        dosis,
+                        cita.getPaciente().getEdad(),
+                        (cita.getPaciente().getPersona().getGenero() == 1 ? "Masculino" : "Femenino"),
+                        peso
+                );
+
+                tvResultadoCalculadora.setText(resultadoCalculadora);
+                tvResultadoCalculadora.setVisibility(View.VISIBLE);
+                layoutBotonesCalculadora.setVisibility(View.GONE);
+                layoutBotonesResultado.setVisibility(View.VISIBLE);
+
+            } catch (Exception e) {
+                Toast.makeText(this, "Error en cálculo", Toast.LENGTH_SHORT).show();
+            }
         });
 
         btnCancelar.setOnClickListener(v -> dialog.dismiss());
 
+        btnOk.setOnClickListener(v -> dialog.dismiss());
+
+        btnAgregarANotas.setOnClickListener(v -> {
+            agregarResultadoANotas();
+            dialog.dismiss();
+        });
+
         dialog.show();
+    }
+
+    private void agregarResultadoANotas() {
+        String notasActuales = etNotas.getText().toString();
+        if (!notasActuales.isEmpty()) {
+            notasActuales += "\n\n";
+        }
+        etNotas.setText(notasActuales + resultadoCalculadora);
     }
 
     private void calcularDosis() {

@@ -3,49 +3,73 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="#FFFFFF">
 
+    <!-- Título -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Calculadora Pediátrica"
+        android:textSize="20sp"
+        android:textColor="@color/colorPrimary"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_marginBottom="16dp"/>
+
+    <!-- Medicamento -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Medicamento:"
+        android:textColor="#333333"
         android:textSize="16sp"
-        android:layout_marginBottom="8dp"/>
+        android:layout_marginBottom="4dp"/>
 
     <Spinner
         android:id="@+id/spinnerMedicamentosDialog"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
+        android:background="@android:drawable/btn_dropdown"
+        android:spinnerMode="dropdown"
         android:layout_marginBottom="16dp"/>
 
+    <!-- Datos paciente -->
     <TextView
         android:id="@+id/tvEdadCalculadora"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="#333333"
         android:textSize="16sp"
-        android:layout_marginBottom="8dp"/>
+        android:layout_marginBottom="4dp"/>
 
     <TextView
         android:id="@+id/tvGeneroCalculadora"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="#333333"
         android:textSize="16sp"
-        android:layout_marginBottom="8dp"/>
+        android:layout_marginBottom="16dp"/>
 
+    <!-- Peso -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Peso (kg):"
+        android:textColor="#333333"
         android:textSize="16sp"
-        android:layout_marginBottom="8dp"/>
+        android:layout_marginBottom="4dp"/>
 
     <EditText
         android:id="@+id/etPesoCalculadora"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:inputType="numberDecimal"
+        android:background="#F5F5F5"
+        android:paddingHorizontal="12dp"
         android:layout_marginBottom="16dp"/>
 
+    <!-- Resultado -->
     <TextView
         android:id="@+id/tvResultadoCalculadora"
         android:layout_width="match_parent"
@@ -53,42 +77,73 @@
         android:layout_marginBottom="16dp"
         android:textSize="16sp"
         android:visibility="gone"
-        android:textColor="@color/colorPrimaryDark"/>
+        android:textColor="#333333"
+        android:background="#E8F5E9"
+        android:padding="12dp"/>
 
+    <!-- Botones Calculadora -->
     <LinearLayout
+        android:id="@+id/layoutBotonesCalculadora"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:gravity="center"
-        android:layout_marginBottom="8dp">
+        android:layout_marginBottom="8dp"
+        android:weightSum="2"
+        android:gravity="center">
 
         <Button
             android:id="@+id/btnCancelarDialog"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
+            android:layout_marginEnd="4dp"
             android:layout_weight="1"
-            android:layout_marginEnd="8dp"
-            android:backgroundTint="@color/colorRed"
+            android:backgroundTint="#FF0303"
             android:text="Cancelar"
-            android:textColor="@android:color/white"/>
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF" />
 
         <Button
             android:id="@+id/btnCalcularDialog"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
+            android:layout_marginStart="4dp"
             android:layout_weight="1"
-            android:layout_marginEnd="8dp"
-            android:backgroundTint="@color/colorPrimary"
+            android:backgroundTint="#00BCD4"
             android:text="Calcular"
-            android:textColor="@android:color/white"/>
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF" />
     </LinearLayout>
 
-    <Button
-        android:id="@+id/btnAgregarANotas"
+    <!-- Botones Resultado -->
+    <LinearLayout
+        android:id="@+id/layoutBotonesResultado"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/colorGreen"
-        android:text="Agregar a Notas"
-        android:textColor="@android:color/white"
-        android:visibility="gone"/>
+        android:orientation="horizontal"
+        android:visibility="gone"
+        android:weightSum="2"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/btnOkDialog"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:layout_marginEnd="4dp"
+            android:background="#2196F3"
+            android:text="OK"
+            android:textColor="#FFFFFF"
+            android:textAllCaps="false"/>
+
+        <Button
+            android:id="@+id/btnAgregarANotas"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:layout_marginStart="4dp"
+            android:background="#FF9800"
+            android:text="Agregar a Notas"
+            android:textColor="#FFFFFF"
+            android:textAllCaps="false"/>
+    </LinearLayout>
 </LinearLayout>

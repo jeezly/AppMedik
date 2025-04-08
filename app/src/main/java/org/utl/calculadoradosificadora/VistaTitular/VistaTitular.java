@@ -13,13 +13,15 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.core.view.GravityCompat;
 import com.google.android.material.navigation.NavigationView;
 
-import org.utl.calculadoradosificadora.InicioActivity;
 import org.utl.calculadoradosificadora.MainActivity;
 import org.utl.calculadoradosificadora.R;
-import org.utl.calculadoradosificadora.VistaMedico.Menu.SobreNosotrosActivity;
-import org.utl.calculadoradosificadora.VistaMedico.Menu.SoporteActivity;
-import org.utl.calculadoradosificadora.VistaMedico.Opciones.ConfiguracionActivity;
-import org.utl.calculadoradosificadora.VistaMedico.VistaMedico;
+
+import org.utl.calculadoradosificadora.VistaTitular.Menu.OpcionesConfiguracionActivity;
+import org.utl.calculadoradosificadora.VistaTitular.Menu.OpcionesPerfilActivity;
+import org.utl.calculadoradosificadora.VistaTitular.Opciones.SoporteActivity;
+import org.utl.calculadoradosificadora.VistaTitular.Acciones.AgendarCitasActivity;
+import org.utl.calculadoradosificadora.VistaTitular.Acciones.HistorialCitaActivity;
+import org.utl.calculadoradosificadora.VistaTitular.Opciones.InformacionUtilActivity;
 
 public class VistaTitular extends AppCompatActivity {
 
@@ -60,10 +62,9 @@ public class VistaTitular extends AppCompatActivity {
                 int id = item.getItemId();
 
                 if (id == R.id.menu_inicio) {
-                    startActivity(new Intent (VistaTitular.this, InicioActivity.class));
+                    startActivity(new Intent (VistaTitular.this, VistaTitular.class));
                 } else if (id == R.id.menu_informacion_util) {
-                    //Es esa activity? o falta otra?
-                    //startActivity(new Intent(VistaTitular.this, SobreNosotrosActivity.class));
+                    startActivity(new Intent(VistaTitular.this, InformacionUtilActivity.class));
                 } else if (id == R.id.menu_soporte) {
                     startActivity(new Intent(VistaTitular.this, SoporteActivity.class));
                 }
@@ -80,9 +81,9 @@ public class VistaTitular extends AppCompatActivity {
                 int id = item.getItemId();
 
                 if (id == R.id.opciones_perfil) {
-                    // Navegar a Perfil //Falta Activity
+                    startActivity(new Intent(VistaTitular.this, OpcionesConfiguracionActivity.class));
                 } else if (id == R.id.opciones_configuracion) {
-                    startActivity(new Intent(VistaTitular.this, ConfiguracionActivity.class));
+                    startActivity(new Intent(VistaTitular.this, OpcionesPerfilActivity.class));
                 } else if (id == R.id.opciones_cerrar_sesion) {
                     cerrarSesion();
                 }

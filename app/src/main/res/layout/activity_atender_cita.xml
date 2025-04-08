@@ -11,7 +11,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="16dp">
 
         <!-- Toolbar -->
         <androidx.appcompat.widget.Toolbar
@@ -255,9 +256,17 @@
                     android:id="@+id/btnFinalizar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="8dp"
                     android:backgroundTint="@color/colorPrimary"
                     android:text="Finalizar Consulta"
+                    android:textColor="@android:color/white"/>
+                <!-- Botón Regresar (rojo) -->
+                <Button
+                    android:id="@+id/btnRegresar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="#FF0000"
+                    android:text="Regresar"
                     android:textColor="@android:color/white"/>
             </LinearLayout>
         </ScrollView>

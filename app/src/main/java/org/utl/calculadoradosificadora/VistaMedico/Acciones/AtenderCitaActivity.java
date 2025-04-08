@@ -165,6 +165,12 @@ public class AtenderCitaActivity extends AppCompatActivity {
 
         ivCalculadora.setOnClickListener(v -> showCalculadoraDialog());
         btnFinalizar.setOnClickListener(v -> finalizarConsulta());
+
+        Button btnRegresar = findViewById(R.id.btnRegresar);
+        btnRegresar.setOnClickListener(v -> {
+            // Simplemente finaliza la actividad para regresar a la anterior
+            finish();
+        });
     }
 
     private void loadCitaData() {
@@ -529,4 +535,5 @@ public class AtenderCitaActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
 }

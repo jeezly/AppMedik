@@ -12,7 +12,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="@color/colorPeach">
+        android:background="@color/colorPeach"
+        android:padding="16dp">
 
         <!-- Toolbar idéntico al de VistaMedico -->
         <androidx.appcompat.widget.Toolbar

@@ -35,7 +35,7 @@
         android:layout_width="133dp"
         android:layout_height="48dp"
         android:layout_marginTop="12dp"
-        android:backgroundTint="#FFA500"
+        android:backgroundTint="#EE45A81F"
         android:text="Titular"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -15,8 +15,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 
 import org.utl.calculadoradosificadora.R;
-import org.utl.calculadoradosificadora.VistaTitular.DetallesHistorialCitaActivity;
-import org.utl.calculadoradosificadora.VistaTitular.HistorialCitaActivity;
+import org.utl.calculadoradosificadora.VistaTitular.Acciones.HistorialCitaActivity;
 
 public class MoficiarCita_DialogFragment extends DialogFragment{
 

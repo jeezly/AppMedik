@@ -1,4 +1,4 @@
-package org.utl.calculadoradosificadora.VistaTitular;
+package org.utl.calculadoradosificadora.adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;

@@ -13,21 +13,8 @@ import org.utl.calculadoradosificadora.VistaMedico.VistaMedico;
 
 public class PrincipalActivity extends AppCompatActivity {
 
-    private Button btnLogout;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.principal); // Cambia esto
-        btnLogout = findViewById(R.id.btnLogout);
 
-        btnLogout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(PrincipalActivity.this, VistaMedico.class);
-                startActivity(intent);
-                finish(); // Cierra la actividad actual
-            }
-        });
-    }
+
+
 }

@@ -126,7 +126,7 @@ public class AgregarCitaActivity extends AppCompatActivity {
         navigationViewLeft.setNavigationItemSelectedListener(item -> {
             int id = item.getItemId();
             if (id == R.id.menu_inicio) {
-                startActivity(new Intent(this, org.utl.calculadoradosificadora.InicioActivity.class));
+                startActivity(new Intent(this, org.utl.calculadoradosificadora.VistaMedico.VistaMedico.class));
             } else if (id == R.id.menu_protocolos) {
                 startActivity(new Intent(this, org.utl.calculadoradosificadora.VistaMedico.Menu.ProtocolosActivity.class));
             } else if (id == R.id.menu_sobre_nosotros) {

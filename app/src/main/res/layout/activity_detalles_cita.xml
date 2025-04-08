@@ -12,7 +12,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="@color/colorPeach">
+        android:background="@color/colorPeach"
+        android:padding="16dp">
 
         <!-- Toolbar idéntico al de AgendaActivity -->
         <androidx.appcompat.widget.Toolbar
@@ -269,22 +270,42 @@
                     android:layout_marginBottom="16dp"
                     android:background="@android:color/darker_gray" />
 
-                <!-- Botones -->
+                <!-- Botones principales (vertical) -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:orientation="vertical">
+
+                    <!-- Botón Atender -->
+                    <Button
+                        android:id="@+id/btnAtender"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:backgroundTint="@color/colorBlueD"
+                        android:text="Atender"
+                        android:textAllCaps="false"/>
+
+                    <!-- Botón Reagendar -->
+                    <Button
+                        android:id="@+id/btnReagendar"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:backgroundTint="#F2CD58"
+                        android:text="Reagendar"
+                        android:textAllCaps="false"/>
+                </LinearLayout>
+
+                <!-- Botones secundarios (horizontal) -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
                     android:orientation="horizontal">
 
-                    <Button
-                        android:id="@+id/btnReagendar"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="8dp"
-                        android:layout_weight="1"
-                        android:backgroundTint="#F2CD58"
-                        android:text="Reagendar" />
-
+                    <!-- Botón Cancelar -->
                     <Button
                         android:id="@+id/btnCancelar"
                         android:layout_width="0dp"
@@ -292,25 +313,19 @@
                         android:layout_marginEnd="8dp"
                         android:layout_weight="1"
                         android:backgroundTint="#E44646"
-                        android:text="Cancelar Cita" />
+                        android:text="Cancelar Cita"
+                        android:textAllCaps="false"/>
 
+                    <!-- Botón Regresar -->
                     <Button
-                        android:id="@+id/btnAtender"
+                        android:id="@+id/btnRegresar"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:backgroundTint="@color/colorBlueD"
-                        android:text="Atender" />
+                        android:backgroundTint="@color/colorOrangeD"
+                        android:text="Regresar"
+                        android:textAllCaps="false"/>
                 </LinearLayout>
-
-                <!-- Botón Regresar -->
-                <Button
-                    android:id="@+id/btnRegresar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:backgroundTint="@color/colorOrangeD"
-                    android:text="Regresar" />
             </LinearLayout>
         </ScrollView>
     </LinearLayout>

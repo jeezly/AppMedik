@@ -1,4 +1,4 @@
-package org.utl.calculadoradosificadora.VistaTitular;
+package org.utl.calculadoradosificadora.VistaTitular.Acciones;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.utl.calculadoradosificadora.R;
+import org.utl.calculadoradosificadora.adapters.HorarioAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +36,7 @@ public class SeleccionarHorarioActivity extends AppCompatActivity {
         String fechaCita = intent.getStringExtra("fechaCita");
 
         // Configurar RecyclerView
-        recyclerViewHorarios = findViewById(R.id.rvHorarios);
+
         recyclerViewHorarios.setLayoutManager(new LinearLayoutManager(this));
 
         // Lista de horarios disponibles
@@ -49,9 +50,7 @@ public class SeleccionarHorarioActivity extends AppCompatActivity {
         horarioAdapter = new HorarioAdapter(horarios);
         recyclerViewHorarios.setAdapter(horarioAdapter);
 
-        // Botones
-        btnCancelar = findViewById(R.id.btnCancelarCita);
-        btnAgendar = findViewById(R.id.btnAgendar);
+
 
         // Acción para el botón Cancelar
         btnCancelar.setOnClickListener(new View.OnClickListener() {

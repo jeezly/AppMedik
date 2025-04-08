@@ -1,4 +1,4 @@
-package org.utl.calculadoradosificadora.VistaTitular;
+package org.utl.calculadoradosificadora.VistaTitular.Acciones;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,6 +7,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import org.utl.calculadoradosificadora.R;
+import org.utl.calculadoradosificadora.VistaTitular.VistaTitular;
 
 public class ConfirmarCitaActivity extends AppCompatActivity {
 
@@ -24,7 +25,7 @@ public class ConfirmarCitaActivity extends AppCompatActivity {
         tvNombreDoctor = findViewById(R.id.tvNombreDoctor);
         tvCedulaDoctor = findViewById(R.id.tvCedulaDoctor);
         tvGeneroDoctor = findViewById(R.id.tvGeneroDoctor);
-        tvRazonCita = findViewById(R.id.tvRazonCita);
+
         btnOk = findViewById(R.id.btnOk);
 
         // Recibir datos de la actividad anterior

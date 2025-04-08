@@ -22,4 +22,9 @@ public interface PacienteService {
             @Path("id") int id,
             @Body Paciente paciente
     );
+    @PUT("UpdatePaciente/{id}")
+    Call<ApiResponse<Paciente>> actualizarPesoPaciente(
+            @Path("id") int id,
+            @Body Paciente paciente
+    );
 }

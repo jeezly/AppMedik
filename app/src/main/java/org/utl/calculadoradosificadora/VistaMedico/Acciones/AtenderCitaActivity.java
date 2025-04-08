@@ -398,92 +398,120 @@ public class AtenderCitaActivity extends AppCompatActivity {
     private void actualizarPesoPaciente(int idPaciente, double nuevoPeso) {
         PacienteService pacienteService = ApiClient.getClient().create(PacienteService.class);
 
-        // Crear un objeto Paciente mínimo con solo el ID y el peso para la actualización
-        Paciente paciente = new Paciente();
-        paciente.setIdPaciente(idPaciente);
-        paciente.setPeso(nuevoPeso);
+        // Crear objeto Paciente con solo los campos necesarios
+        Paciente pacienteActualizado = new Paciente();
+        pacienteActualizado.setIdPaciente(idPaciente);
+        pacienteActualizado.setPeso(nuevoPeso);
 
-        // Crear un objeto Persona mínimo para evitar errores de serialización
-        Persona persona = new Persona();
-        persona.setIdPersona(cita.getPaciente().getPersona().getIdPersona());
-        paciente.setPersona(persona);
+        // Mantener referencia al paciente original
+        pacienteActualizado.setPersona(cita.getPaciente().getPersona());
 
-        Call<ApiResponse<Paciente>> call = pacienteService.updatePaciente(idPaciente, paciente);
+        Call<ApiResponse<Paciente>> call = pacienteService.actualizarPesoPaciente(idPaciente, pacienteActualizado);
         call.enqueue(new Callback<ApiResponse<Paciente>>() {
             @Override
             public void onResponse(Call<ApiResponse<Paciente>> call, Response<ApiResponse<Paciente>> response) {
-                if (!response.isSuccessful() || response.body() == null || !response.body().isSuccess()) {
-                    Toast.makeText(AtenderCitaActivity.this,
-                            "Error al actualizar peso del paciente",
-                            Toast.LENGTH_SHORT).show();
-                } else {
+                if (response.isSuccessful() && response.body() != null && response.body().isSuccess()) {
                     // Actualización exitosa
-                    cita.getPaciente().setPeso(nuevoPeso);
+                    runOnUiThread(() -> {
+                        Toast.makeText(AtenderCitaActivity.this,
+                                "Peso actualizado correctamente",
+                                Toast.LENGTH_SHORT).show();
+                        marcarCitaComoAtendida();
+                    });
+                } else {
+                    runOnUiThread(() ->
+                            Toast.makeText(AtenderCitaActivity.this,
+                                    "Error al actualizar peso: " + (response.body() != null ?
+                                            response.body().getMessage() : "Respuesta inválida"),
+                                    Toast.LENGTH_SHORT).show());
                 }
             }
 
             @Override
             public void onFailure(Call<ApiResponse<Paciente>> call, Throwable t) {
-                Toast.makeText(AtenderCitaActivity.this,
-                        "Error de conexión al actualizar peso: " + t.getMessage(),
-                        Toast.LENGTH_SHORT).show();
+                runOnUiThread(() ->
+                        Toast.makeText(AtenderCitaActivity.this,
+                                "Error de conexión: " + t.getMessage(),
+                                Toast.LENGTH_SHORT).show());
             }
         });
     }
 
     private void marcarCitaComoAtendida() {
         CitaService citaService = ApiClient.getClient().create(CitaService.class);
-        citaService.atenderCita(cita.getIdCita()).enqueue(new Callback<ApiResponse<Void>>() {
+
+        // Crear objeto Cita con solo los campos necesarios
+        Cita citaActualizada = new Cita();
+        citaActualizada.setIdCita(cita.getIdCita());
+        citaActualizada.setEstatus("Atendida");
+        citaActualizada.setPaciente(cita.getPaciente());
+        citaActualizada.setMedico(cita.getMedico());
+
+        Call<ApiResponse<Cita>> call = citaService.marcarCitaComoAtendida(cita.getIdCita(), citaActualizada);
+        call.enqueue(new Callback<ApiResponse<Cita>>() {
             @Override
-            public void onResponse(Call<ApiResponse<Void>> call, Response<ApiResponse<Void>> response) {
+            public void onResponse(Call<ApiResponse<Cita>> call, Response<ApiResponse<Cita>> response) {
                 if (response.isSuccessful() && response.body() != null && response.body().isSuccess()) {
-                    guardarNotas();
+                    runOnUiThread(() -> {
+                        Toast.makeText(AtenderCitaActivity.this,
+                                "Cita marcada como atendida",
+                                Toast.LENGTH_SHORT).show();
+                        guardarNotas();
+                    });
                 } else {
-                    Toast.makeText(AtenderCitaActivity.this, "Error al marcar cita como atendida", Toast.LENGTH_SHORT).show();
+                    runOnUiThread(() ->
+                            Toast.makeText(AtenderCitaActivity.this,
+                                    "Error al actualizar cita: " + (response.body() != null ?
+                                            response.body().getMessage() : "Respuesta inválida"),
+                                    Toast.LENGTH_SHORT).show());
                 }
             }
 
             @Override
-            public void onFailure(Call<ApiResponse<Void>> call, Throwable t) {
-                Toast.makeText(AtenderCitaActivity.this, "Error de conexión: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            public void onFailure(Call<ApiResponse<Cita>> call, Throwable t) {
+                runOnUiThread(() ->
+                        Toast.makeText(AtenderCitaActivity.this,
+                                "Error de conexión: " + t.getMessage(),
+                                Toast.LENGTH_SHORT).show());
             }
         });
     }
-
     private void guardarNotas() {
         String notasCompletas = etNotas.getText().toString();
 
-        // Agregar resultado de calculadora si existe
-        if (resultadoCalculadora != null && !resultadoCalculadora.isEmpty()) {
-            notasCompletas += "\n\n" + resultadoCalculadora;
-        }
-
-        // Si no hay nada que guardar, terminamos
         if (notasCompletas.trim().isEmpty()) {
             finishWithSuccess();
             return;
         }
 
+        // Crear una versión mínima de la cita para la nota
+        Cita citaMinima = new Cita();
+        citaMinima.setIdCita(cita.getIdCita());
+
         Nota nota = new Nota();
         nota.setDato(notasCompletas);
-        nota.setCita(cita);
+        nota.setCita(citaMinima);
 
-        NotaService notaService = ApiClient.getClient().create(NotaService.class);
-        notaService.insertNota(nota).enqueue(new Callback<ApiResponse<Nota>>() {
+        NotaService service = ApiClient.getClient().create(NotaService.class);
+        service.insertNota(nota).enqueue(new Callback<ApiResponse<Nota>>() {
             @Override
             public void onResponse(Call<ApiResponse<Nota>> call, Response<ApiResponse<Nota>> response) {
                 if (response.isSuccessful() && response.body() != null && response.body().isSuccess()) {
-                    finishWithSuccess();
+                    Toast.makeText(AtenderCitaActivity.this, "Notas guardadas correctamente", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(AtenderCitaActivity.this, "Error al guardar notas", Toast.LENGTH_SHORT).show();
-                    finishWithSuccess(); // Terminamos igual aunque no se guardaron las notas
+                    String errorMsg = "Error al guardar notas";
+                    if (response.body() != null) {
+                        errorMsg += ": " + response.body().getMessage();
+                    }
+                    Toast.makeText(AtenderCitaActivity.this, errorMsg, Toast.LENGTH_SHORT).show();
                 }
+                finishWithSuccess();
             }
 
             @Override
             public void onFailure(Call<ApiResponse<Nota>> call, Throwable t) {
-                Toast.makeText(AtenderCitaActivity.this, "Error de conexión al guardar notas", Toast.LENGTH_SHORT).show();
-                finishWithSuccess(); // Terminamos igual aunque no se guardaron las notas
+                Toast.makeText(AtenderCitaActivity.this, "Error de red: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                finishWithSuccess();
             }
         });
     }

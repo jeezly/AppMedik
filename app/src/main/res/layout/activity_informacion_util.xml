@@ -13,6 +13,8 @@
         android:text="Información Útil"
         android:textSize="24sp"
         android:textStyle="bold"
+        android:textAlignment="center"
+        android:layout_marginTop="30dp"
         android:layout_marginBottom="16dp"/>
 
     <TextView
@@ -20,6 +22,7 @@
         android:layout_height="wrap_content"
         android:text="Esta aplicación está diseñada para agilizar el proceso de citas médicas, tanto para pacientes como para profesionales de la salud. Los titulares pueden agendar citas y ver su historial, mientras que los médicos pueden gestionar pacientes, realizar cálculos médicos y administrar citas."
         android:textSize="16sp"
+        android:textAlignment="center"
         android:layout_marginBottom="24dp"/>
 
     <TextView
@@ -27,6 +30,7 @@
         android:layout_height="wrap_content"
         android:text="Desarrollado como parte del programa Técnico Superior Universitario en la UTL."
         android:textSize="14sp"
+        android:textAlignment="center"
         android:layout_marginBottom="24dp"/>
 
     <Button
@@ -34,5 +38,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Regresar"
+        android:layout_gravity="center"
         android:backgroundTint="@color/colorPrimary"/>
 </LinearLayout>

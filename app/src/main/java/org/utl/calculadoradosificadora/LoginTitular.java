@@ -55,7 +55,6 @@ public class LoginTitular extends AppCompatActivity {
                 Toast.makeText(this, "Por favor complete todos los campos", Toast.LENGTH_SHORT).show();
             } else {
                 validarInicioS();
-                navegarAPantallaPrincipal();
             }
         });
 
@@ -81,16 +80,20 @@ public class LoginTitular extends AppCompatActivity {
                     ApiResponse<Titular> apiResponse = response.body();
                     if(apiResponse.isSuccess()){
                         guardarTitular(apiResponse.getData());
+                        navegarAPantallaPrincipal();
                     }else {
                         showError(apiResponse.getMessage());
                         Log.e("API ERROR", "Error en la respuesta: " + apiResponse.getMessage());
                     }
                 }else{
                     try {
-                        String errorBody = response.errorBody() != null ?
-                                response.errorBody().string() : "empty error body";
-                        showError("Error del servidor: " + errorBody);
-                        Log.e("API_ERROR", "Error body: " + errorBody);
+                        showError("Usuario y/o contraseña incorrectos");
+                        etUsuarioT.setText("");
+                        etContraseniaT.setText("");
+//                        String errorBody = response.errorBody() != null ?
+//                                response.errorBody().string() : "empty error body";
+//                        showError("Error del servidor: " + errorBody);
+//                        Log.e("API_ERROR", "Error body: " + errorBody);
                     } catch (Exception e) {
                         Log.e("API_ERROR", "Error al leer errorBody", e);
                     }

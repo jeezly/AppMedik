@@ -23,19 +23,11 @@ public class MainActivity extends AppCompatActivity {
         // Obtén las referencias a los componentes
         Button btnMedico = findViewById(R.id.btnMedico);
         Button btnTitular = findViewById(R.id.btnTitular);
-        TextView tvCreateAccount = findViewById(R.id.textView2);
 
-        // Configura el texto subrayado para "Crear una cuenta"
-        SpannableString content = new SpannableString("Crear una cuenta");
-        content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
-        tvCreateAccount.setText(content);
-        tvCreateAccount.setTextColor(getResources().getColor(android.R.color.holo_blue_dark));
 
-        // Configura el clic en "Crear una cuenta"
-        tvCreateAccount.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, CuentaNueva.class);
-            startActivity(intent);
-        });
+
+
+
 
         // Configura los botones para navegar directamente a las vistas
         btnMedico.setOnClickListener(v -> {

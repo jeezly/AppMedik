@@ -12,9 +12,9 @@ public class PerfilActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_perfil_titular);
+        setContentView(R.layout.activity_perfil);
 
-        Button btnBack = findViewById(R.id.btnBack);
+        Button btnBack = findViewById(R.id.btnSalir);
         btnBack.setOnClickListener(v -> finish());
     }
 }

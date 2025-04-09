@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.gson.Gson;
 
 import org.utl.calculadoradosificadora.R;
+import org.utl.calculadoradosificadora.VistaMedico.VistaMedico;
 import org.utl.calculadoradosificadora.adapters.CitaAdapter;
 import org.utl.calculadoradosificadora.model.Cita;
 import org.utl.calculadoradosificadora.model.Medico;
@@ -42,7 +43,7 @@ public class HistorialCitasActivity extends AppCompatActivity implements CitaAda
     private ProgressBar progressBar;
     private TextView tvEmptyView;
     private Spinner spinnerFiltroEstatus;
-    private Button btnFiltrar;
+    private Button btnFiltrar, btnSalir;
 
     private List<Cita> citasList = new ArrayList<>();
     private List<Cita> citasFiltradas = new ArrayList<>();
@@ -83,6 +84,7 @@ public class HistorialCitasActivity extends AppCompatActivity implements CitaAda
         tvEmptyView = findViewById(R.id.tvEmptyView);
         spinnerFiltroEstatus = findViewById(R.id.spinnerFiltroEstatus);
         btnFiltrar = findViewById(R.id.btnFiltrar);
+        btnSalir = findViewById(R.id.btnSalir);
     }
 
     private void setupRecyclerView() {
@@ -112,6 +114,10 @@ public class HistorialCitasActivity extends AppCompatActivity implements CitaAda
 
     private void setupButtons() {
         btnFiltrar.setOnClickListener(v -> aplicarFiltros());
+        btnSalir.setOnClickListener(v -> {
+            startActivity(new Intent(this, VistaMedico.class));
+            finish();
+        });
     }
 
     private void aplicarFiltros() {

@@ -76,7 +76,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="8dp"
-            android:text="Buen Día Sr.-Sra. Xxxxxx"
+            android:text="Buen Día Sr.-Sra."
             android:textColor="@android:color/black"
             android:textSize="20sp" />
 

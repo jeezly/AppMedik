@@ -18,35 +18,35 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Nombre: Juan Pérez"
+        android:text="Nombre:"
         android:textSize="16sp"
         android:layout_marginBottom="8dp"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Edad: 35 años"
+        android:text="Edad:"
         android:textSize="16sp"
         android:layout_marginBottom="8dp"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Género: Masculino"
+        android:text="Género:"
         android:textSize="16sp"
         android:layout_marginBottom="8dp"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Teléfono: 477-123-4567"
+        android:text="Teléfono:"
         android:textSize="16sp"
         android:layout_marginBottom="8dp"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Correo: juan.perez@example.com"
+        android:text="Correo:"
         android:textSize="16sp"
         android:layout_marginBottom="24dp"/>
 

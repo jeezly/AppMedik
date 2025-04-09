@@ -125,7 +125,7 @@ public class VistaTitular extends AppCompatActivity {
     private Titular crearTitularTEMPORAL(){
         // Primero creamos la Persona
         Persona persona = new Persona(
-                0,                      // idPersona
+                1,                      // idPersona
                 "Juan",                 // nombre
                 "Pérez López",          // apellidos
                 1,                      // genero (1: masculino)
@@ -134,17 +134,17 @@ public class VistaTitular extends AppCompatActivity {
 
 // Luego creamos el Usuario asociado
         Usuario usuario = new Usuario(
-                101,                    // idUsuario
-                "juan.perez",           // usuario
-                "juan.perez@email.com", // correo
-                "miContraseñaSegura",   // contrasenia
+                1,                    // idUsuario
+                "juanperez",           // usuario
+                "juan@example.com", // correo
+                "password123",   // contrasenia
                 1,                      // idPersona (debe coincidir con idPersona anterior)
-                "token_de_sesion_123"   // token
+                ""   // token
         );
 
 // Finalmente creamos el Titular
         Titular titular = new Titular(
-                1001,                   // idTitular
+                1,                   // idTitular
                 "5512345678",           // telefono
                 persona,                // objeto Persona
                 usuario                 // objeto Usuario

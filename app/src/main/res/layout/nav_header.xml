@@ -14,7 +14,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Dr. xxx"
+        android:text="Buen Dia Doc."
         android:textSize="18sp"
         android:textColor="@android:color/white"
         android:layout_gravity="center"

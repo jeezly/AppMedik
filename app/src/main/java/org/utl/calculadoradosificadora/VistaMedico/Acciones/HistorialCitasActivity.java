@@ -3,7 +3,6 @@ package org.utl.calculadoradosificadora.VistaMedico.Acciones;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -16,24 +15,12 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
 
-import org.utl.calculadoradosificadora.MainActivity;
 import org.utl.calculadoradosificadora.R;
-import org.utl.calculadoradosificadora.VistaMedico.Menu.ProtocolosActivity;
-import org.utl.calculadoradosificadora.VistaMedico.Menu.SobreNosotrosActivity;
-import org.utl.calculadoradosificadora.VistaMedico.Menu.SoporteActivity;
-import org.utl.calculadoradosificadora.VistaMedico.Opciones.ConfiguracionActivity;
-import org.utl.calculadoradosificadora.VistaMedico.Opciones.NotificacionesActivity;
-import org.utl.calculadoradosificadora.VistaMedico.Opciones.PerfilActivity;
-import org.utl.calculadoradosificadora.VistaMedico.Opciones.SeguridadActivity;
-import org.utl.calculadoradosificadora.VistaMedico.VistaMedico;
 import org.utl.calculadoradosificadora.adapters.CitaAdapter;
 import org.utl.calculadoradosificadora.model.Cita;
 import org.utl.calculadoradosificadora.model.Medico;
@@ -43,7 +30,6 @@ import org.utl.calculadoradosificadora.service.CitaService;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -51,9 +37,6 @@ import retrofit2.Response;
 
 public class HistorialCitasActivity extends AppCompatActivity implements CitaAdapter.OnItemClickListener {
 
-    private DrawerLayout drawerLayout;
-    private NavigationView navigationViewLeft;
-    private NavigationView navigationViewRight;
     private RecyclerView recyclerViewCitas;
     private CitaAdapter citaAdapter;
     private ProgressBar progressBar;
@@ -78,7 +61,6 @@ public class HistorialCitasActivity extends AppCompatActivity implements CitaAda
             return;
         }
 
-        setupToolbarAndDrawers();
         initializeViews();
         setupRecyclerView();
         setupSpinner();
@@ -90,67 +72,9 @@ public class HistorialCitasActivity extends AppCompatActivity implements CitaAda
         SharedPreferences preferences = getSharedPreferences("Sesion", MODE_PRIVATE);
         String medicoJson = preferences.getString("medico", "");
         if (!medicoJson.isEmpty()) {
-            Medico medico = new Gson().fromJson(medicoJson, Medico.class);
-            if (medico != null) {
-                Log.d("OBTENER_MEDICO", "ID: " + medico.getIdMedico());
-                Log.d("OBTENER_MEDICO", "Nombre: " + medico.getPersona().getNombre());
-                Log.d("OBTENER_MEDICO", "Usuario: " + (medico.getUsuario() != null ? medico.getUsuario().getUsuario() : "null"));
-            }
-            return medico;
+            return new Gson().fromJson(medicoJson, Medico.class);
         }
         return null;
-    }
-
-    private void setupToolbarAndDrawers() {
-        drawerLayout = findViewById(R.id.drawer_layout);
-        navigationViewLeft = findViewById(R.id.navigation_view_left);
-        navigationViewRight = findViewById(R.id.navigation_view_right);
-
-        findViewById(R.id.menu_icon).setOnClickListener(v ->
-                drawerLayout.openDrawer(GravityCompat.START));
-
-        findViewById(R.id.options_icon).setOnClickListener(v ->
-                drawerLayout.openDrawer(GravityCompat.END));
-
-        navigationViewLeft.setNavigationItemSelectedListener(item -> {
-            int id = item.getItemId();
-            handleLeftMenuSelection(id);
-            drawerLayout.closeDrawer(GravityCompat.START);
-            return true;
-        });
-
-        navigationViewRight.setNavigationItemSelectedListener(item -> {
-            int id = item.getItemId();
-            handleRightMenuSelection(id);
-            drawerLayout.closeDrawer(GravityCompat.END);
-            return true;
-        });
-    }
-
-    private void handleLeftMenuSelection(int id) {
-        if (id == R.id.menu_inicio) {
-            startActivity(new Intent(this, VistaMedico.class));
-        } else if (id == R.id.menu_protocolos) {
-            startActivity(new Intent(this, ProtocolosActivity.class));
-        } else if (id == R.id.menu_sobre_nosotros) {
-            startActivity(new Intent(this, SobreNosotrosActivity.class));
-        } else if (id == R.id.menu_soporte) {
-            startActivity(new Intent(this, SoporteActivity.class));
-        }
-    }
-
-    private void handleRightMenuSelection(int id) {
-        if (id == R.id.opciones_perfil) {
-            startActivity(new Intent(this, PerfilActivity.class));
-        } else if (id == R.id.opciones_configuracion) {
-            startActivity(new Intent(this, ConfiguracionActivity.class));
-        } else if (id == R.id.opciones_seguridad) {
-            startActivity(new Intent(this, SeguridadActivity.class));
-        } else if (id == R.id.opciones_notificaciones) {
-            startActivity(new Intent(this, NotificacionesActivity.class));
-        } else if (id == R.id.opciones_cerrar_sesion) {
-            cerrarSesion();
-        }
     }
 
     private void initializeViews() {
@@ -188,9 +112,6 @@ public class HistorialCitasActivity extends AppCompatActivity implements CitaAda
 
     private void setupButtons() {
         btnFiltrar.setOnClickListener(v -> aplicarFiltros());
-
-        Button btnRegresar = findViewById(R.id.btnSalir);
-        btnRegresar.setOnClickListener(v -> finish());
     }
 
     private void aplicarFiltros() {
@@ -276,18 +197,6 @@ public class HistorialCitasActivity extends AppCompatActivity implements CitaAda
         tvEmptyView.setVisibility(View.VISIBLE);
         recyclerViewCitas.setVisibility(View.GONE);
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
-    }
-
-    private void cerrarSesion() {
-        SharedPreferences preferences = getSharedPreferences("Sesion", MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.clear();
-        editor.apply();
-
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
-        finish();
     }
 
     @Override

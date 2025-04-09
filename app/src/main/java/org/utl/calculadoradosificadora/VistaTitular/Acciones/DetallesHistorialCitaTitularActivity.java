@@ -129,31 +129,32 @@ public class DetallesHistorialCitaTitularActivity extends AppCompatActivity {
         tvFecha.setText("Fecha: " + (cita.getFecha() != null ? cita.getFecha() : "N/A"));
         tvHora.setText("Hora: " + (cita.getHora() != null ? cita.getHora() : "N/A"));
 
-        if (cita.getTitular() != null) {
-            tvClaveNombreTitular.setText(String.format("Titular: %s %s",
-                    cita.getTitular().getNombre() != null ? cita.getTitular().getNombre() : "",
-                    cita.getTitular().getApellidos() != null ? cita.getTitular().getApellidos() : ""));
+        if (cita.getTitular() != null && cita.getTitular().getPersona() != null) {
+            tvClaveNombreTitular.setText(String.format("Titular: %s %s\nTeléfono: %s\nCorreo: %s",
+                    cita.getTitular().getPersona().getNombre(),
+                    cita.getTitular().getPersona().getApellidos(),
+                    cita.getTitular().getTelefono() != null ? cita.getTitular().getTelefono() : "N/A",
+                    cita.getTitular().getUsuario() != null ?
+                            cita.getTitular().getUsuario().getCorreo() : "N/A"));
         } else {
             tvClaveNombreTitular.setText("Titular: No disponible");
         }
 
-        if (cita.getPaciente() != null) {
-            tvClaveNombrePaciente.setText(String.format("Paciente: %s %s - Edad: %d años - Peso: %.2f kg",
-                    cita.getPaciente().getNombre() != null ? cita.getPaciente().getNombre() : "",
-                    cita.getPaciente().getApellidos() != null ? cita.getPaciente().getApellidos() : "",
+        if (cita.getPaciente() != null && cita.getPaciente().getPersona() != null) {
+            tvClaveNombrePaciente.setText(String.format("Paciente: %s %s\nEdad: %d años\nPeso: %.2f kg\nSeguro: %s",
+                    cita.getPaciente().getPersona().getNombre(),
+                    cita.getPaciente().getPersona().getApellidos(),
                     cita.getPaciente().getEdad(),
-                    cita.getPaciente().getPeso()));
+                    cita.getPaciente().getPeso(),
+                    cita.getPaciente().getSeguro() != null ?
+                            cita.getPaciente().getSeguro() : "N/A"));
         } else {
             tvClaveNombrePaciente.setText("Paciente: No disponible");
         }
 
         tvRazonCita.setText("Razón: " + (cita.getRazonCita() != null ? cita.getRazonCita() : "N/A"));
-
-        if (cita.getNota() != null && !cita.getNota().isEmpty()) {
-            tvNotas.setText(cita.getNota());
-        } else {
-            tvNotas.setText("No hay notas registradas para esta cita");
-        }
+        tvNotas.setText(cita.getNota() != null && !cita.getNota().isEmpty() ?
+                cita.getNota() : "No hay notas registradas para esta cita");
     }
 
     private void cerrarSesion() {

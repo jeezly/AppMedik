@@ -55,54 +55,54 @@ public class CitaAdapter extends RecyclerView.Adapter<CitaAdapter.CitaViewHolder
         private TextView tvFecha;
         private TextView tvHora;
         private TextView tvPaciente;
+        private TextView tvTitular;
         private TextView tvEstatus;
+        private TextView tvNota;
 
         public CitaViewHolder(@NonNull View itemView) {
             super(itemView);
             tvFecha = itemView.findViewById(R.id.tvFecha);
             tvHora = itemView.findViewById(R.id.tvHora);
             tvPaciente = itemView.findViewById(R.id.tvPaciente);
+            tvTitular = itemView.findViewById(R.id.tvTitular);
             tvEstatus = itemView.findViewById(R.id.tvEstatus);
+            tvNota = itemView.findViewById(R.id.tvNota);
         }
 
         public void bind(final Cita cita, final OnItemClickListener listener) {
-            // Formatear fecha si es necesario (ejemplo: de "2023-12-31" a "31/12/2023")
-            String fechaFormateada = formatFecha(cita.getFecha());
-            tvFecha.setText(fechaFormateada);
+            tvFecha.setText("Fecha: " + formatFecha(cita.getFecha()));
+            tvHora.setText("Hora: " + cita.getHora());
 
-            tvHora.setText(cita.getHora());
-
+            // Mostrar información del paciente
             if (cita.getPaciente() != null && cita.getPaciente().getPersona() != null) {
-                String nombrePaciente = cita.getPaciente().getPersona().getNombre() + " " +
-                        cita.getPaciente().getPersona().getApellidos();
-                tvPaciente.setText(nombrePaciente);
+                tvPaciente.setText("Paciente: " +
+                        cita.getPaciente().getPersona().getNombre() + " " +
+                        cita.getPaciente().getPersona().getApellidos());
             } else {
-                tvPaciente.setText("Paciente no disponible");
+                tvPaciente.setText("Paciente: No disponible");
             }
 
-            if (cita.getEstatus() != null) {
-                tvEstatus.setText(cita.getEstatus());
+            // Mostrar información del titular
+            if (cita.getTitular() != null && cita.getTitular().getPersona() != null) {
+                tvTitular.setText("Titular: " +
+                        cita.getTitular().getPersona().getNombre() + " " +
+                        cita.getTitular().getPersona().getApellidos());
+            } else {
+                tvTitular.setText("Titular: No disponible");
+            }
 
-                // Cambiar color según estatus
-                switch (cita.getEstatus().toLowerCase()) {
-                    case "programada":
-                        tvEstatus.setTextColor(itemView.getContext().getResources().getColor(R.color.colorPrimary));
-                        break;
-                    case "cancelada":
-                        tvEstatus.setTextColor(itemView.getContext().getResources().getColor(R.color.colorRed));
-                        break;
-                    case "atendida":
-                        tvEstatus.setTextColor(itemView.getContext().getResources().getColor(R.color.colorGreen));
-                        break;
-                    case "confirmada":
-                        tvEstatus.setTextColor(itemView.getContext().getResources().getColor(R.color.colorBlue));
-                        break;
-                    default:
-                        tvEstatus.setTextColor(itemView.getContext().getResources().getColor(R.color.colorBlack));
+            // Mostrar estatus y nota si está atendida
+            if (cita.getEstatus() != null) {
+                String estatusText = "Estatus: " + cita.getEstatus();
+                if ("Atendida".equalsIgnoreCase(cita.getEstatus())) {
+                    estatusText += "\nNota: " + (cita.getNota() != null ?
+                            (cita.getNota().length() > 20 ?
+                                    cita.getNota().substring(0, 20) + "..." :
+                                    cita.getNota()) : "Sin notas");
                 }
+                tvEstatus.setText(estatusText);
             } else {
                 tvEstatus.setText("Sin estatus");
-                tvEstatus.setTextColor(itemView.getContext().getResources().getColor(R.color.colorBlack));
             }
 
             itemView.setOnClickListener(v -> {
@@ -114,7 +114,6 @@ public class CitaAdapter extends RecyclerView.Adapter<CitaAdapter.CitaViewHolder
 
         private String formatFecha(String fechaOriginal) {
             try {
-                // Si la fecha viene en formato "yyyy-MM-dd"
                 String[] partes = fechaOriginal.split("-");
                 if (partes.length == 3) {
                     return partes[2] + "/" + partes[1] + "/" + partes[0];

@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -16,33 +15,21 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
 
-import org.utl.calculadoradosificadora.MainActivity;
 import org.utl.calculadoradosificadora.R;
-import org.utl.calculadoradosificadora.VistaTitular.Menu.ConfiguracionActivity;
-import org.utl.calculadoradosificadora.VistaTitular.Opciones.InformacionUtilActivity;
-import org.utl.calculadoradosificadora.VistaTitular.Menu.PerfilActivity;
-import org.utl.calculadoradosificadora.VistaTitular.Menu.SoporteAyudaTitularActivity;
-import org.utl.calculadoradosificadora.VistaTitular.VistaTitular;
 import org.utl.calculadoradosificadora.adapters.CitaAdapter;
 import org.utl.calculadoradosificadora.model.Cita;
-import org.utl.calculadoradosificadora.model.Persona;
 import org.utl.calculadoradosificadora.model.Titular;
-import org.utl.calculadoradosificadora.model.Usuario;
 import org.utl.calculadoradosificadora.service.ApiClient;
 import org.utl.calculadoradosificadora.service.ApiResponse;
 import org.utl.calculadoradosificadora.service.CitaService;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -51,9 +38,6 @@ import retrofit2.Response;
 public class HistorialCitaActivity extends AppCompatActivity implements CitaAdapter.OnItemClickListener {
 
     private static final String TAG = "HistorialCitaTitular";
-    private DrawerLayout drawerLayout;
-    private NavigationView navigationViewLeft;
-    private NavigationView navigationViewRight;
     private RecyclerView recyclerViewCitas;
     private CitaAdapter citaAdapter;
     private ProgressBar progressBar;
@@ -78,9 +62,8 @@ public class HistorialCitaActivity extends AppCompatActivity implements CitaAdap
             return;
         }
 
-        //Log.d(TAG, "Titular actual ID: " + titularActual.getIdTitular());
+        Log.d(TAG, "Titular actual ID: " + titularActual.getIdTitular());
 
-        setupToolbarAndDrawers();
         initializeViews();
         setupRecyclerView();
         setupSpinner();
@@ -88,66 +71,13 @@ public class HistorialCitaActivity extends AppCompatActivity implements CitaAdap
         loadCitas();
     }
 
-
     private Titular obtenerTitularActual() {
         SharedPreferences preferences = getSharedPreferences("Sesion", MODE_PRIVATE);
         String titularJson = preferences.getString("titular", "");
         if (!titularJson.isEmpty()) {
-            Titular titular = new Gson().fromJson(titularJson, Titular.class);
-            if(titular != null){
-                Log.d("OBTENER_TITULAR", "ID: " + titular.getIdTitular());
-                Log.d("OBTENER_TITULAR", "Nombre: " + titular.getPersona().getNombre());
-                Log.d("OBTENER_TITULAR", "Usuario: " + (titular.getUsuario() != null ? titular.getUsuario().getUsuario() : "null"));
-            }
-            return titular;
+            return new Gson().fromJson(titularJson, Titular.class);
         }
         return null;
-    }
-
-    private void setupToolbarAndDrawers() {
-        drawerLayout = findViewById(R.id.drawer_layout);
-        navigationViewLeft = findViewById(R.id.navigation_view_left);
-        navigationViewRight = findViewById(R.id.navigation_view_right);
-
-        findViewById(R.id.menu_icon).setOnClickListener(v ->
-                drawerLayout.openDrawer(GravityCompat.START));
-
-        findViewById(R.id.options_icon).setOnClickListener(v ->
-                drawerLayout.openDrawer(GravityCompat.END));
-
-        navigationViewLeft.setNavigationItemSelectedListener(item -> {
-            int id = item.getItemId();
-            handleLeftMenuSelection(id);
-            drawerLayout.closeDrawer(GravityCompat.START);
-            return true;
-        });
-
-        navigationViewRight.setNavigationItemSelectedListener(item -> {
-            int id = item.getItemId();
-            handleRightMenuSelection(id);
-            drawerLayout.closeDrawer(GravityCompat.END);
-            return true;
-        });
-    }
-
-    private void handleLeftMenuSelection(int id) {
-        if (id == R.id.menu_inicio) {
-            startActivity(new Intent(this, VistaTitular.class));
-        } else if (id == R.id.menu_informacion_util) {
-            startActivity(new Intent(this, InformacionUtilActivity.class));
-        } else if (id == R.id.menu_soporte) {
-            startActivity(new Intent(this, SoporteAyudaTitularActivity.class));
-        }
-    }
-
-    private void handleRightMenuSelection(int id) {
-        if (id == R.id.opciones_perfil) {
-            startActivity(new Intent(this, PerfilActivity.class));
-        } else if (id == R.id.opciones_configuracion) {
-            startActivity(new Intent(this, ConfiguracionActivity.class));
-        } else if (id == R.id.opciones_cerrar_sesion) {
-            cerrarSesion();
-        }
     }
 
     private void initializeViews() {
@@ -185,9 +115,6 @@ public class HistorialCitaActivity extends AppCompatActivity implements CitaAdap
 
     private void setupButtons() {
         btnFiltrar.setOnClickListener(v -> aplicarFiltros());
-
-        Button btnRegresar = findViewById(R.id.btnSalir);
-        btnRegresar.setOnClickListener(v -> finish());
     }
 
     private void aplicarFiltros() {
@@ -227,11 +154,10 @@ public class HistorialCitaActivity extends AppCompatActivity implements CitaAdap
                     if (apiResponse.isSuccess() && apiResponse.getData() != null) {
                         citasList.clear();
 
-                        // Filtrar citas del titular actual y que no estén programadas
+                        // Filtrar citas del titular actual
                         for (Cita cita : apiResponse.getData()) {
                             if (cita.getTitular() != null &&
-                                    cita.getTitular().getIdTitular() == titularActual.getIdTitular() &&
-                                    !"Programada".equalsIgnoreCase(cita.getEstatus())) {
+                                    cita.getTitular().getIdTitular() == titularActual.getIdTitular()) {
                                 citasList.add(cita);
                             }
                         }
@@ -276,19 +202,6 @@ public class HistorialCitaActivity extends AppCompatActivity implements CitaAdap
         tvEmptyView.setVisibility(View.VISIBLE);
         recyclerViewCitas.setVisibility(View.GONE);
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
-        Log.e(TAG, message);
-    }
-
-    private void cerrarSesion() {
-        SharedPreferences preferences = getSharedPreferences("Sesion", MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.clear();
-        editor.apply();
-
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
-        finish();
     }
 
     @Override

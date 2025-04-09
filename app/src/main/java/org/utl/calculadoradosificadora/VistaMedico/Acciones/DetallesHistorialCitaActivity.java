@@ -6,12 +6,15 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+
 import com.google.android.material.navigation.NavigationView;
+import com.google.gson.Gson;
 
 import org.utl.calculadoradosificadora.MainActivity;
 import org.utl.calculadoradosificadora.R;
@@ -24,6 +27,7 @@ import org.utl.calculadoradosificadora.VistaMedico.Opciones.PerfilActivity;
 import org.utl.calculadoradosificadora.VistaMedico.Opciones.SeguridadActivity;
 import org.utl.calculadoradosificadora.VistaMedico.VistaMedico;
 import org.utl.calculadoradosificadora.model.Cita;
+import org.utl.calculadoradosificadora.model.Medico;
 import org.utl.calculadoradosificadora.model.Nota;
 import org.utl.calculadoradosificadora.service.ApiClient;
 import org.utl.calculadoradosificadora.service.ApiResponse;
@@ -43,13 +47,21 @@ public class DetallesHistorialCitaActivity extends AppCompatActivity {
     private NavigationView navigationViewLeft;
     private NavigationView navigationViewRight;
     private Cita cita;
+    private Medico medicoActual;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalles_historial_cita);
 
-        // Configurar Toolbar
+        medicoActual = obtenerMedicoActual();
+        cita = (Cita) getIntent().getSerializableExtra("cita");
+
+        if (cita == null) {
+            finish();
+            return;
+        }
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
@@ -57,22 +69,28 @@ public class DetallesHistorialCitaActivity extends AppCompatActivity {
             getSupportActionBar().setTitle("Detalles de Cita");
         }
 
-        // Inicializar vistas
         initViews();
         setupNavigationDrawer();
+        mostrarDatosCita();
 
-        // Obtener la cita seleccionada
-        cita = (Cita) getIntent().getSerializableExtra("cita");
-
-        if (cita != null) {
-            mostrarDatosCita();
-            loadNotas();
+        // Cargar notas directamente de la cita primero
+        if (cita.getNota() != null && !cita.getNota().isEmpty()) {
+            tvNotas.setText(cita.getNota());
         } else {
-            finish();
+            // Si no hay nota en la cita, intentar cargar desde el servicio
+            loadNotas();
         }
 
-        // Configurar botón "OK"
         btnOk.setOnClickListener(v -> finish());
+    }
+
+    private Medico obtenerMedicoActual() {
+        SharedPreferences preferences = getSharedPreferences("Sesion", MODE_PRIVATE);
+        String medicoJson = preferences.getString("medico", "");
+        if (!medicoJson.isEmpty()) {
+            return new Gson().fromJson(medicoJson, Medico.class);
+        }
+        return null;
     }
 
     private void initViews() {
@@ -89,13 +107,9 @@ public class DetallesHistorialCitaActivity extends AppCompatActivity {
     }
 
     private void setupNavigationDrawer() {
-        // Abrir menú izquierdo
         findViewById(R.id.menu_icon).setOnClickListener(v -> drawerLayout.openDrawer(GravityCompat.START));
-
-        // Abrir menú derecho
         findViewById(R.id.options_icon).setOnClickListener(v -> drawerLayout.openDrawer(GravityCompat.END));
 
-        // Manejar las opciones del menú izquierdo
         navigationViewLeft.setNavigationItemSelectedListener(item -> {
             int id = item.getItemId();
 
@@ -113,7 +127,6 @@ public class DetallesHistorialCitaActivity extends AppCompatActivity {
             return true;
         });
 
-        // Manejar las opciones del menú derecho
         navigationViewRight.setNavigationItemSelectedListener(item -> {
             int id = item.getItemId();
 
@@ -135,29 +148,42 @@ public class DetallesHistorialCitaActivity extends AppCompatActivity {
     }
 
     private void mostrarDatosCita() {
-        tvFecha.setText("Fecha: " + cita.getFecha());
-        tvHora.setText("Hora: " + cita.getHora());
+        tvFecha.setText("Fecha: " + (cita.getFecha() != null ? cita.getFecha() : "N/A"));
+        tvHora.setText("Hora: " + (cita.getHora() != null ? cita.getHora() : "N/A"));
 
-        if (cita.getTitular() != null) {
-            tvClaveNombreTitular.setText(String.format("Titular: %s %s",
-                    cita.getTitular().getNombre(),
-                    cita.getTitular().getApellidos()));
+        // Datos del titular
+        if (cita.getTitular() != null && cita.getTitular().getPersona() != null) {
+            tvClaveNombreTitular.setText(String.format("Titular: %s %s\nTeléfono: %s\nCorreo: %s",
+                    cita.getTitular().getPersona().getNombre(),
+                    cita.getTitular().getPersona().getApellidos(),
+                    cita.getTitular().getTelefono() != null ? cita.getTitular().getTelefono() : "N/A",
+                    cita.getTitular().getUsuario() != null ?
+                            cita.getTitular().getUsuario().getCorreo() : "N/A"));
+        } else {
+            tvClaveNombreTitular.setText("Titular: No disponible");
         }
 
-        if (cita.getPaciente() != null) {
-            tvClaveNombrePaciente.setText(String.format("Paciente: %s %s - Edad: %d años - Peso: %.2f kg",
-                    cita.getPaciente().getNombre(),
-                    cita.getPaciente().getApellidos(),
+        // Datos del paciente
+        if (cita.getPaciente() != null && cita.getPaciente().getPersona() != null) {
+            tvClaveNombrePaciente.setText(String.format("Paciente: %s %s\nEdad: %d años\nPeso: %.2f kg\nSeguro: %s",
+                    cita.getPaciente().getPersona().getNombre(),
+                    cita.getPaciente().getPersona().getApellidos(),
                     cita.getPaciente().getEdad(),
-                    cita.getPaciente().getPeso()));
+                    cita.getPaciente().getPeso(),
+                    cita.getPaciente().getSeguro() != null ?
+                            cita.getPaciente().getSeguro() : "N/A"));
+        } else {
+            tvClaveNombrePaciente.setText("Paciente: No disponible");
         }
 
-        tvRazonCita.setText("Razón: " + cita.getRazonCita());
+        tvRazonCita.setText("Razón: " + (cita.getRazonCita() != null ? cita.getRazonCita() : "N/A"));
     }
 
     private void loadNotas() {
         NotaService service = ApiClient.getClient().create(NotaService.class);
-        service.getNotasByCita(cita.getIdCita()).enqueue(new Callback<ApiResponse<List<Nota>>>() {
+        Call<ApiResponse<List<Nota>>> call = service.getNotasByCita(cita.getIdCita());
+
+        call.enqueue(new Callback<ApiResponse<List<Nota>>>() {
             @Override
             public void onResponse(Call<ApiResponse<List<Nota>>> call, Response<ApiResponse<List<Nota>>> response) {
                 if (response.isSuccessful() && response.body() != null && response.body().isSuccess()) {

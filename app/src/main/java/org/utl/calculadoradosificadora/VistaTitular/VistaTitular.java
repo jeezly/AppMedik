@@ -45,7 +45,7 @@ public class VistaTitular extends AppCompatActivity {
         navigationViewRight = findViewById(R.id.navigation_view_right);
 
 
-        guardarTitular(crearTitularTEMPORAL());
+        //guardarTitular(crearTitularTEMPORAL());
 
         // Abre el menú izquierdo al hacer clic en el ícono de 3 líneas
         findViewById(R.id.menu_icon).setOnClickListener(new View.OnClickListener() {
@@ -122,46 +122,7 @@ public class VistaTitular extends AppCompatActivity {
         });
     }
 
-    private Titular crearTitularTEMPORAL(){
-        // Primero creamos la Persona
-        Persona persona = new Persona(
-                1,                      // idPersona
-                "Juan",                 // nombre
-                "Pérez López",          // apellidos
-                1,                      // genero (1: masculino)
-                1                       // estado (1: activo)
-        );
 
-// Luego creamos el Usuario asociado
-        Usuario usuario = new Usuario(
-                1,                    // idUsuario
-                "juanperez",           // usuario
-                "juan@example.com", // correo
-                "password123",   // contrasenia
-                1,                      // idPersona (debe coincidir con idPersona anterior)
-                ""   // token
-        );
-
-// Finalmente creamos el Titular
-        Titular titular = new Titular(
-                1,                   // idTitular
-                "5512345678",           // telefono
-                persona,                // objeto Persona
-                usuario                 // objeto Usuario
-        );
-        return titular;
-    }
-    private void guardarTitular(Titular titular) {
-        SharedPreferences preferences = getSharedPreferences("Sesion", MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
-
-        // Convertir el objeto Titular a JSON
-        String titularJson = new Gson().toJson(titular);
-
-        // Guardar el JSON en SharedPreferences
-        editor.putString("titular", titularJson);
-        editor.apply(); // o editor.commit() para guardado sincrónico
-    }
 
     private void cerrarSesion() {
         // Limpiar preferencias de sesión

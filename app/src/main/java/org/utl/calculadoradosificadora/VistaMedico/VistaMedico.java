@@ -48,7 +48,7 @@ public class VistaMedico extends AppCompatActivity {
         navigationViewLeft = findViewById(R.id.navigation_view_left);
         navigationViewRight = findViewById(R.id.navigation_view_right);
 
-        guardarMedico(crearMedicoTEMPORAL());
+        //guardarMedico(crearMedicoTEMPORAL());
 
         // Abre el menú izquierdo al hacer clic en el ícono de 3 líneas
         findViewById(R.id.menu_icon).setOnClickListener(new View.OnClickListener() {
@@ -151,47 +151,7 @@ public class VistaMedico extends AppCompatActivity {
         });
     }
 
-    private Medico crearMedicoTEMPORAL(){
-        // Primero creamos la Persona
-        Persona persona = new Persona(
-                3,                      // idPersona
-                "Carlos",                 // nombre
-                "Gómez",          // apellidos
-                1,                      // genero (1: masculino)
-                1                       // estado (1: activo)
-        );
 
-// Luego creamos el Usuario asociado
-        Usuario usuario = new Usuario(
-                2,                    // idUsuario
-                "carlosgomez",           // usuario
-                "carlos@example.com", // correo
-                "password123",   // contrasenia
-                3,                      // idPersona (debe coincidir con idPersona anterior)
-                ""   // token
-        );
-
-// Finalmente creamos el Titular
-        Medico medico = new Medico(
-                1,                   // idTitular
-                "foto_medico.jpg",           // telefono
-                "123456",
-                persona,                // objeto Persona
-                usuario                 // objeto Usuario
-        );
-        return medico;
-    }
-    private void guardarMedico(Medico medico) {
-        SharedPreferences preferences = getSharedPreferences("Sesion", MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
-
-        // Convertir el objeto Titular a JSON
-        String medicoJson = new Gson().toJson(medico);
-
-        // Guardar el JSON en SharedPreferences
-        editor.putString("medico", medicoJson);
-        editor.apply(); // o editor.commit() para guardado sincrónico
-    }
     private void cerrarSesion() {
         // Limpiar preferencias de sesión
         SharedPreferences preferences = getSharedPreferences("Sesion", MODE_PRIVATE);

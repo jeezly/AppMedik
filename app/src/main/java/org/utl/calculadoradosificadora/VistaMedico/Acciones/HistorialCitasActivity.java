@@ -3,6 +3,7 @@ package org.utl.calculadoradosificadora.VistaMedico.Acciones;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -42,6 +43,7 @@ import org.utl.calculadoradosificadora.service.CitaService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -88,7 +90,13 @@ public class HistorialCitasActivity extends AppCompatActivity implements CitaAda
         SharedPreferences preferences = getSharedPreferences("Sesion", MODE_PRIVATE);
         String medicoJson = preferences.getString("medico", "");
         if (!medicoJson.isEmpty()) {
-            return new Gson().fromJson(medicoJson, Medico.class);
+            Medico medico = new Gson().fromJson(medicoJson, Medico.class);
+            if (medico != null) {
+                Log.d("OBTENER_MEDICO", "ID: " + medico.getIdMedico());
+                Log.d("OBTENER_MEDICO", "Nombre: " + medico.getPersona().getNombre());
+                Log.d("OBTENER_MEDICO", "Usuario: " + (medico.getUsuario() != null ? medico.getUsuario().getUsuario() : "null"));
+            }
+            return medico;
         }
         return null;
     }

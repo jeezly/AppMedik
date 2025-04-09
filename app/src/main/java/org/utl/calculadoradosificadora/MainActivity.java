@@ -39,12 +39,12 @@ public class MainActivity extends AppCompatActivity {
 
         // Configura los botones para navegar directamente a las vistas
         btnMedico.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, VistaMedico.class);
+            Intent intent = new Intent(MainActivity.this, LoginMedico.class);
             startActivity(intent);
         });
 
         btnTitular.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, VistaTitular.class);
+            Intent intent = new Intent(MainActivity.this, LoginTitular.class);
             startActivity(intent);
         });
     }

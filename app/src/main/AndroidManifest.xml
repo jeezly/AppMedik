@@ -26,6 +26,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".LoginMedico" android:exported="false"/>
+        <activity android:name=".LoginTitular" android:exported="false"/>
 
         <!-- ==================== VISTA MÉDICO ==================== -->
         <activity android:name=".VistaMedico.VistaMedico" android:exported="false"/>

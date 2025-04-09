@@ -1,5 +1,7 @@
 package org.utl.calculadoradosificadora.service;
 
+import org.utl.calculadoradosificadora.model.InicioSesion;
+import org.utl.calculadoradosificadora.model.Medico;
 import org.utl.calculadoradosificadora.model.Titular;
 import org.utl.calculadoradosificadora.service.ApiResponse;
 
@@ -25,4 +27,7 @@ public interface TitularService {
 
     @PATCH("DeleteTitular/{id}/inhabilitar")
     Call<ApiResponse<Void>> deleteTitular(@Path("id") int id);
+
+    @POST("loginTitular")
+    Call<ApiResponse<Titular>> loginTitular(@Body InicioSesion inicioSesion);
 }

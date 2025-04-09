@@ -1,5 +1,6 @@
 package org.utl.calculadoradosificadora.service;
 
+import org.utl.calculadoradosificadora.model.InicioSesion;
 import org.utl.calculadoradosificadora.model.Medico;
 import org.utl.calculadoradosificadora.model.Usuario;
 import org.utl.calculadoradosificadora.service.ApiResponse;
@@ -24,7 +25,7 @@ public interface MedicoService {
     @PUT("UpdateMedico/{id}")
     Call<ApiResponse<Medico>> updateMedico(@Path("id") int id, @Body Medico medico);
     @POST("loginMedico")
-    Call<Usuario> loginMedico(@Body Usuario usuario);
+    Call<ApiResponse<Medico>> loginMedico(@Body InicioSesion inicioSesion);
     @POST("logout")
     Call<Void> logout(@Header("Authorization") String token);
 }

@@ -33,13 +33,16 @@ import org.utl.calculadoradosificadora.VistaTitular.Menu.SoporteAyudaTitularActi
 import org.utl.calculadoradosificadora.VistaTitular.VistaTitular;
 import org.utl.calculadoradosificadora.adapters.CitaAdapter;
 import org.utl.calculadoradosificadora.model.Cita;
+import org.utl.calculadoradosificadora.model.Persona;
 import org.utl.calculadoradosificadora.model.Titular;
+import org.utl.calculadoradosificadora.model.Usuario;
 import org.utl.calculadoradosificadora.service.ApiClient;
 import org.utl.calculadoradosificadora.service.ApiResponse;
 import org.utl.calculadoradosificadora.service.CitaService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -75,7 +78,7 @@ public class HistorialCitaActivity extends AppCompatActivity implements CitaAdap
             return;
         }
 
-        Log.d(TAG, "Titular actual ID: " + titularActual.getIdTitular());
+        //Log.d(TAG, "Titular actual ID: " + titularActual.getIdTitular());
 
         setupToolbarAndDrawers();
         initializeViews();
@@ -85,12 +88,18 @@ public class HistorialCitaActivity extends AppCompatActivity implements CitaAdap
         loadCitas();
     }
 
+
     private Titular obtenerTitularActual() {
         SharedPreferences preferences = getSharedPreferences("Sesion", MODE_PRIVATE);
         String titularJson = preferences.getString("titular", "");
         if (!titularJson.isEmpty()) {
-            Gson gson = new Gson();
-            return gson.fromJson(titularJson, Titular.class);
+            Titular titular = new Gson().fromJson(titularJson, Titular.class);
+            if(titular != null){
+                Log.d("OBTENER_TITULAR", "ID: " + titular.getIdTitular());
+                Log.d("OBTENER_TITULAR", "Nombre: " + titular.getPersona().getNombre());
+                Log.d("OBTENER_TITULAR", "Usuario: " + (titular.getUsuario() != null ? titular.getUsuario().getUsuario() : "null"));
+            }
+            return titular;
         }
         return null;
     }

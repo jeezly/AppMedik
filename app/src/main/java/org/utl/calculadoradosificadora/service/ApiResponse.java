@@ -1,5 +1,7 @@
 package org.utl.calculadoradosificadora.service;
 
+import org.utl.calculadoradosificadora.model.Medico;
+
 public class ApiResponse<T> {
     private boolean success;
     private String message;

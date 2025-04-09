@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPeach"
-    tools:context=".LoginMedicoActivity">
+    android:id="@+id/loginMedico"
+    tools:context=".LoginMedico">
 
     <ImageView
         android:id="@+id/imageView"
@@ -20,7 +21,7 @@
         app:srcCompat="@drawable/medikidslogo" />
 
     <EditText
-        android:id="@+id/etUsuario"
+        android:id="@+id/etUsuarioM"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -34,7 +35,7 @@
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
     <EditText
-        android:id="@+id/etContrasenia"
+        android:id="@+id/etContraseniaM"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -45,10 +46,10 @@
         android:padding="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etUsuario" />
+        app:layout_constraintTop_toBottomOf="@+id/etUsuarioM" />
 
     <Button
-        android:id="@+id/btnLogin"
+        android:id="@+id/btnLoginM"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -59,6 +60,6 @@
         android:textColor="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etContrasenia" />
+        app:layout_constraintTop_toBottomOf="@+id/etContraseniaM" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

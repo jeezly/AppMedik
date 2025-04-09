@@ -8,6 +8,7 @@ public class Cita implements Serializable {
     private String hora;
     private String estatus;
     private String razonCita;
+    private String nota; // <-- Añade este campo
     private Medico medico;
     private Paciente paciente;
     private Titular titular;
@@ -56,6 +57,14 @@ public class Cita implements Serializable {
         this.razonCita = razonCita;
     }
 
+    public String getNota() {
+        return nota;
+    }
+
+    public void setNota(String nota) {
+        this.nota = nota;
+    }
+
     public Medico getMedico() {
         return medico;
     }
@@ -93,6 +102,7 @@ public class Cita implements Serializable {
         copia.setHora(this.hora);
         copia.setEstatus(this.estatus);
         copia.setRazonCita(this.razonCita);
+        copia.setNota(this.nota); // <-- Añade esta línea
 
         // Solo incluir IDs para las relaciones
         if (this.medico != null) {

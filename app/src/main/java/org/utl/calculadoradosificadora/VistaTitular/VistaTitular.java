@@ -16,11 +16,12 @@ import com.google.android.material.navigation.NavigationView;
 import org.utl.calculadoradosificadora.MainActivity;
 import org.utl.calculadoradosificadora.R;
 
-import org.utl.calculadoradosificadora.VistaTitular.Menu.OpcionesConfiguracionActivity;
-import org.utl.calculadoradosificadora.VistaTitular.Menu.OpcionesPerfilActivity;
-import org.utl.calculadoradosificadora.VistaTitular.Opciones.SoporteActivity;
+
 import org.utl.calculadoradosificadora.VistaTitular.Acciones.AgendarCitasActivity;
 import org.utl.calculadoradosificadora.VistaTitular.Acciones.HistorialCitaActivity;
+import org.utl.calculadoradosificadora.VistaTitular.Menu.ConfiguracionActivity;
+import org.utl.calculadoradosificadora.VistaTitular.Menu.PerfilActivity;
+import org.utl.calculadoradosificadora.VistaTitular.Menu.SoporteAyudaTitularActivity;
 import org.utl.calculadoradosificadora.VistaTitular.Opciones.InformacionUtilActivity;
 
 public class VistaTitular extends AppCompatActivity {
@@ -62,11 +63,11 @@ public class VistaTitular extends AppCompatActivity {
                 int id = item.getItemId();
 
                 if (id == R.id.menu_inicio) {
-                    startActivity(new Intent (VistaTitular.this, VistaTitular.class));
+                    startActivity(new Intent(VistaTitular.this, VistaTitular.class));
                 } else if (id == R.id.menu_informacion_util) {
                     startActivity(new Intent(VistaTitular.this, InformacionUtilActivity.class));
                 } else if (id == R.id.menu_soporte) {
-                    startActivity(new Intent(VistaTitular.this, SoporteActivity.class));
+                    startActivity(new Intent(VistaTitular.this, SoporteAyudaTitularActivity.class));
                 }
 
                 drawerLayout.closeDrawer(GravityCompat.START);
@@ -81,9 +82,9 @@ public class VistaTitular extends AppCompatActivity {
                 int id = item.getItemId();
 
                 if (id == R.id.opciones_perfil) {
-                    startActivity(new Intent(VistaTitular.this, OpcionesConfiguracionActivity.class));
+                    startActivity(new Intent(VistaTitular.this, PerfilActivity.class));
                 } else if (id == R.id.opciones_configuracion) {
-                    startActivity(new Intent(VistaTitular.this, OpcionesPerfilActivity.class));
+                    startActivity(new Intent(VistaTitular.this, ConfiguracionActivity.class));
                 } else if (id == R.id.opciones_cerrar_sesion) {
                     cerrarSesion();
                 }
@@ -123,7 +124,7 @@ public class VistaTitular extends AppCompatActivity {
 
         // Redirigir a la pantalla de inicio
         Intent intent = new Intent(VistaTitular.this, MainActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // Elimina el historial de actividades
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();
     }

@@ -31,6 +31,7 @@ public class Medicamento implements Serializable {
     }
 
     public void setIdMedicamentos(int idMedicamentos) {
+
         this.idMedicamentos = idMedicamentos;
     }
 

@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPeach">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Contacto de Soporte"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="16dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="¿Necesitas ayuda? Contáctanos:"
+            android:textSize="16sp"
+            android:layout_marginBottom="24dp"/>
+
+        <!-- Contacto 1 -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Casillas Tapia Aideé Vanessa"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp"/>
+
+        <TextView
+            android:id="@+id/tvContact1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="📞 477-123-4567"
+            android:textColor="@color/colorPrimary"
+            android:layout_marginBottom="4dp"/>
+
+        <TextView
+            android:id="@+id/tvEmail1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="✉ a.casillas@utl.edu.mx"
+            android:textColor="@color/colorPrimary"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- Contacto 2 -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="García Hernández Juan Pablo"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp"/>
+
+        <TextView
+            android:id="@+id/tvContact2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="📞 477-234-5678"
+            android:textColor="@color/colorPrimary"
+            android:layout_marginBottom="4dp"/>
+
+        <TextView
+            android:id="@+id/tvEmail2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="✉ j.garcia@utl.edu.mx"
+            android:textColor="@color/colorPrimary"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- Contacto 3 -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="González Espadas Hugo Armando"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp"/>
+
+        <TextView
+            android:id="@+id/tvContact3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="📞 477-345-6789"
+            android:textColor="@color/colorPrimary"
+            android:layout_marginBottom="4dp"/>
+
+        <TextView
+            android:id="@+id/tvEmail3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="✉ h.gonzalez@utl.edu.mx"
+            android:textColor="@color/colorPrimary"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- Contacto 4 -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Velázquez Martínez José Isaac"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp"/>
+
+        <TextView
+            android:id="@+id/tvContact4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="📞 477-456-7890"
+            android:textColor="@color/colorPrimary"
+            android:layout_marginBottom="4dp"/>
+
+        <TextView
+            android:id="@+id/tvEmail4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="✉ j.velazquez@utl.edu.mx"
+            android:textColor="@color/colorPrimary"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- Contacto 5 -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ramírez Ramírez María José"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp"/>
+
+        <TextView
+            android:id="@+id/tvContact5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="📞 477-567-8901"
+            android:textColor="@color/colorPrimary"
+            android:layout_marginBottom="4dp"/>
+
+        <TextView
+            android:id="@+id/tvEmail5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="✉ m.ramirez@utl.edu.mx"
+            android:textColor="@color/colorPrimary"
+            android:layout_marginBottom="24dp"/>
+
+        <Button
+            android:id="@+id/btnBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Regresar"
+            android:backgroundTint="@color/colorPrimary"/>
+    </LinearLayout>
+</ScrollView>

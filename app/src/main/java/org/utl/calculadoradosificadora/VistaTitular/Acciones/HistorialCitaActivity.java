@@ -3,6 +3,7 @@ package org.utl.calculadoradosificadora.VistaTitular.Acciones;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -21,19 +22,24 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.gson.Gson;
 
 import org.utl.calculadoradosificadora.MainActivity;
 import org.utl.calculadoradosificadora.R;
+import org.utl.calculadoradosificadora.VistaTitular.Menu.ConfiguracionActivity;
+import org.utl.calculadoradosificadora.VistaTitular.Opciones.InformacionUtilActivity;
+import org.utl.calculadoradosificadora.VistaTitular.Menu.PerfilActivity;
+import org.utl.calculadoradosificadora.VistaTitular.Menu.SoporteAyudaTitularActivity;
 import org.utl.calculadoradosificadora.VistaTitular.VistaTitular;
 import org.utl.calculadoradosificadora.adapters.CitaAdapter;
 import org.utl.calculadoradosificadora.model.Cita;
+import org.utl.calculadoradosificadora.model.Titular;
 import org.utl.calculadoradosificadora.service.ApiClient;
 import org.utl.calculadoradosificadora.service.ApiResponse;
 import org.utl.calculadoradosificadora.service.CitaService;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -41,6 +47,7 @@ import retrofit2.Response;
 
 public class HistorialCitaActivity extends AppCompatActivity implements CitaAdapter.OnItemClickListener {
 
+    private static final String TAG = "HistorialCitaTitular";
     private DrawerLayout drawerLayout;
     private NavigationView navigationViewLeft;
     private NavigationView navigationViewRight;
@@ -54,11 +61,21 @@ public class HistorialCitaActivity extends AppCompatActivity implements CitaAdap
     private List<Cita> citasList = new ArrayList<>();
     private List<Cita> citasFiltradas = new ArrayList<>();
     private String filtroEstatusSeleccionado = "Todas";
+    private Titular titularActual;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_historial_cita_titular);
+
+        titularActual = obtenerTitularActual();
+        if (titularActual == null) {
+            Toast.makeText(this, "Error: No se pudo obtener información del titular", Toast.LENGTH_LONG).show();
+            finish();
+            return;
+        }
+
+        Log.d(TAG, "Titular actual ID: " + titularActual.getIdTitular());
 
         setupToolbarAndDrawers();
         initializeViews();
@@ -66,6 +83,15 @@ public class HistorialCitaActivity extends AppCompatActivity implements CitaAdap
         setupSpinner();
         setupButtons();
         loadCitas();
+    }
+
+    private Titular obtenerTitularActual() {
+        SharedPreferences preferences = getSharedPreferences("Sesion", MODE_PRIVATE);
+        String titularJson = preferences.getString("titular", "");
+        if (!titularJson.isEmpty()) {
+            return new Gson().fromJson(titularJson, Titular.class);
+        }
+        return null;
     }
 
     private void setupToolbarAndDrawers() {
@@ -81,21 +107,37 @@ public class HistorialCitaActivity extends AppCompatActivity implements CitaAdap
 
         navigationViewLeft.setNavigationItemSelectedListener(item -> {
             int id = item.getItemId();
-            if (id == R.id.menu_inicio) {
-                startActivity(new Intent(this, VistaTitular.class));
-            }
+            handleLeftMenuSelection(id);
             drawerLayout.closeDrawer(GravityCompat.START);
             return true;
         });
 
         navigationViewRight.setNavigationItemSelectedListener(item -> {
             int id = item.getItemId();
-            if (id == R.id.opciones_cerrar_sesion) {
-                cerrarSesion();
-            }
+            handleRightMenuSelection(id);
             drawerLayout.closeDrawer(GravityCompat.END);
             return true;
         });
+    }
+
+    private void handleLeftMenuSelection(int id) {
+        if (id == R.id.menu_inicio) {
+            startActivity(new Intent(this, VistaTitular.class));
+        } else if (id == R.id.menu_informacion_util) {
+            startActivity(new Intent(this, InformacionUtilActivity.class));
+        } else if (id == R.id.menu_soporte) {
+            startActivity(new Intent(this, SoporteAyudaTitularActivity.class));
+        }
+    }
+
+    private void handleRightMenuSelection(int id) {
+        if (id == R.id.opciones_perfil) {
+            startActivity(new Intent(this, PerfilActivity.class));
+        } else if (id == R.id.opciones_configuracion) {
+            startActivity(new Intent(this, ConfiguracionActivity.class));
+        } else if (id == R.id.opciones_cerrar_sesion) {
+            cerrarSesion();
+        }
     }
 
     private void initializeViews() {
@@ -144,21 +186,16 @@ public class HistorialCitaActivity extends AppCompatActivity implements CitaAdap
         if (filtroEstatusSeleccionado.equals("Todas")) {
             citasFiltradas.addAll(citasList);
         } else {
-            citasFiltradas.addAll(citasList.stream()
-                    .filter(c -> filtroEstatusSeleccionado.equalsIgnoreCase(c.getEstatus()))
-                    .collect(Collectors.toList()));
+            for (Cita cita : citasList) {
+                if (cita.getEstatus() != null &&
+                        cita.getEstatus().equalsIgnoreCase(filtroEstatusSeleccionado)) {
+                    citasFiltradas.add(cita);
+                }
+            }
         }
 
         citaAdapter.updateData(citasFiltradas);
-
-        if (citasFiltradas.isEmpty()) {
-            tvEmptyView.setText(getString(R.string.sin_citas_historial));
-            tvEmptyView.setVisibility(View.VISIBLE);
-            recyclerViewCitas.setVisibility(View.GONE);
-        } else {
-            tvEmptyView.setVisibility(View.GONE);
-            recyclerViewCitas.setVisibility(View.VISIBLE);
-        }
+        checkEmptyState();
     }
 
     private void loadCitas() {
@@ -166,12 +203,8 @@ public class HistorialCitaActivity extends AppCompatActivity implements CitaAdap
         tvEmptyView.setVisibility(View.GONE);
         recyclerViewCitas.setVisibility(View.GONE);
 
-        // Obtener el ID del titular desde SharedPreferences
-        SharedPreferences preferences = getSharedPreferences("Sesion", MODE_PRIVATE);
-        int idTitular = preferences.getInt("idUsuario", 0);
-
         CitaService service = ApiClient.getClient().create(CitaService.class);
-        Call<ApiResponse<List<Cita>>> call = service.getCitasByTitular(idTitular);
+        Call<ApiResponse<List<Cita>>> call = service.getAllCitas();
 
         call.enqueue(new Callback<ApiResponse<List<Cita>>>() {
             @Override
@@ -183,43 +216,57 @@ public class HistorialCitaActivity extends AppCompatActivity implements CitaAdap
 
                     if (apiResponse.isSuccess() && apiResponse.getData() != null) {
                         citasList.clear();
-                        // Filtrar solo citas atendidas o canceladas (no programadas)
-                        citasList.addAll(apiResponse.getData().stream()
-                                .filter(c -> !"Programada".equalsIgnoreCase(c.getEstatus()))
-                                .collect(Collectors.toList()));
+
+                        // Filtrar citas del titular actual y que no estén programadas
+                        for (Cita cita : apiResponse.getData()) {
+                            if (cita.getTitular() != null &&
+                                    cita.getTitular().getIdTitular() == titularActual.getIdTitular() &&
+                                    !"Programada".equalsIgnoreCase(cita.getEstatus())) {
+                                citasList.add(cita);
+                            }
+                        }
 
                         citasFiltradas.clear();
                         citasFiltradas.addAll(citasList);
                         citaAdapter.updateData(citasFiltradas);
+                        checkEmptyState();
 
-                        if (citasFiltradas.isEmpty()) {
-                            tvEmptyView.setText(getString(R.string.sin_citas_historial));
-                            tvEmptyView.setVisibility(View.VISIBLE);
-                        } else {
-                            recyclerViewCitas.setVisibility(View.VISIBLE);
-                        }
+                        Log.d(TAG, "Citas cargadas: " + citasList.size());
                     } else {
                         showError(apiResponse.getMessage() != null ?
-                                apiResponse.getMessage() : getString(R.string.error_cargando_citas));
+                                apiResponse.getMessage() : "Error al cargar citas");
                     }
                 } else {
-                    showError(getString(R.string.error_cargando_citas) + ": " + response.code());
+                    showError("Error en la respuesta del servidor: " + response.code());
                 }
             }
 
             @Override
             public void onFailure(Call<ApiResponse<List<Cita>>> call, Throwable t) {
                 progressBar.setVisibility(View.GONE);
-                showError(getString(R.string.error_cargando_citas) + ": " + t.getMessage());
+                showError("Error de conexión: " + t.getMessage());
+                Log.e(TAG, "Error al cargar citas", t);
             }
         });
+    }
+
+    private void checkEmptyState() {
+        if (citasFiltradas.isEmpty()) {
+            tvEmptyView.setText("No hay citas en el historial");
+            tvEmptyView.setVisibility(View.VISIBLE);
+            recyclerViewCitas.setVisibility(View.GONE);
+        } else {
+            tvEmptyView.setVisibility(View.GONE);
+            recyclerViewCitas.setVisibility(View.VISIBLE);
+        }
     }
 
     private void showError(String message) {
         tvEmptyView.setText(message);
         tvEmptyView.setVisibility(View.VISIBLE);
         recyclerViewCitas.setVisibility(View.GONE);
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+        Log.e(TAG, message);
     }
 
     private void cerrarSesion() {
@@ -236,7 +283,7 @@ public class HistorialCitaActivity extends AppCompatActivity implements CitaAdap
 
     @Override
     public void onItemClick(Cita cita) {
-        Intent intent = new Intent(this, DetallesHistorialCitaActivity.class);
+        Intent intent = new Intent(this, DetallesHistorialCitaTitularActivity.class);
         intent.putExtra("cita", cita);
         startActivity(intent);
     }

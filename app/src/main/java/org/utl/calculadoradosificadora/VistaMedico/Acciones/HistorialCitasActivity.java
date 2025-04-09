@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.gson.Gson;
 
 import org.utl.calculadoradosificadora.MainActivity;
 import org.utl.calculadoradosificadora.R;
@@ -34,13 +35,13 @@ import org.utl.calculadoradosificadora.VistaMedico.Opciones.SeguridadActivity;
 import org.utl.calculadoradosificadora.VistaMedico.VistaMedico;
 import org.utl.calculadoradosificadora.adapters.CitaAdapter;
 import org.utl.calculadoradosificadora.model.Cita;
+import org.utl.calculadoradosificadora.model.Medico;
 import org.utl.calculadoradosificadora.service.ApiClient;
 import org.utl.calculadoradosificadora.service.ApiResponse;
 import org.utl.calculadoradosificadora.service.CitaService;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -56,25 +57,40 @@ public class HistorialCitasActivity extends AppCompatActivity implements CitaAda
     private ProgressBar progressBar;
     private TextView tvEmptyView;
     private Spinner spinnerFiltroEstatus;
-    private Spinner spinnerFiltroPersona;
     private Button btnFiltrar;
 
     private List<Cita> citasList = new ArrayList<>();
     private List<Cita> citasFiltradas = new ArrayList<>();
     private String filtroEstatusSeleccionado = "Todas";
-    private String filtroPersonaSeleccionado = "Sin filtro";
+    private Medico medicoActual;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_historial_citas);
 
+        medicoActual = obtenerMedicoActual();
+        if (medicoActual == null) {
+            Toast.makeText(this, "Error: No se pudo obtener información del médico", Toast.LENGTH_LONG).show();
+            finish();
+            return;
+        }
+
         setupToolbarAndDrawers();
         initializeViews();
         setupRecyclerView();
-        setupSpinners();
+        setupSpinner();
         setupButtons();
         loadCitas();
+    }
+
+    private Medico obtenerMedicoActual() {
+        SharedPreferences preferences = getSharedPreferences("Sesion", MODE_PRIVATE);
+        String medicoJson = preferences.getString("medico", "");
+        if (!medicoJson.isEmpty()) {
+            return new Gson().fromJson(medicoJson, Medico.class);
+        }
+        return null;
     }
 
     private void setupToolbarAndDrawers() {
@@ -134,7 +150,6 @@ public class HistorialCitasActivity extends AppCompatActivity implements CitaAda
         progressBar = findViewById(R.id.progressBar);
         tvEmptyView = findViewById(R.id.tvEmptyView);
         spinnerFiltroEstatus = findViewById(R.id.spinnerFiltroEstatus);
-        spinnerFiltroPersona = findViewById(R.id.spinnerFiltroPersona);
         btnFiltrar = findViewById(R.id.btnFiltrar);
     }
 
@@ -144,8 +159,7 @@ public class HistorialCitasActivity extends AppCompatActivity implements CitaAda
         recyclerViewCitas.setAdapter(citaAdapter);
     }
 
-    private void setupSpinners() {
-        // Configurar spinner de estatus
+    private void setupSpinner() {
         ArrayAdapter<CharSequence> adapterEstatus = ArrayAdapter.createFromResource(this,
                 R.array.filtros_citas_historial, android.R.layout.simple_spinner_item);
         adapterEstatus.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -162,24 +176,6 @@ public class HistorialCitasActivity extends AppCompatActivity implements CitaAda
                 filtroEstatusSeleccionado = "Todas";
             }
         });
-
-        // Configurar spinner de persona
-        ArrayAdapter<CharSequence> adapterPersona = ArrayAdapter.createFromResource(this,
-                R.array.filtros_por_persona, android.R.layout.simple_spinner_item);
-        adapterPersona.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerFiltroPersona.setAdapter(adapterPersona);
-
-        spinnerFiltroPersona.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                filtroPersonaSeleccionado = parent.getItemAtPosition(position).toString();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                filtroPersonaSeleccionado = "Sin filtro";
-            }
-        });
     }
 
     private void setupButtons() {
@@ -192,33 +188,19 @@ public class HistorialCitasActivity extends AppCompatActivity implements CitaAda
     private void aplicarFiltros() {
         citasFiltradas.clear();
 
-        // Primero filtramos por estatus
         if (filtroEstatusSeleccionado.equals("Todas")) {
             citasFiltradas.addAll(citasList);
         } else {
-            citasFiltradas.addAll(citasList.stream()
-                    .filter(c -> filtroEstatusSeleccionado.equalsIgnoreCase(c.getEstatus()))
-                    .collect(Collectors.toList()));
-        }
-
-        // Luego aplicamos el filtro por persona si es necesario
-        if (!filtroPersonaSeleccionado.equals("Sin filtro")) {
-            // Aquí implementarías la lógica para filtrar por médico, paciente o titular
-            // Esto requeriría que el médico seleccione específicamente qué médico/paciente/titular filtrar
-            // Por ahora solo mostramos un mensaje
-            Toast.makeText(this, "Filtrando por: " + filtroPersonaSeleccionado, Toast.LENGTH_SHORT).show();
+            for (Cita cita : citasList) {
+                if (cita.getEstatus() != null &&
+                        cita.getEstatus().equalsIgnoreCase(filtroEstatusSeleccionado)) {
+                    citasFiltradas.add(cita);
+                }
+            }
         }
 
         citaAdapter.updateData(citasFiltradas);
-
-        if (citasFiltradas.isEmpty()) {
-            tvEmptyView.setText(getString(R.string.sin_citas_historial));
-            tvEmptyView.setVisibility(View.VISIBLE);
-            recyclerViewCitas.setVisibility(View.GONE);
-        } else {
-            tvEmptyView.setVisibility(View.GONE);
-            recyclerViewCitas.setVisibility(View.VISIBLE);
-        }
+        checkEmptyState();
     }
 
     private void loadCitas() {
@@ -239,43 +221,53 @@ public class HistorialCitasActivity extends AppCompatActivity implements CitaAda
 
                     if (apiResponse.isSuccess() && apiResponse.getData() != null) {
                         citasList.clear();
-                        // Filtrar solo citas atendidas o canceladas (no programadas)
-                        citasList.addAll(apiResponse.getData().stream()
-                                .filter(c -> !"Programada".equalsIgnoreCase(c.getEstatus()))
-                                .collect(Collectors.toList()));
+
+                        // Filtrar citas del médico actual y que no estén programadas
+                        for (Cita cita : apiResponse.getData()) {
+                            if (cita.getMedico() != null &&
+                                    cita.getMedico().getIdMedico() == medicoActual.getIdMedico() &&
+                                    !"Programada".equalsIgnoreCase(cita.getEstatus())) {
+                                citasList.add(cita);
+                            }
+                        }
 
                         citasFiltradas.clear();
                         citasFiltradas.addAll(citasList);
                         citaAdapter.updateData(citasFiltradas);
-
-                        if (citasFiltradas.isEmpty()) {
-                            tvEmptyView.setText(getString(R.string.sin_citas_historial));
-                            tvEmptyView.setVisibility(View.VISIBLE);
-                        } else {
-                            recyclerViewCitas.setVisibility(View.VISIBLE);
-                        }
+                        checkEmptyState();
                     } else {
                         showError(apiResponse.getMessage() != null ?
-                                apiResponse.getMessage() : getString(R.string.error_cargando_citas));
+                                apiResponse.getMessage() : "Error al cargar citas");
                     }
                 } else {
-                    showError(getString(R.string.error_cargando_citas) + ": " + response.code());
+                    showError("Error en la respuesta del servidor: " + response.code());
                 }
             }
 
             @Override
             public void onFailure(Call<ApiResponse<List<Cita>>> call, Throwable t) {
                 progressBar.setVisibility(View.GONE);
-                showError(getString(R.string.error_cargando_citas) + ": " + t.getMessage());
+                showError("Error de conexión: " + t.getMessage());
             }
         });
+    }
+
+    private void checkEmptyState() {
+        if (citasFiltradas.isEmpty()) {
+            tvEmptyView.setText("No hay citas en el historial");
+            tvEmptyView.setVisibility(View.VISIBLE);
+            recyclerViewCitas.setVisibility(View.GONE);
+        } else {
+            tvEmptyView.setVisibility(View.GONE);
+            recyclerViewCitas.setVisibility(View.VISIBLE);
+        }
     }
 
     private void showError(String message) {
         tvEmptyView.setText(message);
         tvEmptyView.setVisibility(View.VISIBLE);
         recyclerViewCitas.setVisibility(View.GONE);
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 
     private void cerrarSesion() {

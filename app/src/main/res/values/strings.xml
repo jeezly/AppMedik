@@ -74,10 +74,6 @@
         <item>Masculino</item>
         <item>Femenino</item>
     </string-array>
-    <string-array name="generoInsert_array_titulares">
-        <item>Masculino</item>
-        <item>Femenino</item>
-    </string-array>
 
     <string-array name="edad_array">
         <item>Recién nacido (0-28 días)</item>
@@ -208,11 +204,6 @@
     Juan Pablo García Hernández\n
     Teléfono: 477 371 4924\n
     Email: heezly123@gmail.com\n\n
-
-    Aideé Vanessa Casillas Tapia\n
-    Teléfono: 477 294 3651\n
-    Email: aideecasillas14@gmail.com\n
-    GitHub user: Catasi\n\n
 
     [Aquí los demás]
     </string>

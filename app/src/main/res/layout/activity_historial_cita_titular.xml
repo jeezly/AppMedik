@@ -3,36 +3,33 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/historial_cita_layout"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".VistaTitular.Acciones.HistorialCitaActivity">
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
+        android:background="@color/colorPeach"
         android:padding="16dp">
 
-        <!-- Barra Superior (Toolbar) -->
+        <!-- Toolbar con color verde -->
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/colorBlueD"
+            android:background="@color/colorGreen"
             android:elevation="4dp"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
-            <!-- Contenedor para organizar los elementos -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
-                android:layout_marginEnd="16dp"
                 android:orientation="horizontal">
 
-                <!-- Menú de 3 líneas (ícono de menú) -->
                 <ImageView
                     android:id="@+id/menu_icon"
                     android:layout_width="24dp"
@@ -41,27 +38,24 @@
                     android:contentDescription="@string/menu_icon_description"
                     android:src="@drawable/ic_menu" />
 
-                <!-- Espacio flexible para centrar el título -->
                 <Space
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1" />
 
-                <!-- Título "Inicio" -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Historial Citas"
+                    android:text="@string/titulo_historial"
+                    android:textColor="@android:color/white"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
-                <!-- Espacio flexible para alinear el ícono de opciones a la derecha -->
                 <Space
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1" />
 
-                <!-- Ícono de 3 puntos verticales (opciones) -->
                 <ImageView
                     android:id="@+id/options_icon"
                     android:layout_width="24dp"
@@ -71,71 +65,105 @@
             </LinearLayout>
         </androidx.appcompat.widget.Toolbar>
 
+        <!-- Filtros -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp">
+            android:orientation="vertical"
+            android:padding="16dp">
 
-            <!-- SearchView -->
-            <SearchView
-                android:id="@+id/searchView"
-                android:layout_width="0dp"
+            <!-- Filtro por estatus -->
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:queryHint="Buscar cita..."
-                android:iconifiedByDefault="false"/>
+                android:orientation="horizontal"
+                android:layout_marginBottom="8dp">
 
-            <!-- ImageView para el filtro -->
-            <ImageView
-                android:id="@+id/ivFiltro"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:src="@drawable/ic_filter"
-                android:layout_marginStart="8dp"
-                android:contentDescription="@string/filter_icon_description"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Estatus:"
+                    android:layout_marginEnd="8dp"
+                    android:textSize="16sp"/>
+
+                <Spinner
+                    android:id="@+id/spinnerFiltroEstatus"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:entries="@array/filtros_citas_historial"/>
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btnFiltrar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:text="@string/filtrar"
+                android:backgroundTint="@color/colorGreen"/>
         </LinearLayout>
 
-        <ScrollView
+        <!-- Contenido -->
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="698dp"
-            android:layout_weight="1">
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="gone"/>
+
+            <TextView
+                android:id="@+id/tvEmptyView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="@string/cargando_historial"
+                android:textSize="18sp"
+                android:visibility="visible"/>
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvHistorialCitasTitular"
+                android:id="@+id/rvHistorialCitas"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:layout_marginTop="8dp"/>
-        </ScrollView>
-        <!-- Botón de salir -->
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:paddingBottom="16dp"
+                android:visibility="gone"
+                tools:listitem="@layout/item_cita"/>
+        </LinearLayout>
+
         <Button
             android:id="@+id/btnSalir"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/colorRedD"
-            android:text="Regresar"
-            android:layout_gravity="center"
-            android:layout_marginTop="16dp"/>
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="16dp"
+            android:text="@string/regresar"
+            android:textColor="@android:color/white"
+            android:backgroundTint="@color/colorGreen"/>
     </LinearLayout>
 
-    <!-- Menú desplegable lateral izquierdo -->
+    <!-- Menú izquierdo -->
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navigation_view_left"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        app:headerLayout="@layout/nav_header"
-        app:menu="@menu/drawer_menu"/>
+        app:headerLayout="@layout/nav_header_titular"
+        app:menu="@menu/drawer_menu_titular"/>
 
-    <!-- Menú desplegable lateral derecho -->
+    <!-- Menú derecho -->
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navigation_view_right"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="end"
-        app:headerLayout="@layout/nav_header"
-        app:menu="@menu/options_menu"/>
+        app:headerLayout="@layout/nav_header_titular"
+        app:menu="@menu/options_menu_titular"/>
 </androidx.drawerlayout.widget.DrawerLayout>

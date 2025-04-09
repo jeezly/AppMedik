@@ -23,12 +23,10 @@ public interface CitaService {
     @PUT("UpdateCita/{id}")
     Call<ApiResponse<Cita>> updateCita(@Path("id") int id, @Body Cita cita);
 
-    // Endpoint específico para cancelar (PATCH sin body)
     @PATCH("DeleteCita/{id}/cancelar")
     Call<ApiResponse<Void>> cancelarCita(@Path("id") int id);
 
-    // Endpoint para marcar como atendida
-    @PATCH("UpdateCita/{id}/atender")
+    @PATCH("AtenderCita/{id}/atender")
     Call<ApiResponse<Void>> atenderCita(@Path("id") int id);
 
     @PUT("UpdateCita/{id}")

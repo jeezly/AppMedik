@@ -2,7 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- Permisos (de Hugo y tuyos) -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
@@ -16,7 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CalculadoraDosificadora"
         tools:targetApi="31"
-        android:usesCleartextTraffic="true"> <!-- Permite HTTP (necesario para desarrollo) -->
+        android:usesCleartextTraffic="true">
 
         <!-- Actividad Principal (Launcher) -->
         <activity
@@ -71,12 +70,21 @@
         <activity android:name=".VistaTitular.VistaTitular" android:exported="false"/>
         <activity android:name=".VistaTitular.Acciones.AgendarCitasActivity" android:exported="false"/>
         <activity android:name=".VistaTitular.Acciones.HistorialCitaActivity" android:exported="false"/>
-        <activity android:name=".VistaTitular.Acciones.DetallesHistorialCitaActivity" android:exported="false"/>
+        <activity android:name=".VistaTitular.Acciones.DetallesHistorialCitaTitularActivity" android:exported="false"/>
+
+        <!-- Menu Titular -->
+        <activity android:name=".VistaTitular.Menu.PerfilActivity" android:exported="false"/>
+        <activity android:name=".VistaTitular.Menu.ConfiguracionActivity" android:exported="false"/>
+        <activity android:name=".VistaTitular.Menu.SoporteAyudaTitularActivity" android:exported="false"/>
+
+        <!-- Opciones Titular -->
+        <activity android:name=".VistaTitular.Opciones.InformacionUtilActivity" android:exported="false"/>
 
         <!-- Actividades Generales (Login/Registro) -->
         <activity android:name=".BienvenidaActivity" android:exported="false"/>
         <activity android:name=".VistaMedico.CuentaNueva.CrearCuentaMedico" android:exported="false"/>
         <activity android:name=".VistaTitular.CuentaNueva.CrearCuentaTitular" android:exported="false"/>
+
 
     </application>
 

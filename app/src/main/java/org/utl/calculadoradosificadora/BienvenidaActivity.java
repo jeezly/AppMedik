@@ -6,7 +6,7 @@ import android.os.Handler;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import org.utl.calculadoradosificadora.R;
+
 import org.utl.calculadoradosificadora.VistaMedico.VistaMedico;
 import org.utl.calculadoradosificadora.VistaTitular.VistaTitular;
 

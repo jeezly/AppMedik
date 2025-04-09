@@ -14,23 +14,19 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.gson.Gson;
 
 import org.utl.calculadoradosificadora.MainActivity;
 import org.utl.calculadoradosificadora.R;
+import org.utl.calculadoradosificadora.VistaTitular.Menu.ConfiguracionActivity;
+import org.utl.calculadoradosificadora.VistaTitular.Opciones.InformacionUtilActivity;
+import org.utl.calculadoradosificadora.VistaTitular.Menu.PerfilActivity;
+import org.utl.calculadoradosificadora.VistaTitular.Menu.SoporteAyudaTitularActivity;
 import org.utl.calculadoradosificadora.VistaTitular.VistaTitular;
 import org.utl.calculadoradosificadora.model.Cita;
-import org.utl.calculadoradosificadora.model.Nota;
-import org.utl.calculadoradosificadora.service.ApiClient;
-import org.utl.calculadoradosificadora.service.ApiResponse;
-import org.utl.calculadoradosificadora.service.NotaService;
+import org.utl.calculadoradosificadora.model.Titular;
 
-import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
-public class DetallesHistorialCitaActivity extends AppCompatActivity {
+public class DetallesHistorialCitaTitularActivity extends AppCompatActivity {
 
     private TextView tvFecha, tvHora, tvClaveNombreTitular, tvClaveNombrePaciente, tvRazonCita, tvNotas;
     private Button btnOk;
@@ -38,15 +34,20 @@ public class DetallesHistorialCitaActivity extends AppCompatActivity {
     private NavigationView navigationViewLeft;
     private NavigationView navigationViewRight;
     private Cita cita;
+    private Titular titularActual;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalles_historial_cita_titular);
 
-        // Configurar Toolbar con estilo de titular
+        titularActual = obtenerTitularActual();
+        if (titularActual == null) {
+            finish();
+            return;
+        }
+
         Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setBackgroundColor(getResources().getColor(R.color.colorPrimaryTitular));
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -60,12 +61,20 @@ public class DetallesHistorialCitaActivity extends AppCompatActivity {
 
         if (cita != null) {
             mostrarDatosCita();
-            loadNotas();
         } else {
             finish();
         }
 
         btnOk.setOnClickListener(v -> finish());
+    }
+
+    private Titular obtenerTitularActual() {
+        SharedPreferences preferences = getSharedPreferences("Sesion", MODE_PRIVATE);
+        String titularJson = preferences.getString("titular", "");
+        if (!titularJson.isEmpty()) {
+            return new Gson().fromJson(titularJson, Titular.class);
+        }
+        return null;
     }
 
     private void initViews() {
@@ -85,69 +94,66 @@ public class DetallesHistorialCitaActivity extends AppCompatActivity {
         findViewById(R.id.menu_icon).setOnClickListener(v -> drawerLayout.openDrawer(GravityCompat.START));
         findViewById(R.id.options_icon).setOnClickListener(v -> drawerLayout.openDrawer(GravityCompat.END));
 
+        navigationViewLeft.setNavigationItemSelectedListener(item -> {
+            int id = item.getItemId();
 
+            if (id == R.id.menu_inicio) {
+                startActivity(new Intent(this, VistaTitular.class));
+            } else if (id == R.id.menu_informacion_util) {
+                startActivity(new Intent(this, InformacionUtilActivity.class));
+            } else if (id == R.id.menu_soporte) {
+                startActivity(new Intent(this, SoporteAyudaTitularActivity.class));
+            }
+
+            drawerLayout.closeDrawer(GravityCompat.START);
+            return true;
+        });
 
         navigationViewRight.setNavigationItemSelectedListener(item -> {
             int id = item.getItemId();
-            if (id == R.id.opciones_cerrar_sesion) {
+
+            if (id == R.id.opciones_perfil) {
+                startActivity(new Intent(this, PerfilActivity.class));
+            } else if (id == R.id.opciones_configuracion) {
+                startActivity(new Intent(this, ConfiguracionActivity.class));
+            } else if (id == R.id.opciones_cerrar_sesion) {
                 cerrarSesion();
             }
+
             drawerLayout.closeDrawer(GravityCompat.END);
             return true;
         });
     }
 
     private void mostrarDatosCita() {
-        tvFecha.setText("Fecha: " + cita.getFecha());
-        tvHora.setText("Hora: " + cita.getHora());
+        tvFecha.setText("Fecha: " + (cita.getFecha() != null ? cita.getFecha() : "N/A"));
+        tvHora.setText("Hora: " + (cita.getHora() != null ? cita.getHora() : "N/A"));
 
         if (cita.getTitular() != null) {
             tvClaveNombreTitular.setText(String.format("Titular: %s %s",
-                    cita.getTitular().getNombre(),
-                    cita.getTitular().getApellidos()));
+                    cita.getTitular().getNombre() != null ? cita.getTitular().getNombre() : "",
+                    cita.getTitular().getApellidos() != null ? cita.getTitular().getApellidos() : ""));
+        } else {
+            tvClaveNombreTitular.setText("Titular: No disponible");
         }
 
         if (cita.getPaciente() != null) {
             tvClaveNombrePaciente.setText(String.format("Paciente: %s %s - Edad: %d años - Peso: %.2f kg",
-                    cita.getPaciente().getNombre(),
-                    cita.getPaciente().getApellidos(),
+                    cita.getPaciente().getNombre() != null ? cita.getPaciente().getNombre() : "",
+                    cita.getPaciente().getApellidos() != null ? cita.getPaciente().getApellidos() : "",
                     cita.getPaciente().getEdad(),
                     cita.getPaciente().getPeso()));
+        } else {
+            tvClaveNombrePaciente.setText("Paciente: No disponible");
         }
 
-        tvRazonCita.setText("Razón: " + cita.getRazonCita());
-    }
+        tvRazonCita.setText("Razón: " + (cita.getRazonCita() != null ? cita.getRazonCita() : "N/A"));
 
-    private void loadNotas() {
-        NotaService service = ApiClient.getClient().create(NotaService.class);
-        service.getNotasByCita(cita.getIdCita()).enqueue(new Callback<ApiResponse<List<Nota>>>() {
-            @Override
-            public void onResponse(Call<ApiResponse<List<Nota>>> call, Response<ApiResponse<List<Nota>>> response) {
-                if (response.isSuccessful() && response.body() != null && response.body().isSuccess()) {
-                    List<Nota> notas = response.body().getData();
-                    if (notas != null && !notas.isEmpty()) {
-                        StringBuilder sb = new StringBuilder();
-                        for (Nota nota : notas) {
-                            sb.append(nota.getDato()).append("\n\n");
-                        }
-                        tvNotas.setText(sb.toString().trim());
-                    } else {
-                        tvNotas.setText("No hay notas registradas para esta cita");
-                    }
-                } else {
-                    String errorMsg = "Error al cargar notas";
-                    if (response.body() != null) {
-                        errorMsg += ": " + response.body().getMessage();
-                    }
-                    tvNotas.setText(errorMsg);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ApiResponse<List<Nota>>> call, Throwable t) {
-                tvNotas.setText("Error de conexión: " + t.getMessage());
-            }
-        });
+        if (cita.getNota() != null && !cita.getNota().isEmpty()) {
+            tvNotas.setText(cita.getNota());
+        } else {
+            tvNotas.setText("No hay notas registradas para esta cita");
+        }
     }
 
     private void cerrarSesion() {
@@ -163,7 +169,7 @@ public class DetallesHistorialCitaActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+    public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             onBackPressed();
             return true;

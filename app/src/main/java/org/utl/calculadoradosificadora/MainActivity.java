@@ -10,8 +10,8 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import org.utl.calculadoradosificadora.VistaMedico.VistaMedico;
-import org.utl.calculadoradosificadora.VistaTitular.VistaTitular;
 import org.utl.calculadoradosificadora.VistaTitular.CuentaNueva.CuentaNueva;
+import org.utl.calculadoradosificadora.VistaTitular.VistaTitular;
 
 public class MainActivity extends AppCompatActivity {
 

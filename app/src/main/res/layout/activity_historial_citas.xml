@@ -77,22 +77,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginBottom="8dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Filtrar por:"
-                    android:layout_marginEnd="8dp"
-                    android:textSize="16sp"/>
-
-                <Spinner
-                    android:id="@+id/spinnerFiltroPersona"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:entries="@array/filtros_por_persona"/>
-            </LinearLayout>
+                android:layout_marginBottom="8dp"/>
 
             <!-- Filtro por estatus -->
             <LinearLayout

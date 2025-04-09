@@ -19,7 +19,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/colorGreen"
+            android:background="@color/colorGreenD"
             android:elevation="4dp"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
@@ -99,8 +99,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
-                android:text="@string/filtrar"
-                android:backgroundTint="@color/colorGreen"/>
+                android:backgroundTint="@color/colorGreenD"
+                android:text="@string/filtrar" />
         </LinearLayout>
 
         <!-- Contenido -->
@@ -144,9 +144,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_margin="16dp"
+            android:backgroundTint="@color/colorGreenD"
             android:text="@string/regresar"
-            android:textColor="@android:color/white"
-            android:backgroundTint="@color/colorGreen"/>
+            android:textColor="@android:color/white" />
     </LinearLayout>
 
     <!-- Menú izquierdo -->

@@ -121,10 +121,10 @@
                 android:id="@+id/btnSalir"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
                 android:layout_weight="1"
-                android:text="Salir"
-                android:backgroundTint="@color/colorRed"
-                android:layout_marginEnd="8dp"/>
+                android:backgroundTint="@color/colorRedD"
+                android:text="Salir" />
 
             <Button
                 android:id="@+id/btnCancelar"

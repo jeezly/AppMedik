@@ -96,7 +96,7 @@
             android:layout_gravity="top"
             android:layout_marginStart="10dp"
             android:layout_marginTop="16dp"
-            android:backgroundTint="@color/colorGreen"
+            android:backgroundTint="@color/colorGreenD"
             android:text="Modificar" />
     </LinearLayout>
 

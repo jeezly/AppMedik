@@ -86,9 +86,9 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
                     android:layout_marginBottom="16dp"
+                    android:backgroundTint="@color/colorGreenD"
                     android:text="Agregar Cita"
-                    android:textColor="@android:color/white"
-                    android:backgroundTint="@color/colorGreen"/>
+                    android:textColor="@android:color/white" />
 
                 <!-- ProgressBar para carga -->
                 <ProgressBar

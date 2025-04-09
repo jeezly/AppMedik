@@ -191,18 +191,18 @@
                 android:id="@+id/btnCancelar"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
                 android:layout_weight="1"
-                android:text="Cancelar"
-                android:backgroundTint="@color/colorRed"
-                android:layout_marginEnd="8dp"/>
+                android:backgroundTint="@color/colorRedD"
+                android:text="Cancelar" />
 
             <Button
                 android:id="@+id/btnRegistrar"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Registrar"
-                android:backgroundTint="@color/colorGreen"/>
+                android:backgroundTint="@color/colorGreenD"
+                android:text="Registrar" />
         </LinearLayout>
     </LinearLayout>
 

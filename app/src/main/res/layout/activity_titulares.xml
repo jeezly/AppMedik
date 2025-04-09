@@ -135,15 +135,16 @@
                 android:layout_marginTop="8dp"
                 android:layout_weight="1" />
         </LinearLayout>
+
         <Button
             android:id="@+id/btnSalirT"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_margin="16dp"
+            android:backgroundTint="@color/colorRedD"
             android:text="@string/regresar"
-            android:textColor="@android:color/white"
-            android:backgroundTint="@color/colorRed"/>
+            android:textColor="@android:color/white" />
     </LinearLayout>
 
     <!-- Menú desplegable lateral izquierdo -->

@@ -97,7 +97,7 @@
             android:layout_height="48dp"
             android:layout_marginEnd="4dp"
             android:layout_weight="1"
-            android:backgroundTint="#FF0303"
+            android:backgroundTint="@color/colorRedD"
             android:text="Cancelar"
             android:textAllCaps="false"
             android:textColor="#FFFFFF" />

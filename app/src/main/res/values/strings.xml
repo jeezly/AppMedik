@@ -69,6 +69,14 @@
         <item>Prefiero no decir</item>
     </string-array>
 
+    <string-array name="generoInsert_array_titulares">
+        <item>Masculino</item>
+        <item>Femenino</item>
+        <item>No binario</item>
+        <item>Otro</item>
+        <item>Prefiero no decir</item>
+    </string-array>
+
     <string-array name="genero_array_titulares">
         <item>Todos</item>
         <item>Masculino</item>
@@ -206,11 +214,25 @@
 
     <!-- Soporte -->
     <string name="contacto_desarrolladores">
-
     Juan Pablo García Hernández\n
     Teléfono: 477 371 4924\n
     Email: heezly123@gmail.com\n\n
 
-    [Aquí los demás]
+    Casillas Tapia Aideé Vanessa\n
+    Teléfono: 477 249 3651\n
+    Email: id@gmail.com\n\n
+
+    González Espadas Hugo Armando\n
+    Teléfono: 477 110 3413\n
+    Email: uwu@outlook.com\n\n
+
+    Velázquez Martínez José Isaac\n
+    Teléfono: 477 126 7554\n
+    Email: elpepe@hotmail.com\n\n
+
+    Ramírez Ramírez María José\n
+    Teléfono: 477 113 4677\n
+    Email: majomi@gmail.com
+
     </string>
 </resources>

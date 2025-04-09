@@ -172,11 +172,13 @@
             android:textSize="14sp"
             android:layout_marginTop="8dp"/>
 
-        <EditText
-            android:id="@+id/etGenero"
+        <Spinner
+            android:id="@+id/spGenero"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="text"/>
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="8dp">
+        </Spinner>
 
         <!-- Botones -->
         <LinearLayout

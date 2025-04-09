@@ -108,7 +108,7 @@ public class DetallesTitularActivity extends AppCompatActivity {
                 .setMessage(R.string.confirmar_eliminar)
                 .setPositiveButton(R.string.si, (dialog, which) -> {
                     // Aquí iría la lógica para eliminar de la base de datos
-                    deleteTitular(titular.getIdTitular()); //QUEDA PENDIENTE EL FILL
+                    deleteTitular(titular.getIdTitular());
                     //Toast.makeText(this, R.string.titular_eliminado, Toast.LENGTH_SHORT).show();
                     setResult(RESULT_OK);
                     finish();
@@ -128,7 +128,7 @@ public class DetallesTitularActivity extends AppCompatActivity {
                     ApiResponse<Void> apiResponse = response.body();
                     if(apiResponse.isSuccess()){
                         Toast.makeText(getBaseContext(), "Titular eliminado correctamente", Toast.LENGTH_SHORT).show();
-                        new AlertDialog.Builder(getBaseContext())
+                        new AlertDialog.Builder(DetallesTitularActivity.this)
                                 .setTitle("Eliminación")
                                 .setMessage("Titular eliminado con Éxito")
                                 .setPositiveButton("OK", (dialog, which) -> {
@@ -163,12 +163,7 @@ public class DetallesTitularActivity extends AppCompatActivity {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
-    private Titular fillTitular(){
-        Persona personaT = new Persona();
 
-        //ESTE NO SE REGRESA, FALTA EL FILL CHIDO
-        return titular;
-    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

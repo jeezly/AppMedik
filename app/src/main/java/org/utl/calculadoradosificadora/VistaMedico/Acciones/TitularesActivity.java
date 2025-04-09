@@ -201,7 +201,12 @@ public class TitularesActivity extends AppCompatActivity implements TitularesAda
 
                     if (apiResponse.isSuccess() && apiResponse.getData() != null) {
                         listaTitulares.clear();
-                        listaTitulares.addAll(apiResponse.getData());
+                        for(Titular t: apiResponse.getData()){
+                            if(t.getPersona().getEstado() == 1){
+                                listaTitulares.add(t);
+                            }
+                        }
+
                         adapter.updateData(listaTitulares);
 
                         if (listaTitulares.isEmpty()) {

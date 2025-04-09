@@ -1,13 +1,16 @@
 package org.utl.calculadoradosificadora.VistaMedico.Acciones;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -49,6 +52,7 @@ public class RegistrarTitularActivity extends AppCompatActivity {
     private TextView tvClaveTitular, tvUsuario;
     private EditText etCorreo, etTelefono, etNombre, etApellidos, etGenero;
     private Button btnCancelar, btnRegistrar;
+    private Spinner spGenero;
     private int idTitular;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +66,11 @@ public class RegistrarTitularActivity extends AppCompatActivity {
         etTelefono = findViewById(R.id.etTelefono);
         etNombre = findViewById(R.id.etNombre);
         etApellidos = findViewById(R.id.etApellidos);
-        etGenero = findViewById(R.id.etGenero);
+        spGenero = findViewById(R.id.spGenero);
+        ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(this,
+                R.array.generoInsert_array_titulares, android.R.layout.simple_spinner_item);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spGenero.setAdapter(spinnerAdapter);
         btnCancelar = findViewById(R.id.btnCancelar);
         btnRegistrar = findViewById(R.id.btnRegistrar);
 
@@ -70,7 +78,7 @@ public class RegistrarTitularActivity extends AppCompatActivity {
         int claveTitular = new Random().nextInt(9000) + 1000; // Número entre 1000 y 9999
         String usuario = "usr" + claveTitular;
 
-        tvClaveTitular.setText("Clave titular: " + claveTitular);
+        tvClaveTitular.setText("Clave titular: " + idTitular);
         tvUsuario.setText("Usuario: " + usuario);
 
         // Configurar botón Cancelar
@@ -213,23 +221,19 @@ public class RegistrarTitularActivity extends AppCompatActivity {
 
     private Titular fillTitularInsert(){
         idTitular = (int) getIntent().getSerializableExtra("idTitular");
-        //System.out.println(idTitular);
-        //Obtenemos los datos de persona
+
         Persona personaTitular = new Persona();
-        //personaTitular.setIdPersona();
         personaTitular.setNombre(etNombre.getText().toString());
         personaTitular.setApellidos(etApellidos.getText().toString());
-//        int generoSeleccionado = spGenero.getSelectedItemPosition(); // 0 -> Masculino, 1 -> Femenino
-//        personaTitular.setGenero(generoSeleccionado + 1); // 1 -> Masculino, 2 -> Femenino
-        personaTitular.setGenero(etGenero.getText().length());
+        int generoSeleccionado = spGenero.getSelectedItemPosition(); // 0 -> Masculino, 1 -> Femenino
+        personaTitular.setGenero(generoSeleccionado + 1); // 1 -> Masculino, 2 -> Femenino
+        //personaTitular.setGenero(etGenero.getText().length());
         personaTitular.setEstado(1);
-        //Obtenemos los datos de usuario
+
         Usuario usuarioTitular = new Usuario();
-        //usuarioTitular.setIdUsuario(0);
         usuarioTitular.setUsuario(tvUsuario.getText().toString());
         usuarioTitular.setCorreo(etCorreo.getText().toString());
         usuarioTitular.setContrasenia("default");
-        //usuarioTitular.setIdPersona();
         usuarioTitular.setToken(null);
 
         //Cargamos el modelo Titular

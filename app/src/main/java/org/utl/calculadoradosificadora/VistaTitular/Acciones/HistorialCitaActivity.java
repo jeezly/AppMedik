@@ -89,7 +89,8 @@ public class HistorialCitaActivity extends AppCompatActivity implements CitaAdap
         SharedPreferences preferences = getSharedPreferences("Sesion", MODE_PRIVATE);
         String titularJson = preferences.getString("titular", "");
         if (!titularJson.isEmpty()) {
-            return new Gson().fromJson(titularJson, Titular.class);
+            Gson gson = new Gson();
+            return gson.fromJson(titularJson, Titular.class);
         }
         return null;
     }

@@ -12,6 +12,7 @@ import androidx.cardview.widget.CardView;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.core.view.GravityCompat;
 import com.google.android.material.navigation.NavigationView;
+import com.google.gson.Gson;
 
 import org.utl.calculadoradosificadora.MainActivity;
 import org.utl.calculadoradosificadora.R;
@@ -23,6 +24,9 @@ import org.utl.calculadoradosificadora.VistaTitular.Menu.ConfiguracionActivity;
 import org.utl.calculadoradosificadora.VistaTitular.Menu.PerfilActivity;
 import org.utl.calculadoradosificadora.VistaTitular.Menu.SoporteAyudaTitularActivity;
 import org.utl.calculadoradosificadora.VistaTitular.Opciones.InformacionUtilActivity;
+import org.utl.calculadoradosificadora.model.Persona;
+import org.utl.calculadoradosificadora.model.Titular;
+import org.utl.calculadoradosificadora.model.Usuario;
 
 public class VistaTitular extends AppCompatActivity {
 
@@ -39,6 +43,9 @@ public class VistaTitular extends AppCompatActivity {
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationViewLeft = findViewById(R.id.navigation_view_left);
         navigationViewRight = findViewById(R.id.navigation_view_right);
+
+
+        guardarTitular(crearTitularTEMPORAL());
 
         // Abre el menú izquierdo al hacer clic en el ícono de 3 líneas
         findViewById(R.id.menu_icon).setOnClickListener(new View.OnClickListener() {
@@ -113,6 +120,47 @@ public class VistaTitular extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    private Titular crearTitularTEMPORAL(){
+        // Primero creamos la Persona
+        Persona persona = new Persona(
+                0,                      // idPersona
+                "Juan",                 // nombre
+                "Pérez López",          // apellidos
+                1,                      // genero (1: masculino)
+                1                       // estado (1: activo)
+        );
+
+// Luego creamos el Usuario asociado
+        Usuario usuario = new Usuario(
+                101,                    // idUsuario
+                "juan.perez",           // usuario
+                "juan.perez@email.com", // correo
+                "miContraseñaSegura",   // contrasenia
+                1,                      // idPersona (debe coincidir con idPersona anterior)
+                "token_de_sesion_123"   // token
+        );
+
+// Finalmente creamos el Titular
+        Titular titular = new Titular(
+                1001,                   // idTitular
+                "5512345678",           // telefono
+                persona,                // objeto Persona
+                usuario                 // objeto Usuario
+        );
+        return titular;
+    }
+    private void guardarTitular(Titular titular) {
+        SharedPreferences preferences = getSharedPreferences("Sesion", MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+
+        // Convertir el objeto Titular a JSON
+        String titularJson = new Gson().toJson(titular);
+
+        // Guardar el JSON en SharedPreferences
+        editor.putString("titular", titularJson);
+        editor.apply(); // o editor.commit() para guardado sincrónico
     }
 
     private void cerrarSesion() {
